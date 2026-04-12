@@ -603,7 +603,18 @@
     #header { flex-wrap: wrap; gap: 6px 12px; padding: 8px 12px; }
     #header h1 { font-size: 18px; }
     #header .crew { display: none; }
-    .timeline-bar { display: none; }
+    .timeline-bar { padding: 4px 12px; }
+    .timeline-track { height: 24px; }
+    .timeline-track-bg { top: 10px; height: 4px; }
+    .timeline-dot { top: 5px; width: 8px; height: 8px; transform: translateX(-4px); }
+    .timeline-dot.cluster { width: 10px; height: 10px; top: 4px; transform: translateX(-5px); }
+    .timeline-playhead { top: 2px; height: 20px; }
+    .timeline-activity-bars { display: none; }
+    .timeline-labels { display: none; }
+    .zoom-controls { display: none; }
+    .timeline-hover-tip { display: none !important; }
+    .timeline-event-markers { display: none; }
+    .timeline-audio-dots { display: none; }
     .mobile-activity { display: block; }
     .controls-row { padding: 6px 12px; gap: 6px; }
 
@@ -753,7 +764,7 @@
 
 
 <script>
-function edt(s) { return new Date(s + " GMT-0400").getTime(); }
+function edt(s) { return new Date(s.replace(' ','T') + "-04:00").getTime(); }
 
 const PHOTOS = [
   {t:edt("2026-04-01 15:05:27"),f:"55196404298_f9af1764ea_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 20mm f/1.8 S",set:"20mm · f/2.8 · 1/200s · ISO 2500",sc:false},
@@ -1530,17 +1541,30 @@ let viewStart = T_START;
 let viewEnd = T_END;
 const MIN_VIEW_SPAN = 2 * 3600000;
 
+// Convert timestamp to EDT Date components (EDT = UTC-4)
+function edtParts(ts) {
+  const d = new Date(ts - 4 * 3600000); // shift to UTC that reads as EDT
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return {
+    mon: months[d.getUTCMonth()],
+    day: String(d.getUTCDate()).padStart(2,'0'),
+    dayNum: d.getUTCDate(),
+    hr24: d.getUTCHours(),
+    hr: d.getUTCHours() % 12 || 12,
+    min: String(d.getUTCMinutes()).padStart(2,'0'),
+    sec: String(d.getUTCSeconds()).padStart(2,'0'),
+    ampm: d.getUTCHours() < 12 ? 'AM' : 'PM'
+  };
+}
+
 function formatTime(ts) {
-  const d = new Date(ts);
-  const mon = d.toLocaleString('en-US', {month:'short',timeZone:'America/New_York'});
-  const day = d.toLocaleString('en-US', {day:'2-digit',timeZone:'America/New_York'});
-  const h = d.toLocaleString('en-US', {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true,timeZone:'America/New_York'});
-  return `${mon} ${day}, ${h}`;
+  const p = edtParts(ts);
+  return `${p.mon} ${p.day}, ${p.hr}:${p.min}:${p.sec} ${p.ampm}`;
 }
 
 function formatTimeShort(ts) {
-  const d = new Date(ts);
-  return d.toLocaleString('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
+  const p = edtParts(ts);
+  return `${p.mon} ${p.dayNum}, ${p.hr}:${p.min} ${p.ampm}`;
 }
 
 function timeToViewPercent(t) {
