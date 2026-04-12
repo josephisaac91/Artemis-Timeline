@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARTEMIS II PHOTO TIMELINE</title>
+<link rel="icon" type="image/png" href="pngtree-detailed-full-moon-rendered-in-3d-for-creative-use-png-image_15976807.png">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0a0a14;
+    color: #e0e0e0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a14; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+  /* Header — compact single line */
+  #header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #1a1a2e;
+    background: linear-gradient(180deg, #0d1117, #0a0a14);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  #header h1 { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: -0.5px; white-space: nowrap; }
+  #header h1 span { color: #4FC3F7; }
+  #header .subtitle { color: #fff; font-size: 12px; }
+  #header .crew { color: #fff; font-size: 11px; }
+
+  /* Timeline bar — single line at top */
+  .timeline-bar {
+    padding: 8px 20px;
+    background: #0d0d1a;
+    border-bottom: 1px solid #1a1a2e;
+    flex-shrink: 0;
+  }
+  .timeline-track {
+    position: relative;
+    height: 54px;
+    cursor: pointer;
+  }
+  .timeline-track-bg {
+    position: absolute;
+    top: 17px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: #1a1a2e;
+    border-radius: 3px;
+  }
+  .timeline-dot {
+    position: absolute;
+    top: 9px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #333;
+    transform: translateX(-5px);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .timeline-dot:hover { background: #4FC3F7; }
+  .timeline-dot.active { background: #4FC3F7; box-shadow: 0 0 8px rgba(79,195,247,0.6); }
+  .timeline-dot.cluster { width: 14px; height: 14px; top: 7px; transform: translateX(-7px); }
+  .timeline-playhead {
+    position: absolute;
+    top: 4px;
+    width: 3px;
+    height: 46px;
+    background: #4FC3F7;
+    transform: translateX(-1.5px);
+    pointer-events: none;
+    border-radius: 1.5px;
+  }
+  .timeline-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #555;
+    margin-top: 2px;
+  }
+  .timeline-event-markers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 54px;
+    pointer-events: none;
+  }
+  .timeline-event-tick {
+    position: absolute;
+    top: 0;
+    width: 4px;
+    height: 14px;
+    background: rgba(79,195,247,0.5);
+    border-radius: 2px;
+    pointer-events: auto;
+    cursor: pointer;
+    transform: translateX(-2px);
+  }
+  .timeline-event-tick:hover {
+    background: rgba(79,195,247,1);
+    height: 16px;
+  }
+  .timeline-event-tick .tick-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1a1a2e;
+    border: 1px solid #333;
+    color: #ddd;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .timeline-event-tick:hover .tick-tooltip { display: block; }
+
+  /* Photo dots on timeline */
+  .timeline-photo-dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 54px;
+    pointer-events: none;
+  }
+  .photo-dot {
+    position: absolute;
+    top: 26px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #555;
+    transform: translateX(-3.5px);
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+  .photo-dot:hover { background: #4FC3F7; transform: translateX(-5px); width: 10px; height: 10px; top: 24px; }
+  .photo-dot.active { background: #4FC3F7; width: 9px; height: 9px; top: 25px; transform: translateX(-4.5px); box-shadow: 0 0 6px rgba(79,195,247,0.5); }
+  .photo-dot.spacecraft { background: #7B68EE; }
+  .photo-dot.spacecraft:hover { background: #9B88FF; }
+  .photo-dot.spacecraft.active { background: #9B88FF; box-shadow: 0 0 6px rgba(123,104,238,0.5); }
+  .timeline-audio-dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 54px;
+    pointer-events: none;
+    display: none;
+  }
+  .timeline-audio-dots { z-index: 15; }
+  .audio-dot {
+    position: absolute;
+    top: 26px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffd600;
+    transform: translateX(-3.5px);
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+  .audio-dot:hover { background: #ffea00; width: 10px; height: 10px; top: 24px; transform: translateX(-5px); }
+  .audio-dot.playing { background: #ffea00; width: 9px; height: 9px; top: 25px; transform: translateX(-4.5px); }
+  .audio-dot .audio-tip {
+    display: none;
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(26,26,46,0.95);
+    border: 1px solid #ffd600;
+    color: #ffd600;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 30;
+    pointer-events: none;
+  }
+  .audio-dot:hover .audio-tip { display: block; }
+
+  /* Zoom indicator */
+  .zoom-hint {
+    position: absolute;
+    top: -2px;
+    right: 0;
+    font-size: 9px;
+    color: #444;
+    pointer-events: none;
+  }
+  .zoom-controls {
+    position: absolute;
+    top: -1px;
+    right: 0;
+    display: flex;
+    gap: 4px;
+    z-index: 10;
+  }
+  .zoom-btn {
+    width: 18px;
+    height: 18px;
+    border: 1px solid #333;
+    background: #1a1a2e;
+    color: #888;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+    padding: 0;
+  }
+  .zoom-btn:hover { color: #fff; border-color: #4FC3F7; }
+
+  /* Controls row */
+  .controls-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 20px;
+    border-bottom: 1px solid #1a1a2e;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 5px 14px;
+    border: 1px solid #1a1a2e;
+    background: #0d0d1a;
+    color: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: #1a1a2e; border-color: #333; }
+  .btn.active { background: #1a237e; border-color: #3949ab; color: #fff; }
+  .filter-btn {
+    padding: 4px 10px;
+    border: 1px solid #1a1a2e;
+    background: transparent;
+    color: #888;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 600;
+    transition: all 0.15s;
+  }
+  .filter-btn.active { background: #1a237e; border-color: #3949ab; color: #fff; }
+  .filter-sep { color: #333; font-size: 10px; margin: 0 4px; }
+  .controls-spacer { flex: 1; }
+  .info-text { color: #4FC3F7; font-size: 12px; font-weight: 600; }
+  .audio-now { color: #888; font-size: 10px; font-style: italic; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Centered nav bar above photo */
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-shrink: 0;
+    padding-bottom: 6px;
+  }
+  .nav-btn {
+    padding: 7px 20px;
+    border: 1px solid #2a2a4e;
+    background: #12122a;
+    color: #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { background: #1a1a3e; border-color: #4FC3F7; color: #fff; }
+
+  /* Main viewer area — fills remaining height */
+  .viewer {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+    padding: 12px 20px;
+    gap: 20px;
+  }
+
+  /* Photo side — takes available width, fixed height from flex */
+  .photo-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+  .photo-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0d0d1a;
+    border: 1px solid #1a1a2e;
+    border-radius: 8px;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .photo-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  /* Prev/Next arrow overlays on photo */
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 64px;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    font-size: 28px;
+    font-weight: 300;
+    cursor: pointer;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    padding: 0;
+  }
+  .nav-arrow:hover { background: rgba(0,0,0,0.7); color: #fff; }
+  .nav-prev { left: 0; border-radius: 0 6px 6px 0; }
+  .nav-next { right: 0; border-radius: 6px 0 0 6px; }
+
+  .download-link {
+    display: block;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 11px;
+    color: #555;
+    text-decoration: none;
+    transition: color 0.15s;
+    flex-shrink: 0;
+  }
+  .download-link:hover { color: #4FC3F7; }
+
+  /* Metadata panel — right side, fixed width */
+  .meta-panel {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+  }
+  .meta-section {
+    padding: 12px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    border: 1px solid #1a1a2e;
+  }
+  .meta-section h3 {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  .meta-field { margin-bottom: 10px; }
+  .meta-field:last-child { margin-bottom: 0; }
+  .meta-label { color: #666; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .meta-value { color: #bbb; font-size: 13px; margin-top: 2px; word-break: break-word; }
+  .meta-value.highlight { color: #4FC3F7; font-weight: 600; }
+  .meta-value.time-value { font-size: 15px; font-variant-numeric: tabular-nums; }
+  .meta-desc { color: #999; font-size: 12px; line-height: 1.4; margin-top: 4px; }
+
+  /* Trajectory diagram */
+  .traj-section {
+    position: relative;
+    background: rgba(0,0,0,0.35);
+    border-radius: 8px;
+    border: 1px solid #1a1a2e;
+    padding: 6px;
+    text-align: center;
+  }
+  .traj-section canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .traj-label {
+    color: #888;
+    font-size: 10px;
+    margin-top: 2px;
+    text-align: center;
+  }
+
+
+  /* Activity bars on timeline */
+  .timeline-activity-bars {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 18px;
+    pointer-events: none;
+  }
+  .timeline-activity-bar {
+    position: absolute;
+    bottom: 0;
+    height: 18px;
+    border-radius: 3px;
+    opacity: 0.7;
+    font-size: 9px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    line-height: 18px;
+    padding: 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+  }
+  .timeline-activity-bar.observation-bar {
+    color: rgba(0,0,0,0.9);
+    animation: obs-glow 2s ease-in-out infinite;
+  }
+  .timeline-activity-bar.observation-bar-plain {
+    color: rgba(0,0,0,0.9);
+  }
+  @keyframes obs-glow {
+    0%, 100% { box-shadow: 0 0 4px rgba(255,214,0,0.4); opacity: 0.7; }
+    50% { box-shadow: 0 0 12px rgba(255,214,0,0.8), 0 0 20px rgba(255,214,0,0.3); opacity: 0.95; }
+  }
+
+  /* Timeline hover tooltip */
+  /* Print availability overlay — bottom-right card */
+  .print-overlay {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    padding: 12px 14px;
+    background: rgba(10,10,20,0.88);
+    border: 1px solid rgba(255,214,0,0.25);
+    border-radius: 6px;
+    backdrop-filter: blur(8px);
+    z-index: 5;
+    max-width: 220px;
+    text-align: center;
+  }
+  .print-close {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    background: none;
+    border: none;
+    color: #777;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 5px;
+    border-radius: 3px;
+    transition: color 0.15s;
+  }
+  .print-close:hover { color: #fff; }
+  .print-badge {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #ffd600;
+    background: rgba(255,214,0,0.12);
+    border: 1px solid rgba(255,214,0,0.25);
+    border-radius: 3px;
+    padding: 2px 8px;
+    margin-bottom: 6px;
+  }
+  .print-text {
+    display: block;
+    font-size: 11px;
+    color: #bbb;
+    line-height: 1.45;
+  }
+  .print-text strong { color: #e0e0e0; }
+  .print-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #4FC3F7;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .print-link:hover { color: #81D4FA; }
+
+  /* Calendar promo — always visible */
+  .calendar-promo {
+    padding: 12px;
+    background: linear-gradient(135deg, #0d1b2a, #1b2838);
+    border: 1px solid #1e3a5f;
+    border-radius: 6px;
+    margin-top: auto;
+  }
+  .calendar-promo-inner {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .calendar-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
+  .calendar-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: #e0e0e0;
+    letter-spacing: -0.2px;
+  }
+  .calendar-subtitle {
+    font-size: 11px;
+    color: #778899;
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+  .calendar-link {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    padding: 7px 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .calendar-link:hover { background: linear-gradient(135deg, #1976d2, #1565c0); }
+
+  .timeline-hover-tip {
+    display: none;
+    position: absolute;
+    bottom: 58px;
+    transform: translateX(-50%);
+    background: #12121f;
+    border: 1px solid #333;
+    color: #ddd;
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 30;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  .timeline-hover-tip .tip-time { color: #4FC3F7; font-weight: 600; font-size: 10px; margin-bottom: 3px; }
+  .timeline-hover-tip .tip-activity { display: flex; align-items: center; gap: 6px; }
+  .timeline-hover-tip .tip-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .timeline-hover-tip .tip-label { color: #bbb; font-size: 10px; }
+
+  /* --- Mobile / narrow screens --- */
+  @media (max-width: 768px) {
+    body { height: auto; overflow: auto; }
+    #header { flex-wrap: wrap; gap: 6px 12px; padding: 8px 12px; }
+    #header h1 { font-size: 18px; }
+    #header .crew { display: none; }
+    .timeline-bar { padding: 8px 12px; }
+    .controls-row { padding: 6px 12px; gap: 6px; }
+
+    /* Stack viewer vertically */
+    .viewer {
+      flex-direction: column;
+      padding: 8px 12px;
+      gap: 10px;
+      overflow-y: auto;
+    }
+    .photo-side { min-height: 50vw; max-height: 60vh; }
+    .meta-panel { width: 100%; flex-shrink: 0; flex-direction: row; flex-wrap: wrap; gap: 8px; }
+    .meta-section { flex: 1; min-width: 140px; padding: 10px; }
+    .meta-field { margin-bottom: 6px; }
+    .meta-value.time-value { font-size: 13px; }
+    .download-link { font-size: 10px; padding: 3px 0; }
+  }
+
+  @media (max-width: 480px) {
+    #header .subtitle { font-size: 10px; }
+    #header .disclaimer { display: none; }
+    .photo-side { min-height: 40vw; }
+    .meta-panel { flex-direction: column; }
+    .meta-section { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div id="header">
+  <h1>ARTEMIS <span>II</span> PHOTO TIMELINE</h1>
+  <div class="subtitle">April 1–10, 2026</div>
+  <div class="crew">Wiseman • Glover • Koch • Hansen</div>
+</div>
+
+<!-- Timeline bar -->
+<div class="timeline-bar">
+  <div class="timeline-track" id="timelineTrack">
+    <div class="timeline-track-bg"></div>
+    <div class="timeline-activity-bars" id="activityBars"></div>
+    <div class="timeline-photo-dots" id="photoDots"></div>
+    <div class="timeline-audio-dots" id="audioDots"></div>
+    <div class="timeline-event-markers" id="eventMarkers"></div>
+    <div class="timeline-playhead" id="playhead"></div>
+    <div class="timeline-hover-tip" id="timelineHoverTip">
+      <div class="tip-time" id="tipTime"></div>
+      <div class="tip-activity" id="tipActivity"></div>
+    </div>
+    <div class="zoom-controls">
+      <button class="zoom-btn" id="zoomInBtn" title="Zoom in">+</button>
+      <button class="zoom-btn" id="zoomOutBtn" title="Zoom out">−</button>
+      <button class="zoom-btn" id="zoomResetBtn" title="Reset zoom">⊙</button>
+    </div>
+  </div>
+  <div class="timeline-labels">
+    <span>Apr 1</span><span>Apr 2</span><span>Apr 3</span><span>Apr 4</span><span>Apr 5</span><span>Apr 6</span><span>Apr 7</span><span>Apr 8</span><span>Apr 9</span><span>Apr 10</span><span>Apr 11</span>
+  </div>
+</div>
+
+<!-- Controls row -->
+<div class="controls-row">
+  <button class="filter-btn active" data-filter="all">All Photos</button>
+  <button class="filter-btn" data-filter="spacecraft">Crew Photos Only</button>
+  <span class="filter-sep">|</span>
+  <button class="filter-btn crew-filter" data-crew="Wiseman">Wiseman</button>
+  <button class="filter-btn crew-filter" data-crew="Glover">Glover</button>
+  <button class="filter-btn crew-filter" data-crew="Koch">Koch</button>
+  <button class="filter-btn crew-filter" data-crew="Hansen">Hansen</button>
+  <span class="filter-sep">|</span>
+  <button class="filter-btn" id="muteBtn" title="Toggle mission audio">Add Audio</button>
+  <span class="audio-now" id="audioNow"></span>
+  <div class="controls-spacer"></div>
+  <span class="info-text" id="photoCounter">1 / 220</span>
+</div>
+
+<!-- Main viewer -->
+<div class="viewer">
+  <div class="photo-side">
+    <div class="photo-container">
+      <img id="currentPhoto" class="photo-img" alt="Current photo">
+      <button class="nav-arrow nav-prev" id="prevBtn" title="Previous photo">‹</button>
+      <button class="nav-arrow nav-next" id="nextBtn" title="Next photo">›</button>
+      <div id="printBanner" class="print-overlay" style="display:none">
+        <button class="print-close" id="printClose" title="Dismiss">×</button>
+        <span class="print-badge">PRINT AVAILABLE</span>
+        <span class="print-text">This image is available as a <strong>16×24 giclée print</strong> on archival paper.</span>
+        <a class="print-link" href="#">Order Print →</a>
+      </div>
+    </div>
+    <a id="downloadLink" class="download-link" download>Download full quality</a>
+  </div>
+  <div class="meta-panel">
+    <div class="meta-section">
+      <div class="meta-field">
+        <div class="meta-label">Time (EDT)</div>
+        <div class="meta-value highlight time-value" id="metaTime">—</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-label">Distance from Earth</div>
+        <div class="meta-value highlight" id="metaDistance">—</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-label">Distance to Moon</div>
+        <div class="meta-value highlight" id="metaMoonDist">—</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-label">Photographer</div>
+        <div class="meta-value highlight" id="metaPhotographer">—</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-label">Location</div>
+        <div class="meta-value" id="metaLocation">—</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-label">Camera</div>
+        <div class="meta-value" id="metaCamera">—</div>
+      </div>
+      <div class="meta-field">
+        <div class="meta-label">Settings</div>
+        <div class="meta-value" id="metaSettings">—</div>
+      </div>
+    </div>
+    <div class="meta-section" id="descSection" style="display:none">
+      <h3>Description</h3>
+      <div class="meta-desc" id="metaDesc"></div>
+    </div>
+    <div class="traj-section">
+      <canvas id="trajCanvas" width="400" height="200"></canvas>
+      <div class="traj-label" id="trajLabel"></div>
+    </div>
+    <div class="calendar-promo">
+      <div class="calendar-promo-inner">
+        <div class="calendar-icon">📅</div>
+        <div class="calendar-copy">
+          <div class="calendar-title">Artemis II — 2027 Calendar</div>
+          <div class="calendar-subtitle">13 months of historic mission photography on premium matte paper.</div>
+        </div>
+      </div>
+      <a class="calendar-link" href="#">Pre-order Now →</a>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function edt(s) { return new Date(s + " GMT-0400").getTime(); }
+
+const PHOTOS = [
+  {t:edt("2026-04-01 15:05:27"),f:"55196404298_f9af1764ea_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 20mm f/1.8 S",set:"20mm · f/2.8 · 1/200s · ISO 2500",sc:false},
+  {t:edt("2026-04-01 17:45:25"),f:"55182696113-0c4398702d-o-2.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"400mm · f/8.0 · 1/2000s · ISO 100",sc:false},
+  {t:edt("2026-04-01 17:45:25"),f:"55182696113-0c4398702d-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"400mm · f/8.0 · 1/2000s · ISO 100",sc:false},
+  {t:edt("2026-04-01 17:47:00"),f:"55181686977-7e768c5ab5-o.jpg",p:"NASA/Keegan Barber",loc:"Liftoff",cam:"NIKON Z 6_2 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/16.0 · 180s · ISO 100",sc:false},
+  {t:edt("2026-04-01 17:47:05"),f:"55182980490-8608942e35-o.jpg",p:"NASA/Keegan Barber",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 180-600mm f/5.6-6.3 VR",set:"480mm · f/8.0 · 1/4000s · ISO 360",sc:false},
+  {t:edt("2026-04-01 17:47:10"),f:"55182992165-bcbb710703-o.jpg",p:"NASA/Keegan Barber",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 180-600mm f/5.6-6.3 VR",set:"180mm · f/8.0 · 1/4000s · ISO 280",sc:false},
+  {t:edt("2026-04-01 17:47:15"),f:"55182789108-f13e3eb9ec-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"800mm · f/9.0 · 1/1000s · ISO 250",sc:false},
+  {t:edt("2026-04-01 17:47:20"),f:"55183079963-98d70178ff-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS 6D + EF20mm f/2.8 USM",set:"20mm · f/6.3 · 1/4000s · ISO 100",sc:false},
+  {t:edt("2026-04-01 17:47:25"),f:"55183089523-2832f9419d-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS 6D + EF20mm f/2.8 USM",set:"20mm · f/6.3 · 1/4000s · ISO 100",sc:false},
+  {t:edt("2026-04-01 17:47:30"),f:"55181746722-0c6113480d-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/2000s · ISO 1250",sc:false},
+  {t:edt("2026-04-01 21:27:22"),f:"55196507489_63cc22c484_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"59mm · f/2.8 · 1/100s · ISO 2500",sc:false},
+  {t:edt("2026-04-01 21:45:05"),f:"55196663265_ef59978360_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"89mm · f/2.8 · 1/250s · ISO 2500",sc:false},
+  {t:edt("2026-04-01 22:21:15"),f:"55196252006_59544763b0_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"28mm · f/2.8 · 1/160s · ISO 2500",sc:false},
+  {t:edt("2026-04-02 18:24:11"),f:"55196698385_b79957418c_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/250s · ISO 3200",sc:false},
+  {t:edt("2026-04-02 18:27:51"),f:"55196534939_e4bc5a438e_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/250s · ISO 3200",sc:false},
+  {t:edt("2026-04-02 18:28:00"),f:"55195674427_a68aba74ca_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"43mm · f/2.8 · 1/250s · ISO 3200",sc:false},
+  {t:edt("2026-04-02 19:45:21"),f:"55196543334_5797e7293a_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"31mm · f/3.2 · 1/160s · ISO 2000",sc:false},
+  {t:edt("2026-04-02 20:00:03"),f:"55195410937_bbbe00800f_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"43mm · f/2.8 · 1/160s · ISO 3200",sc:false},
+  {t:edt("2026-04-02 21:55:15"),f:"55184731952_c2bde0bcc6_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/14.0 · 1/320s · ISO 400",sc:true},
+  {t:edt("2026-04-02 23:41:23"),f:"55187684915_d91051b281_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/1000s · ISO 32",sc:false},
+  {t:edt("2026-04-02 23:42:35"),f:"55187189317_52ff04bc9a_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/1250s · ISO 40",sc:false},
+  {t:edt("2026-04-02 23:44:38"),f:"55187293546_43c21e2ef2_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/180s · ISO 20",sc:false},
+  {t:edt("2026-04-02 23:53:12"),f:"55184586022_5fcdc8cc94_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/20.0 · 1/250s · ISO 250",sc:true},
+  {t:edt("2026-04-02 23:53:13"),f:"55184586022_5fcdc8cc94_o (2).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/20.0 · 1/250s · ISO 250",sc:true},
+  {t:edt("2026-04-03 01:27:20"),f:"55185622941_3e571fdc44_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"22mm · f/5.6 · 1/15s · ISO 51200",sc:true},
+  {t:edt("2026-04-03 01:27:39"),f:"55185633398_0374c915ce_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"22mm · f/4.0 · 1/4s · ISO 51200",sc:true},
+  {t:edt("2026-04-03 13:48:33"),f:"55186615484_510014958c_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/670s · ISO 100",sc:false},
+  {t:edt("2026-04-03 15:12:38"),f:"55186454418_1410110fe9_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2000s · ISO 100",sc:false},
+  {t:edt("2026-04-03 15:21:47"),f:"55186770575_d987f9c852_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/3900s · ISO 100",sc:false},
+  {t:edt("2026-04-03 19:30:32"),f:"55187172560_359bfaccb9_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.0 · 1/26000s · ISO 400",sc:true},
+  {t:edt("2026-04-04 00:32:38"),f:"55188864542_695985d1a6_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/16.0 · 1/500s · ISO 500",sc:true},
+  {t:edt("2026-04-04 00:38:22"),f:"55189799111_138617a557_o (1).jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/14.0 · 1/320s · ISO 400",sc:true},
+  {t:edt("2026-04-04 00:38:59"),f:"55187298155_0f0187a6de_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"150mm · f/18.0 · 1/640s · ISO 500",sc:true},
+  {t:edt("2026-04-04 00:44:47"),f:"55186902076_0f58231a29_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/16.0 · 1/500s · ISO 500",sc:true},
+  {t:edt("2026-04-04 00:48:56"),f:"55186933788_b4a8045c8e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/2.8 · 1/13s · ISO 51200",sc:true},
+  {t:edt("2026-04-04 00:49:20"),f:"55187055368_7ab1e4c6a4_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/2.8 · 1/20s · ISO 51200",sc:true},
+  {t:edt("2026-04-04 03:03:18"),f:"55187348577_9a3666de4f_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/18.0 · 1/640s · ISO 500",sc:true},
+  {t:edt("2026-04-04 05:34:19"),f:"55190036409_b8751c9d86_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-04 06:06:49"),f:"55189767696_27cf3376e4_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-04 17:20:54"),f:"55190303117_0330a107be_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/2s · ISO 32000",sc:false},
+  {t:edt("2026-04-04 23:49:45"),f:"55190613700_1beec64e98_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.2 · 1/30s · ISO 400",sc:true},
+  {t:edt("2026-04-05 00:02:50"),f:"55190158269_06db61345b_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + VR 80-400mm f/4.5-5.6G",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-05 00:23:11"),f:"55195961058_8ac0d8b4af_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/15s · ISO 141",sc:false},
+  {t:edt("2026-04-05 00:23:14"),f:"55194920227_1ced7587f1_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/30s · ISO 530",sc:false},
+  {t:edt("2026-04-05 00:23:41"),f:"55194920222_e6114d3da6_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/15s · ISO 397",sc:false},
+  {t:edt("2026-04-05 07:35:18"),f:"55189687036_7504c9280d_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/9.0 · 1/1250s · ISO 400",sc:true},
+  {t:edt("2026-04-05 07:39:36"),f:"55190200376_9170407d93_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/20.0 · 1/1000s · ISO 1250",sc:true},
+  {t:edt("2026-04-05 18:23:47"),f:"55191185696_f8cd3e9788_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/5.0 · 1/125s · ISO 10000",sc:true},
+  {t:edt("2026-04-05 22:10:46"),f:"55198608122_db1a277281_o.jpg",p:"NASA/Robert Markowitz",loc:"Science Evaluation Room, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/3.2 · 1/100s · ISO 3200",sc:false},
+  {t:edt("2026-04-05 23:28:49"),f:"55191439024_9460827fd4_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON Z 9 + VR 80-400mm f/4.5-5.6G",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 04:42:16"),f:"55191180896_93318c9e5e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true},
+  {t:edt("2026-04-06 04:43:29"),f:"55191585995_ce02dc566d_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true},
+  {t:edt("2026-04-06 04:45:53"),f:"55190298147_d6a1a8bb31_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true},
+  {t:edt("2026-04-06 04:48:55"),f:"55191331293_bb63acba64_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/22.0 · 1/250s · ISO 400",sc:true},
+  {t:edt("2026-04-06 06:45:17"),f:"55189594357_55ef58f817_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/22.0 · 1/250s · ISO 400",sc:true},
+  {t:edt("2026-04-06 13:33:24"),f:"55199650003_5df2686dc1_o.jpg",p:"NASA/Luna Posadas Nava",loc:"Science Evaluation Room, Houston",cam:"NIKON D5 + 24.0-70.0 mm f/2.8",set:"32mm · f/2.8 · 1/125s · ISO 800",sc:false},
+  {t:edt("2026-04-06 14:45:19"),f:"55197095290_da7fb6ece3_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.5 · 1/20s · ISO 10000",sc:true},
+  {t:edt("2026-04-06 14:55:26"),f:"55193194643_0c9eac774f_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.5 · 1/20s · ISO 16000",sc:true},
+  {t:edt("2026-04-06 15:57:39"),f:"55196704886_deccb80f7a_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/3.5 · 1/50s · ISO 16000",sc:true},
+  {t:edt("2026-04-06 15:59:12"),f:"55196961359_8ed5e86af3_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/4.5 · 1/80s · ISO 16000",sc:true},
+  {t:edt("2026-04-06 16:25:36"),f:"55191470911_ed6d17c2be_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"200mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 16:25:43"),f:"55193069001_940360cfdb_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/3.5 · 1/50s · ISO 20000",sc:true},
+  {t:edt("2026-04-06 18:10:17"),f:"55194917013_732620c66e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 18:13:31"),f:"55193462360_e4366d4b48_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/18s · ISO 800",sc:false},
+  {t:edt("2026-04-06 18:32:05"),f:"55195026049_90a254f6a3_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 18:33:35"),f:"55196453768_35ac350f09_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 18:33:44"),f:"55197737178_9b35dbcb12_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 18:35:56"),f:"55193368072_2d78e28314_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 20mm f/1.8 S",set:"20mm · f/2.8 · 1/125s · ISO 2500",sc:false},
+  {t:edt("2026-04-06 19:15:12"),f:"55195796542_759a8b698a_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/7.1 · 1/20s · ISO 5000",sc:true},
+  {t:edt("2026-04-06 19:15:22"),f:"55195796552_a8d5bffdc8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/7.1 · 1/20s · ISO 5000",sc:true},
+  {t:edt("2026-04-06 19:19:17"),f:"55199404085_fdf82b3e68_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 19:19:35"),f:"55193049251_43a64bf74d_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 19:22:45"),f:"55195413602_c4306fea38_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 19:41:43"),f:"55199312161_f84ab3fd2e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/22.0 · 1/1000s · ISO 2000",sc:true},
+  {t:edt("2026-04-06 19:43:49"),f:"55196937384_4d99b6bf96_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/3.5 · 1/50s · ISO 16000",sc:true},
+  {t:edt("2026-04-06 19:44:25"),f:"55192164982_b14b7d4a20_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/4.5 · 1/80s · ISO 16000",sc:true},
+  {t:edt("2026-04-06 19:48:09"),f:"55197095240_3d7a1b7391_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/2.8 · 1/20s · ISO 16000",sc:true},
+  {t:edt("2026-04-06 20:02:00"),f:"55194627304_c3cb06ab2f_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:04:00"),f:"55194619544_73f74ae5d0_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:05:44"),f:"55193053886_9071f0a61e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"140mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:06:26"),f:"55194762480_75e13bca20_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:06:43"),f:"55194361976_92f5a33949_o (1).jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:07:44"),f:"55194639639_2f9b1e8be0_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:08:18"),f:"55194598974_0173dc947b_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"290mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:09:26"),f:"55195894708_a9a94dba10_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:11:52"),f:"55194768276_c87d2884e2_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"85mm · f/11.0 · 1/2000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:12:02"),f:"55194334756_16d84a9ace_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"125mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:18:24"),f:"55193784989_3b532023c0_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false},
+  {t:edt("2026-04-06 20:25:21"),f:"55194529188_d90aa501b6_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"185mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:28:57"),f:"55194627309_3957207b4b_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:34:27"),f:"55196010752_5b3201ef0d_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:41:45"),f:"55193206753_03e267f92b_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"180mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 20:46:20"),f:"55197995935_c2a38d06b9_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"130mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 21:44:32"),f:"55194399918_813cc7ef06_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"24mm · f/2.8 · 1/160s · ISO 2500",sc:false},
+  {t:edt("2026-04-06 22:30:00"),f:"55193337359_950011bf2d_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/15s · ISO 800",sc:false},
+  {t:edt("2026-04-06 22:38:25"),f:"55194659885_32f13f28a3_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"55mm · f/3.5 · 1/250s · ISO 2000",sc:false},
+  {t:edt("2026-04-06 22:44:27"),f:"55196075694_3e4b1a789d_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 22:45:04"),f:"55197007576_c061c21cdb_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"340mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 22:46:35"),f:"55193137293_3b37051840_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 22:49:02"),f:"55197552725_311cf42abf_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 22:49:43"),f:"55193002296_dc7f150992_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 22:50:25"),f:"55193946135_2664677690_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2200s · ISO 100",sc:false},
+  {t:edt("2026-04-06 22:58:14"),f:"55193149063_81719d37c8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:02:22"),f:"55193071311_0170f32df8_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"19mm · f/1.9 · 1/7s · ISO 1000",sc:false},
+  {t:edt("2026-04-06 23:05:33"),f:"55193414680_6b40b7bc89_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:35:54"),f:"55192123432_66aed38dd0_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:40:47"),f:"55193180468_5de0cf977a_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"380mm · f/7.1 · 1/800s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:41:22"),f:"55192132107_00dc598014_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:41:37"),f:"55192084847_0b9940c4b9_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:41:58"),f:"55193178333_e4a5a133ed_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/7.1 · 1/800s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:42:14"),f:"55192657082_f72aa9aacb_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/3500s · ISO 100",sc:false},
+  {t:edt("2026-04-06 23:42:42"),f:"55198598917_7ab5bc48c9_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:42:45"),f:"55198687567_68fd1bd7e7_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"130mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-06 23:42:52"),f:"55199984595_1727ddf745_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true},
+  {t:edt("2026-04-07 00:01:17"),f:"55196710272_1289069236_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true},
+  {t:edt("2026-04-07 00:02:32"),f:"55199774765_6e77d97b51_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-07 00:03:06"),f:"55198362617_946e74e391_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/7.1 · 1/800s · ISO 400",sc:true},
+  {t:edt("2026-04-07 00:03:30"),f:"55199141754_7ff4708cb4_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
+  {t:edt("2026-04-07 00:09:30"),f:"55198256277_137a632358_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/7.1 · 1/800s · ISO 400",sc:true},
+  {t:edt("2026-04-07 00:22:30"),f:"55193054686_6ed51f4f15_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
+  {t:edt("2026-04-07 00:23:16"),f:"55199812540_b8facc0701_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/10.0 · 1/1600s · ISO 400",sc:true},
+  {t:edt("2026-04-07 01:35:31"),f:"55197506830_a07d2d54ba_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"350mm · f/5.6 · 1/25s · ISO 6400",sc:true},
+  {t:edt("2026-04-07 02:01:20"),f:"55192173787_b8322b1190_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/4.5 · 1/6s · ISO 40000",sc:true},
+  {t:edt("2026-04-07 02:01:20"),f:"55193054741_03c94834b0_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.0 · 2s · ISO 1600",sc:true},
+  {t:edt("2026-04-07 02:10:44"),f:"55193566011_0087fe82c1_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 5s · ISO 800",sc:false},
+  {t:edt("2026-04-07 02:11:49"),f:"55192683067_668f78b20c_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 15s · ISO 800",sc:false},
+  {t:edt("2026-04-07 02:28:36"),f:"55193207303_dd68355a57_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/5.3 · 1/100s · ISO 6400",sc:true},
+  {t:edt("2026-04-07 02:28:39"),f:"55193828029_dca505dae8_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2s · ISO 800",sc:false},
+  {t:edt("2026-04-07 02:32:01"),f:"55193207308_5031aaa6c0_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/40s · ISO 320",sc:false},
+  {t:edt("2026-04-07 09:37:06"),f:"55199492819_2388a0954b_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/200s · ISO 5000",sc:false},
+  {t:edt("2026-04-07 09:40:26"),f:"55199492814_a53ed1ea82_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"52mm · f/2.8 · 1/160s · ISO 4000",sc:false},
+  {t:edt("2026-04-07 10:06:59"),f:"55199243981_8577454010_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/4.0 · 1/160s · ISO 4000",sc:false},
+  {t:edt("2026-04-07 10:17:27"),f:"55199649540_122da08a21_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/3.5 · 1/160s · ISO 2500",sc:false},
+  {t:edt("2026-04-07 13:27:53"),f:"55194494274_e401f02494_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/1600s · ISO 100",sc:false},
+  {t:edt("2026-04-07 13:33:23"),f:"55193360877_04bff6ed5a_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/950s · ISO 100",sc:false},
+  {t:edt("2026-04-07 13:58:03"),f:"55194789840_d7cf899d17_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false},
+  {t:edt("2026-04-07 14:03:43"),f:"55194789845_74d1e2da75_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false},
+  {t:edt("2026-04-07 14:40:13"),f:"55195952067_f58158e8ab_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"17mm · f/2.8 · 1/250s · ISO 2500",sc:false},
+  {t:edt("2026-04-07 14:40:25"),f:"55194459003_3bae619a73_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2400s · ISO 100",sc:false},
+  {t:edt("2026-04-07 14:41:45"),f:"55194517308_b152775e40_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false},
+  {t:edt("2026-04-07 14:42:13"),f:"55195952087_cdbd0422a9_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/3.2 · 1/250s · ISO 2500",sc:false},
+  {t:edt("2026-04-07 15:04:59"),f:"55199789389_8449869349_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"57mm · f/2.8 · 1/125s · ISO 2500",sc:false},
+  {t:edt("2026-04-07 17:32:35"),f:"55194523579_bf4efc3d44_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.8 · 10s · ISO 12800",sc:true},
+  {t:edt("2026-04-07 23:34:49"),f:"55195066435_9f77676d65_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true},
+  {t:edt("2026-04-07 23:35:09"),f:"55194658516_0007ed5ba5_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true},
+  {t:edt("2026-04-07 23:35:25"),f:"55193772547_d9e3b1d0e8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true},
+  {t:edt("2026-04-07 23:35:33"),f:"55193772552_b8cfb47b7e_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/80s · ISO 4000",sc:true},
+  {t:edt("2026-04-10 16:11:05"),f:"55199324306-ac28f4dddd-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/6.3 · 1/320s · ISO 64",sc:false},
+  {t:edt("2026-04-10 16:11:33"),f:"55199507598-efe3d0a725-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"50mm · f/8.0 · 1/1000s · ISO 160",sc:false},
+  {t:edt("2026-04-10 17:52:06"),f:"55199520466-34d138dc13-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"135mm · f/2.8 · 1/3200s · ISO 125",sc:false},
+  {t:edt("2026-04-10 18:17:00"),f:"55199526571-c49720e4ba-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"18mm · f/8.0 · 1/1000s · ISO 220",sc:false},
+  {t:edt("2026-04-10 19:04:07"),f:"55199709323-8fe6819300-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"165mm · f/7.1 · 1/200s · ISO 80",sc:false},
+  {t:edt("2026-04-10 19:11:46"),f:"55199558901-750598e081-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/6.3 · 1/1000s · ISO 250",sc:false},
+  {t:edt("2026-04-10 20:04:30"),f:"55200049934-d149f06d5a-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
+  {t:edt("2026-04-10 20:04:32"),f:"55198907367-be08b9ca9d-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
+  {t:edt("2026-04-10 20:04:34"),f:"55200207020-dcf603c8cf-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
+  {t:edt("2026-04-10 20:04:36"),f:"55200207390-ab1f43b8b8-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
+  {t:edt("2026-04-10 20:04:56"),f:"55199953168-d2742b8861-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
+  {t:edt("2026-04-10 20:06:20"),f:"55201553518_2b828d9b20_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/16000s · ISO 2000",sc:false},
+  {t:edt("2026-04-10 20:06:39"),f:"55200077344_5014935964_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"18mm · f/3.5 · 1/125s · ISO 2000",sc:false},
+  {t:edt("2026-04-10 20:06:56"),f:"55201805415_0a912b8951_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/16000s · ISO 2000",sc:false},
+  {t:edt("2026-04-10 20:07:17"),f:"55199878864-41ff4d23f4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/7.1 · 1/2500s · ISO 400",sc:false},
+  {t:edt("2026-04-10 20:07:24"),f:"55199878669-257ddff58b-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/7.1 · 1/2500s · ISO 400",sc:false},
+  {t:edt("2026-04-10 20:07:26"),f:"55199856343_5a157820d0_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false},
+  {t:edt("2026-04-10 20:07:26"),f:"dsc-3398.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false},
+  {t:edt("2026-04-10 20:07:26"),f:"nhq202604100018.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 280",sc:false},
+  {t:edt("2026-04-10 20:07:29"),f:"55199856318_652c455baf_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false},
+  {t:edt("2026-04-10 20:07:29"),f:"dsc-3427.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false},
+  {t:edt("2026-04-10 20:07:36"),f:"55199685771-a20de6ebf3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 320",sc:false},
+  {t:edt("2026-04-10 20:07:43"),f:"55200091055-901e263aa4-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 280",sc:false},
+  {t:edt("2026-04-10 20:07:47"),f:"55199935584-7cd41d3d4a-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 360",sc:false},
+  {t:edt("2026-04-10 20:22:02"),f:"55200100035-733f23e750-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/1250s · ISO 400",sc:false},
+  {t:edt("2026-04-10 20:26:25"),f:"55198801842-c6f17d4041-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 300mm f/4E",set:"300mm · f/7.1 · 1/1000s · ISO 80",sc:false},
+  {t:edt("2026-04-10 20:28:43"),f:"55201813860_9e0777e100_o.jpg",p:"NASA/James Blair",loc:"USS John P. Murtha",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"800mm · f/14.0 · 1/5000s · ISO 2000",sc:false},
+  {t:edt("2026-04-10 20:29:32"),f:"55199695466-e0a2e1c3cc-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/400s · ISO 160",sc:false},
+  {t:edt("2026-04-10 20:37:18"),f:"55199695136-23fb9ed419-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/400s · ISO 200",sc:false},
+  {t:edt("2026-04-10 21:13:25"),f:"55198811582-9032c9d84c-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/800s · ISO 320",sc:false},
+  {t:edt("2026-04-10 21:14:04"),f:"55199854793-6863c5998c-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/1600s · ISO 800",sc:false},
+  {t:edt("2026-04-10 21:52:36"),f:"55200008149-09a5f1fc33-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/1250s · ISO 800",sc:false},
+  {t:edt("2026-04-10 22:05:57"),f:"55198951957-0f8ed6527b-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"58mm · f/4.0 · 1/200s · ISO 900",sc:false},
+  {t:edt("2026-04-10 22:06:02"),f:"55198952237-ba1b02a8eb-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 500",sc:false},
+  {t:edt("2026-04-10 22:06:08"),f:"55199996653-9e384a8235-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"35mm · f/4.0 · 1/200s · ISO 720",sc:false},
+  {t:edt("2026-04-10 22:06:30"),f:"55200096939-71021a8429-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"22mm · f/4.0 · 1/160s · ISO 900",sc:false},
+  {t:edt("2026-04-10 22:06:34"),f:"55199997948-73cd027a44-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"66mm · f/4.0 · 1/200s · ISO 900",sc:false},
+  {t:edt("2026-04-10 22:06:37"),f:"55199998298-845d964fd0-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"66mm · f/4.0 · 1/200s · ISO 900",sc:false},
+  {t:edt("2026-04-10 22:06:51"),f:"55199999093-35f97d59f4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"31mm · f/4.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-10 22:06:52"),f:"55200099409-ca39242549-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"64mm · f/4.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-10 22:07:29"),f:"55200000228-2210704fdd-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"15mm · f/4.0 · 1/160s · ISO 220",sc:false},
+  {t:edt("2026-04-10 22:08:09"),f:"55200255400-1f787b68e3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"55mm · f/4.0 · 1/200s · ISO 220",sc:false},
+  {t:edt("2026-04-10 22:08:11"),f:"55200256115-8e4a2a3c19-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 360",sc:false},
+  {t:edt("2026-04-10 22:08:19"),f:"55200101349-5474a342f9-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"28mm · f/4.0 · 1/200s · ISO 450",sc:false},
+  {t:edt("2026-04-10 22:08:38"),f:"55200002168-7f1077cdf3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/4.0 · 1/250s · ISO 900",sc:false},
+  {t:edt("2026-04-10 22:08:47"),f:"55199853946-2f65c26928-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"15mm · f/4.0 · 1/250s · ISO 900",sc:false},
+  {t:edt("2026-04-10 22:08:55"),f:"55200103109-b50ff40360-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 1800",sc:false},
+  {t:edt("2026-04-10 22:09:27"),f:"55199854926-a16b9b3e77-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"35mm · f/4.0 · 1/200s · ISO 160",sc:false},
+  {t:edt("2026-04-10 22:09:35"),f:"55198960402-0abbb32ff4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"32mm · f/4.0 · 1/200s · ISO 64",sc:false},
+  {t:edt("2026-04-10 22:09:51"),f:"55200004673-5ffb431c22-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"46mm · f/4.0 · 1/200s · ISO 320",sc:false},
+  {t:edt("2026-04-10 22:10:00"),f:"55199857746-07908c9d65-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"26mm · f/4.0 · 1/200s · ISO 1100",sc:false},
+  {t:edt("2026-04-11 15:48:38"),f:"55201576233_6118e4a62d_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"200mm · f/5.6 · 1/400s · ISO 6400",sc:false},
+  {t:edt("2026-04-11 15:57:48"),f:"55201661369_d473eacbfc_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"57mm · f/13.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:57:51"),f:"55201562253_163bb4ccd4_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"68mm · f/11.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:57:58"),f:"55201661254_440279afc1_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"97mm · f/11.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:57:59"),f:"55201661244_ac6e689903_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"92mm · f/11.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:58:03"),f:"55201813500_ec82522436_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"103mm · f/11.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:58:06"),f:"55201409946_7ff7864eef_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"89mm · f/11.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:58:10"),f:"55201562128_8162605d3a_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"37mm · f/11.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:58:14"),f:"55201661154_12a741d752_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"37mm · f/11.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:58:22"),f:"55201409941_743264a963_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"24mm · f/14.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 15:58:42"),f:"55201410186_78fbc1e3d0_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"26mm · f/14.0 · 1/200s · ISO 800",sc:false},
+  {t:edt("2026-04-11 16:56:56"),f:"55201813565_c377149276_o.jpg",p:"NASA/David DeHoyos",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"73mm · f/8.0 · 1/200s · ISO 160",sc:false},
+  {t:edt("2026-04-11 16:57:00"),f:"55201813575_d7059f1d7a_o.jpg",p:"NASA/David DeHoyos",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"98mm · f/7.1 · 1/200s · ISO 160",sc:false},
+  {t:edt("2026-04-11 17:00:02"),f:"55201576423_da7c6da6be_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"350mm · f/6.3 · 1/125s · ISO 8000",sc:false},
+  {t:edt("2026-04-11 17:00:15"),f:"55201576443_c26131ec35_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"190mm · f/6.3 · 1/125s · ISO 8000",sc:false},
+  {t:edt("2026-04-11 17:00:28"),f:"55201576368_eb58dd6430_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"500mm · f/6.3 · 1/125s · ISO 8000",sc:false},
+  {t:edt("2026-04-11 17:00:33"),f:"55201424106_98aa64778f_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"300mm · f/6.3 · 1/125s · ISO 8000",sc:false},
+  {t:edt("2026-04-11 17:00:41"),f:"55201424136_87b2702a88_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"120mm · f/4.5 · 1/200s · ISO 4000",sc:false},
+  {t:edt("2026-04-11 17:01:41"),f:"55200530422_383420cb6c_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"34mm · f/4.5 · 1/200s · ISO 4000",sc:false},
+  {t:edt("2026-04-11 17:21:12"),f:"55201827775_7fd56ee4d4_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"24mm · f/4.0 · 1/250s · ISO 4000",sc:false},
+  {t:edt("2026-04-11 17:21:13"),f:"55201424021_282d63f7af_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"32mm · f/4.0 · 1/250s · ISO 4000",sc:false},
+  {t:edt("2026-04-11 17:21:16"),f:"55201675544_799f745939_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"26mm · f/4.0 · 1/250s · ISO 4000",sc:false},
+];
+
+const EVENTS = [
+  {t:edt("2026-04-01 09:25:00"),title:"Crew Wake-Up",desc:"Astronauts wake at Kennedy Space Center",icon:"☀️"},
+  {t:edt("2026-04-01 12:50:00"),title:"Suit Up",desc:"Crew dons orange Orion suits",icon:"🧑‍🚀"},
+  {t:edt("2026-04-01 14:30:00"),title:"Board Orion",desc:"Crew boards spacecraft at Pad 39B",icon:"🚀"},
+  {t:edt("2026-04-01 17:45:25"),title:"LIFTOFF",desc:"SLS launches from Kennedy Space Center",icon:"🔥"},
+  {t:edt("2026-04-02 19:49:00"),title:"Trans Lunar Injection",desc:"5:50 burn toward the Moon",icon:"🌙"},
+  {t:edt("2026-04-06 00:37:00"),title:"Lunar Sphere of Influence",desc:"Orion enters Moon's gravity",icon:"🌑"},
+  {t:edt("2026-04-06 13:56:00"),title:"DISTANCE RECORD",desc:"252,756 miles from Earth",icon:"🏆"},
+  {t:edt("2026-04-06 18:41:00"),title:"EARTHSET",desc:"Earth disappears — loss of signal",icon:"📡"},
+  {t:edt("2026-04-06 19:02:00"),title:"CLOSEST APPROACH",desc:"4,070 miles above lunar surface",icon:"🌕"},
+  {t:edt("2026-04-06 19:24:00"),title:"EARTHRISE",desc:"Earth reappears — comms restored",icon:"🌎"},
+  {t:edt("2026-04-06 20:35:00"),title:"ECLIPSE",desc:"Eclipse and impact-flash observations",icon:"🌘"},
+  {t:edt("2026-04-10 20:07:00"),title:"SPLASHDOWN",desc:"Pacific Ocean, off San Diego",icon:"🌊"}
+];
+
+const QUOTES = [
+  {t:edt("2026-04-01 17:45:25"),who:"Launch Director",text:"Liftoff of Artemis II — America returns to the Moon with crew!"},
+  {t:edt("2026-04-02 19:55:00"),who:"CAPCOM",text:"Integrity, TLI is complete. You are on your way to the Moon."},
+  {t:edt("2026-04-06 13:56:00"),who:"CAPCOM",text:"You have just traveled farther from Earth than any human in history."},
+  {t:edt("2026-04-06 18:41:00"),who:"CAPCOM",text:"Going behind the Moon. We'll see you on the other side."},
+  {t:edt("2026-04-06 19:24:00"),who:"Reid Wiseman",text:"Houston, Integrity. We see Earth again. What a sight."},
+  {t:edt("2026-04-10 20:07:00"),who:"Recovery Director",text:"Welcome home, Integrity. Splashdown confirmed."}
+];
+
+// Distance waypoints: [timestamp, miles from Earth surface]
+// Artemis II profile: launch → LEO orbits → TLI → coast to Moon → flyby → return → splashdown
+// JPL Horizons ephemeris — range from Earth surface in miles, hourly
+// Source: NASA/JPL Horizons API, target -1024 (Artemis II), center Earth (399)
+const DIST_WAYPOINTS = [
+  {t:edt("2026-04-01 17:45:25"),d:0},
+  {t:edt("2026-04-01 17:45:55"),d:0.95},
+  {t:edt("2026-04-01 17:46:25"),d:3.8},
+  {t:edt("2026-04-01 17:47:00"),d:11.4},
+  {t:edt("2026-04-01 17:47:37"),d:29.9},
+  {t:edt("2026-04-01 17:48:55"),d:37.9},
+  {t:edt("2026-04-01 17:50:25"),d:56.8},
+  {t:edt("2026-04-01 17:53:29"),d:97.5},
+  {t:edt("2026-04-01 17:53:41"),d:98.5},
+  {t:edt("2026-04-01 17:54:00"),d:155},
+  {t:edt("2026-04-01 19:30:00"),d:155},
+  {t:edt("2026-04-01 20:30:00"),d:155},
+  {t:edt("2026-04-01 21:30:00"),d:155},
+  // 30-min resolution: orbit phase (Apr 1 22:00 - Apr 2 18:30 EDT)
+  {t:edt("2026-04-01 22:00:00"),d:14002},
+  {t:edt("2026-04-01 22:30:00"),d:17676},
+  {t:edt("2026-04-01 23:00:00"),d:20907},
+  {t:edt("2026-04-01 23:30:00"),d:23781},
+  {t:edt("2026-04-02 00:00:00"),d:26348},
+  {t:edt("2026-04-02 00:30:00"),d:28660},
+  {t:edt("2026-04-02 01:00:00"),d:30746},
+  {t:edt("2026-04-02 01:30:00"),d:32630},
+  {t:edt("2026-04-02 02:00:00"),d:34329},
+  {t:edt("2026-04-02 02:30:00"),d:35858},
+  {t:edt("2026-04-02 03:00:00"),d:37228},
+  {t:edt("2026-04-02 03:30:00"),d:38448},
+  {t:edt("2026-04-02 04:00:00"),d:39526},
+  {t:edt("2026-04-02 04:30:00"),d:40469},
+  {t:edt("2026-04-02 05:00:00"),d:41280},
+  {t:edt("2026-04-02 05:30:00"),d:41965},
+  {t:edt("2026-04-02 06:00:00"),d:42521},
+  {t:edt("2026-04-02 06:30:00"),d:42961},
+  {t:edt("2026-04-02 07:00:00"),d:43283},
+  {t:edt("2026-04-02 07:30:00"),d:43488},
+  {t:edt("2026-04-02 08:00:00"),d:43577},
+  {t:edt("2026-04-02 08:30:00"),d:43549},
+  {t:edt("2026-04-02 09:00:00"),d:43405},
+  {t:edt("2026-04-02 09:30:00"),d:43145},
+  {t:edt("2026-04-02 10:00:00"),d:42768},
+  {t:edt("2026-04-02 10:30:00"),d:42271},
+  {t:edt("2026-04-02 11:00:00"),d:41653},
+  {t:edt("2026-04-02 11:30:00"),d:40910},
+  {t:edt("2026-04-02 12:00:00"),d:40040},
+  {t:edt("2026-04-02 12:30:00"),d:39036},
+  {t:edt("2026-04-02 13:00:00"),d:37894},
+  {t:edt("2026-04-02 13:30:00"),d:36608},
+  {t:edt("2026-04-02 14:00:00"),d:35167},
+  {t:edt("2026-04-02 14:30:00"),d:33563},
+  {t:edt("2026-04-02 15:00:00"),d:31783},
+  {t:edt("2026-04-02 15:30:00"),d:29811},
+  {t:edt("2026-04-02 16:00:00"),d:27627},
+  {t:edt("2026-04-02 16:30:00"),d:25206},
+  {t:edt("2026-04-02 17:00:00"),d:22514},
+  {t:edt("2026-04-02 17:30:00"),d:19503},
+  {t:edt("2026-04-02 18:00:00"),d:16108},
+  {t:edt("2026-04-02 18:30:00"),d:12227},
+  // 5-min resolution: TLI perigee window (Apr 2 19:00 - Apr 3 00:00 EDT)
+  {t:edt("2026-04-02 19:00:00"),d:7709},
+  {t:edt("2026-04-02 19:05:00"),d:6882},
+  {t:edt("2026-04-02 19:10:00"),d:6032},
+  {t:edt("2026-04-02 19:15:00"),d:5160},
+  {t:edt("2026-04-02 19:20:00"),d:4271},
+  {t:edt("2026-04-02 19:25:00"),d:3372},
+  {t:edt("2026-04-02 19:30:00"),d:2477},
+  {t:edt("2026-04-02 19:35:00"),d:1620},
+  {t:edt("2026-04-02 19:40:00"),d:862},
+  {t:edt("2026-04-02 19:45:00"),d:313},
+  {t:edt("2026-04-02 19:50:00"),d:116},
+  {t:edt("2026-04-02 19:55:00"),d:352},
+  {t:edt("2026-04-02 20:00:00"),d:977},
+  {t:edt("2026-04-02 20:05:00"),d:1829},
+  {t:edt("2026-04-02 20:10:00"),d:2786},
+  {t:edt("2026-04-02 20:15:00"),d:3783},
+  {t:edt("2026-04-02 20:20:00"),d:4786},
+  {t:edt("2026-04-02 20:25:00"),d:5781},
+  {t:edt("2026-04-02 20:30:00"),d:6761},
+  {t:edt("2026-04-02 20:35:00"),d:7722},
+  {t:edt("2026-04-02 20:40:00"),d:8664},
+  {t:edt("2026-04-02 20:45:00"),d:9586},
+  {t:edt("2026-04-02 20:50:00"),d:10489},
+  {t:edt("2026-04-02 20:55:00"),d:11373},
+  {t:edt("2026-04-02 21:00:00"),d:12241},
+  {t:edt("2026-04-02 21:05:00"),d:13092},
+  {t:edt("2026-04-02 21:10:00"),d:13927},
+  {t:edt("2026-04-02 21:15:00"),d:14747},
+  {t:edt("2026-04-02 21:20:00"),d:15554},
+  {t:edt("2026-04-02 21:25:00"),d:16347},
+  {t:edt("2026-04-02 21:30:00"),d:17128},
+  {t:edt("2026-04-02 21:35:00"),d:17896},
+  {t:edt("2026-04-02 21:40:00"),d:18654},
+  {t:edt("2026-04-02 21:45:00"),d:19400},
+  {t:edt("2026-04-02 21:50:00"),d:20136},
+  {t:edt("2026-04-02 21:55:00"),d:20863},
+  {t:edt("2026-04-02 22:00:00"),d:21579},
+  {t:edt("2026-04-02 22:05:00"),d:22287},
+  {t:edt("2026-04-02 22:10:00"),d:22986},
+  {t:edt("2026-04-02 22:15:00"),d:23677},
+  {t:edt("2026-04-02 22:20:00"),d:24360},
+  {t:edt("2026-04-02 22:25:00"),d:25035},
+  {t:edt("2026-04-02 22:30:00"),d:25703},
+  {t:edt("2026-04-02 22:35:00"),d:26363},
+  {t:edt("2026-04-02 22:40:00"),d:27017},
+  {t:edt("2026-04-02 22:45:00"),d:27664},
+  {t:edt("2026-04-02 22:50:00"),d:28305},
+  {t:edt("2026-04-02 22:55:00"),d:28939},
+  {t:edt("2026-04-02 23:00:00"),d:29568},
+  {t:edt("2026-04-02 23:05:00"),d:30191},
+  {t:edt("2026-04-02 23:10:00"),d:30808},
+  {t:edt("2026-04-02 23:15:00"),d:31419},
+  {t:edt("2026-04-02 23:20:00"),d:32026},
+  {t:edt("2026-04-02 23:25:00"),d:32627},
+  {t:edt("2026-04-02 23:30:00"),d:33223},
+  {t:edt("2026-04-02 23:35:00"),d:33814},
+  {t:edt("2026-04-02 23:40:00"),d:34400},
+  {t:edt("2026-04-02 23:45:00"),d:34982},
+  {t:edt("2026-04-02 23:50:00"),d:35560},
+  {t:edt("2026-04-02 23:55:00"),d:36133},
+  {t:edt("2026-04-03 00:00:00"),d:36701},
+  // 30-min resolution: early outbound (Apr 3 00:30 - 04:00 EDT)
+  {t:edt("2026-04-03 00:30:00"),d:40029},
+  {t:edt("2026-04-03 01:00:00"),d:43226},
+  {t:edt("2026-04-03 01:30:00"),d:46307},
+  {t:edt("2026-04-03 02:00:00"),d:49285},
+  {t:edt("2026-04-03 02:30:00"),d:52170},
+  {t:edt("2026-04-03 03:00:00"),d:54971},
+  {t:edt("2026-04-03 03:30:00"),d:57695},
+  {t:edt("2026-04-03 04:00:00"),d:60348},
+  {t:edt("2026-04-03 05:00:00"),d:65472},
+  {t:edt("2026-04-03 06:00:00"),d:70359},
+  {t:edt("2026-04-03 07:00:00"),d:75045},
+  {t:edt("2026-04-03 08:00:00"),d:79553},
+  {t:edt("2026-04-03 09:00:00"),d:83900},
+  {t:edt("2026-04-03 10:00:00"),d:88101},
+  {t:edt("2026-04-03 11:00:00"),d:92169},
+  {t:edt("2026-04-03 12:00:00"),d:96114},
+  {t:edt("2026-04-03 13:00:00"),d:99945},
+  {t:edt("2026-04-03 14:00:00"),d:103671},
+  {t:edt("2026-04-03 15:00:00"),d:107297},
+  {t:edt("2026-04-03 16:00:00"),d:110831},
+  {t:edt("2026-04-03 17:00:00"),d:114277},
+  {t:edt("2026-04-03 18:00:00"),d:117641},
+  {t:edt("2026-04-03 19:00:00"),d:120927},
+  {t:edt("2026-04-03 20:00:00"),d:124139},
+  {t:edt("2026-04-03 21:00:00"),d:127280},
+  {t:edt("2026-04-03 22:00:00"),d:130354},
+  {t:edt("2026-04-03 23:00:00"),d:133363},
+  {t:edt("2026-04-04 00:00:00"),d:136311},
+  {t:edt("2026-04-04 01:00:00"),d:139199},
+  {t:edt("2026-04-04 02:00:00"),d:142031},
+  {t:edt("2026-04-04 03:00:00"),d:144808},
+  {t:edt("2026-04-04 04:00:00"),d:147532},
+  {t:edt("2026-04-04 05:00:00"),d:150205},
+  {t:edt("2026-04-04 06:00:00"),d:152826},
+  {t:edt("2026-04-04 07:00:00"),d:155402},
+  {t:edt("2026-04-04 08:00:00"),d:157933},
+  {t:edt("2026-04-04 09:00:00"),d:160418},
+  {t:edt("2026-04-04 10:00:00"),d:162860},
+  {t:edt("2026-04-04 11:00:00"),d:165260},
+  {t:edt("2026-04-04 12:00:00"),d:167619},
+  {t:edt("2026-04-04 13:00:00"),d:169939},
+  {t:edt("2026-04-04 14:00:00"),d:172219},
+  {t:edt("2026-04-04 15:00:00"),d:174462},
+  {t:edt("2026-04-04 16:00:00"),d:176668},
+  {t:edt("2026-04-04 17:00:00"),d:178838},
+  {t:edt("2026-04-04 18:00:00"),d:180973},
+  {t:edt("2026-04-04 19:00:00"),d:183073},
+  {t:edt("2026-04-04 20:00:00"),d:185140},
+  {t:edt("2026-04-04 21:00:00"),d:187175},
+  {t:edt("2026-04-04 22:00:00"),d:189177},
+  {t:edt("2026-04-04 23:00:00"),d:191148},
+  {t:edt("2026-04-05 00:00:00"),d:193088},
+  {t:edt("2026-04-05 01:00:00"),d:195000},
+  {t:edt("2026-04-05 02:00:00"),d:196881},
+  {t:edt("2026-04-05 03:00:00"),d:198732},
+  {t:edt("2026-04-05 04:00:00"),d:200556},
+  {t:edt("2026-04-05 05:00:00"),d:202352},
+  {t:edt("2026-04-05 06:00:00"),d:204120},
+  {t:edt("2026-04-05 07:00:00"),d:205861},
+  {t:edt("2026-04-05 08:00:00"),d:207576},
+  {t:edt("2026-04-05 09:00:00"),d:209265},
+  {t:edt("2026-04-05 10:00:00"),d:210929},
+  {t:edt("2026-04-05 11:00:00"),d:212567},
+  {t:edt("2026-04-05 12:00:00"),d:214180},
+  {t:edt("2026-04-05 13:00:00"),d:215769},
+  {t:edt("2026-04-05 14:00:00"),d:217335},
+  {t:edt("2026-04-05 15:00:00"),d:218877},
+  {t:edt("2026-04-05 16:00:00"),d:220396},
+  {t:edt("2026-04-05 17:00:00"),d:221893},
+  {t:edt("2026-04-05 18:00:00"),d:223367},
+  {t:edt("2026-04-05 19:00:00"),d:224819},
+  {t:edt("2026-04-05 20:00:00"),d:226250},
+  {t:edt("2026-04-05 21:00:00"),d:227660},
+  {t:edt("2026-04-05 22:00:00"),d:229049},
+  {t:edt("2026-04-05 23:00:00"),d:230418},
+  {t:edt("2026-04-06 00:00:00"),d:231766},
+  {t:edt("2026-04-06 01:00:00"),d:233094},
+  {t:edt("2026-04-06 02:00:00"),d:234403},
+  {t:edt("2026-04-06 03:00:00"),d:235693},
+  {t:edt("2026-04-06 04:00:00"),d:236964},
+  {t:edt("2026-04-06 05:00:00"),d:238218},
+  {t:edt("2026-04-06 06:00:00"),d:239453},
+  {t:edt("2026-04-06 07:00:00"),d:240671},
+  {t:edt("2026-04-06 08:00:00"),d:241872},
+  {t:edt("2026-04-06 09:00:00"),d:243056},
+  {t:edt("2026-04-06 10:00:00"),d:244223},
+  {t:edt("2026-04-06 11:00:00"),d:245374},
+  {t:edt("2026-04-06 12:00:00"),d:246506},
+  {t:edt("2026-04-06 13:00:00"),d:247620},
+  // 30-min resolution: approach (Apr 6 14:00 - 18:00 EDT)
+  {t:edt("2026-04-06 14:00:00"),d:248686},
+  {t:edt("2026-04-06 14:30:00"),d:249221},
+  {t:edt("2026-04-06 15:00:00"),d:249747},
+  {t:edt("2026-04-06 15:30:00"),d:250262},
+  {t:edt("2026-04-06 16:00:00"),d:250760},
+  {t:edt("2026-04-06 16:30:00"),d:251237},
+  {t:edt("2026-04-06 17:00:00"),d:251682},
+  {t:edt("2026-04-06 17:30:00"),d:252080},
+  // 5-min resolution: lunar flyby (Apr 6 18:00 - Apr 7 00:00 EDT)
+  {t:edt("2026-04-06 18:00:00"),d:252408},
+  {t:edt("2026-04-06 18:05:00"),d:252453},
+  {t:edt("2026-04-06 18:10:00"),d:252496},
+  {t:edt("2026-04-06 18:15:00"),d:252536},
+  {t:edt("2026-04-06 18:20:00"),d:252572},
+  {t:edt("2026-04-06 18:25:00"),d:252605},
+  {t:edt("2026-04-06 18:30:00"),d:252635},
+  {t:edt("2026-04-06 18:35:00"),d:252660},
+  {t:edt("2026-04-06 18:40:00"),d:252682},
+  {t:edt("2026-04-06 18:45:00"),d:252700},
+  {t:edt("2026-04-06 18:50:00"),d:252714},
+  {t:edt("2026-04-06 18:55:00"),d:252724},
+  {t:edt("2026-04-06 19:00:00"),d:252730},
+  {t:edt("2026-04-06 19:05:00"),d:252732},
+  {t:edt("2026-04-06 19:10:00"),d:252730},
+  {t:edt("2026-04-06 19:15:00"),d:252724},
+  {t:edt("2026-04-06 19:20:00"),d:252713},
+  {t:edt("2026-04-06 19:25:00"),d:252699},
+  {t:edt("2026-04-06 19:30:00"),d:252681},
+  {t:edt("2026-04-06 19:35:00"),d:252659},
+  {t:edt("2026-04-06 19:40:00"),d:252634},
+  {t:edt("2026-04-06 19:45:00"),d:252605},
+  {t:edt("2026-04-06 19:50:00"),d:252573},
+  {t:edt("2026-04-06 19:55:00"),d:252538},
+  {t:edt("2026-04-06 20:00:00"),d:252499},
+  {t:edt("2026-04-06 20:05:00"),d:252458},
+  {t:edt("2026-04-06 20:10:00"),d:252414},
+  {t:edt("2026-04-06 20:15:00"),d:252367},
+  {t:edt("2026-04-06 20:20:00"),d:252318},
+  {t:edt("2026-04-06 20:25:00"),d:252267},
+  {t:edt("2026-04-06 20:30:00"),d:252213},
+  {t:edt("2026-04-06 20:35:00"),d:252158},
+  {t:edt("2026-04-06 20:40:00"),d:252101},
+  {t:edt("2026-04-06 20:45:00"),d:252042},
+  {t:edt("2026-04-06 20:50:00"),d:251981},
+  {t:edt("2026-04-06 20:55:00"),d:251919},
+  {t:edt("2026-04-06 21:00:00"),d:251855},
+  {t:edt("2026-04-06 21:05:00"),d:251790},
+  {t:edt("2026-04-06 21:10:00"),d:251724},
+  {t:edt("2026-04-06 21:15:00"),d:251656},
+  {t:edt("2026-04-06 21:20:00"),d:251588},
+  {t:edt("2026-04-06 21:25:00"),d:251518},
+  {t:edt("2026-04-06 21:30:00"),d:251447},
+  {t:edt("2026-04-06 21:35:00"),d:251376},
+  {t:edt("2026-04-06 21:40:00"),d:251303},
+  {t:edt("2026-04-06 21:45:00"),d:251230},
+  {t:edt("2026-04-06 21:50:00"),d:251156},
+  {t:edt("2026-04-06 21:55:00"),d:251082},
+  {t:edt("2026-04-06 22:00:00"),d:251006},
+  {t:edt("2026-04-06 22:05:00"),d:250930},
+  {t:edt("2026-04-06 22:10:00"),d:250854},
+  {t:edt("2026-04-06 22:15:00"),d:250777},
+  {t:edt("2026-04-06 22:20:00"),d:250699},
+  {t:edt("2026-04-06 22:25:00"),d:250621},
+  {t:edt("2026-04-06 22:30:00"),d:250542},
+  {t:edt("2026-04-06 22:35:00"),d:250463},
+  {t:edt("2026-04-06 22:40:00"),d:250384},
+  {t:edt("2026-04-06 22:45:00"),d:250304},
+  {t:edt("2026-04-06 22:50:00"),d:250223},
+  {t:edt("2026-04-06 22:55:00"),d:250143},
+  {t:edt("2026-04-06 23:00:00"),d:250062},
+  {t:edt("2026-04-06 23:05:00"),d:249980},
+  {t:edt("2026-04-06 23:10:00"),d:249899},
+  {t:edt("2026-04-06 23:15:00"),d:249817},
+  {t:edt("2026-04-06 23:20:00"),d:249734},
+  {t:edt("2026-04-06 23:25:00"),d:249652},
+  {t:edt("2026-04-06 23:30:00"),d:249569},
+  {t:edt("2026-04-06 23:35:00"),d:249486},
+  {t:edt("2026-04-06 23:40:00"),d:249402},
+  {t:edt("2026-04-06 23:45:00"),d:249319},
+  {t:edt("2026-04-06 23:50:00"),d:249235},
+  {t:edt("2026-04-06 23:55:00"),d:249151},
+  {t:edt("2026-04-07 00:00:00"),d:249066},
+  {t:edt("2026-04-07 01:00:00"),d:248063},
+  {t:edt("2026-04-07 02:00:00"),d:247012},
+  {t:edt("2026-04-07 03:00:00"),d:245941},
+  {t:edt("2026-04-07 04:00:00"),d:244853},
+  {t:edt("2026-04-07 05:00:00"),d:243746},
+  {t:edt("2026-04-07 06:00:00"),d:242623},
+  {t:edt("2026-04-07 07:00:00"),d:241483},
+  {t:edt("2026-04-07 08:00:00"),d:240325},
+  {t:edt("2026-04-07 09:00:00"),d:239150},
+  {t:edt("2026-04-07 10:00:00"),d:237957},
+  {t:edt("2026-04-07 11:00:00"),d:236745},
+  {t:edt("2026-04-07 12:00:00"),d:235515},
+  {t:edt("2026-04-07 13:00:00"),d:234266},
+  {t:edt("2026-04-07 14:00:00"),d:232998},
+  {t:edt("2026-04-07 15:00:00"),d:231711},
+  {t:edt("2026-04-07 16:00:00"),d:230403},
+  {t:edt("2026-04-07 17:00:00"),d:229076},
+  {t:edt("2026-04-07 18:00:00"),d:227727},
+  {t:edt("2026-04-07 19:00:00"),d:226358},
+  {t:edt("2026-04-07 20:00:00"),d:224967},
+  {t:edt("2026-04-07 21:00:00"),d:223555},
+  {t:edt("2026-04-07 22:00:00"),d:222121},
+  {t:edt("2026-04-07 23:00:00"),d:220664},
+  {t:edt("2026-04-08 00:00:00"),d:219185},
+  {t:edt("2026-04-08 01:00:00"),d:217683},
+  {t:edt("2026-04-08 02:00:00"),d:216157},
+  {t:edt("2026-04-08 03:00:00"),d:214608},
+  {t:edt("2026-04-08 04:00:00"),d:213034},
+  {t:edt("2026-04-08 05:00:00"),d:211436},
+  {t:edt("2026-04-08 06:00:00"),d:209812},
+  {t:edt("2026-04-08 07:00:00"),d:208163},
+  {t:edt("2026-04-08 08:00:00"),d:206489},
+  {t:edt("2026-04-08 09:00:00"),d:204788},
+  {t:edt("2026-04-08 10:00:00"),d:203060},
+  {t:edt("2026-04-08 11:00:00"),d:201305},
+  {t:edt("2026-04-08 12:00:00"),d:199523},
+  {t:edt("2026-04-08 13:00:00"),d:197712},
+  {t:edt("2026-04-08 14:00:00"),d:195872},
+  {t:edt("2026-04-08 15:00:00"),d:194003},
+  {t:edt("2026-04-08 16:00:00"),d:192104},
+  {t:edt("2026-04-08 17:00:00"),d:190174},
+  {t:edt("2026-04-08 18:00:00"),d:188214},
+  {t:edt("2026-04-08 19:00:00"),d:186221},
+  {t:edt("2026-04-08 20:00:00"),d:184196},
+  {t:edt("2026-04-08 21:00:00"),d:182138},
+  {t:edt("2026-04-08 22:00:00"),d:180046},
+  {t:edt("2026-04-08 23:00:00"),d:177920},
+  {t:edt("2026-04-09 00:00:00"),d:175757},
+  {t:edt("2026-04-09 01:00:00"),d:173559},
+  {t:edt("2026-04-09 02:00:00"),d:171323},
+  {t:edt("2026-04-09 03:00:00"),d:169049},
+  {t:edt("2026-04-09 04:00:00"),d:166736},
+  {t:edt("2026-04-09 05:00:00"),d:164382},
+  {t:edt("2026-04-09 06:00:00"),d:161989},
+  {t:edt("2026-04-09 07:00:00"),d:159551},
+  {t:edt("2026-04-09 08:00:00"),d:157070},
+  {t:edt("2026-04-09 09:00:00"),d:154543},
+  {t:edt("2026-04-09 10:00:00"),d:151970},
+  {t:edt("2026-04-09 11:00:00"),d:149349},
+  {t:edt("2026-04-09 12:00:00"),d:146678},
+  {t:edt("2026-04-09 13:00:00"),d:143955},
+  {t:edt("2026-04-09 14:00:00"),d:141179},
+  {t:edt("2026-04-09 15:00:00"),d:138347},
+  {t:edt("2026-04-09 16:00:00"),d:135458},
+  {t:edt("2026-04-09 17:00:00"),d:132509},
+  {t:edt("2026-04-09 18:00:00"),d:129497},
+  {t:edt("2026-04-09 19:00:00"),d:126420},
+  {t:edt("2026-04-09 20:00:00"),d:123275},
+  {t:edt("2026-04-09 21:00:00"),d:120058},
+  {t:edt("2026-04-09 22:00:00"),d:116765},
+  {t:edt("2026-04-09 23:00:00"),d:113394},
+  {t:edt("2026-04-10 00:00:00"),d:109937},
+  {t:edt("2026-04-10 01:00:00"),d:106392},
+  {t:edt("2026-04-10 02:00:00"),d:102753},
+  {t:edt("2026-04-10 03:00:00"),d:99013},
+  {t:edt("2026-04-10 04:00:00"),d:95165},
+  {t:edt("2026-04-10 05:00:00"),d:91200},
+  {t:edt("2026-04-10 06:00:00"),d:87111},
+  {t:edt("2026-04-10 07:00:00"),d:82884},
+  {t:edt("2026-04-10 08:00:00"),d:78508},
+  {t:edt("2026-04-10 09:00:00"),d:73967},
+  {t:edt("2026-04-10 10:00:00"),d:69242},
+  {t:edt("2026-04-10 11:00:00"),d:64311},
+  {t:edt("2026-04-10 12:00:00"),d:59143},
+  {t:edt("2026-04-10 13:00:00"),d:53702},
+  {t:edt("2026-04-10 14:00:00"),d:47938},
+  {t:edt("2026-04-10 15:00:00"),d:41780},
+  {t:edt("2026-04-10 16:00:00"),d:35128},
+  {t:edt("2026-04-10 17:00:00"),d:27819},
+  {t:edt("2026-04-10 18:00:00"),d:19563},
+  {t:edt("2026-04-10 19:00:00"),d:9751},
+  {t:edt("2026-04-10 19:30:00"),d:4800},
+  {t:edt("2026-04-10 19:50:00"),d:400},
+  {t:edt("2026-04-10 19:53:00"),d:75.8},
+  {t:edt("2026-04-10 19:56:00"),d:40},
+  {t:edt("2026-04-10 19:59:00"),d:18},
+  {t:edt("2026-04-10 20:01:00"),d:9},
+  {t:edt("2026-04-10 20:03:00"),d:4.73},
+  {t:edt("2026-04-10 20:03:30"),d:3.5},
+  {t:edt("2026-04-10 20:04:00"),d:1.8},
+  {t:edt("2026-04-10 20:04:30"),d:1.14},
+  {t:edt("2026-04-10 20:05:00"),d:0.76},
+  {t:edt("2026-04-10 20:05:30"),d:0.38},
+  {t:edt("2026-04-10 20:06:00"),d:0.19},
+  {t:edt("2026-04-10 20:06:30"),d:0.04},
+  {t:edt("2026-04-10 20:07:00"),d:0}
+];
+
+function getDistanceAtTime(ts) {
+  if (ts <= DIST_WAYPOINTS[0].t) return DIST_WAYPOINTS[0].d;
+  if (ts >= DIST_WAYPOINTS[DIST_WAYPOINTS.length-1].t) return DIST_WAYPOINTS[DIST_WAYPOINTS.length-1].d;
+  for (let i = 0; i < DIST_WAYPOINTS.length - 1; i++) {
+    const a = DIST_WAYPOINTS[i], b = DIST_WAYPOINTS[i+1];
+    if (ts >= a.t && ts <= b.t) {
+      const frac = (ts - a.t) / (b.t - a.t);
+      return a.d + (b.d - a.d) * frac;
+    }
+  }
+  return 0;
+}
+
+const SPLASHDOWN_T = edt("2026-04-10 20:07:00");
+const LIFTOFF_T = edt("2026-04-01 17:45:25");
+const SRB_SEP_T = edt("2026-04-01 17:47:37");
+function getDisplayDistance(ts) {
+  // Recovery photos after splashdown are on the ground
+  if (ts >= SPLASHDOWN_T) return 0;
+  // During ascent before SRB separation — show as "Liftoff"
+  if (ts >= LIFTOFF_T && ts < SRB_SEP_T) return -1;
+  return getDistanceAtTime(ts);
+}
+function formatDistance(miles) {
+  if (miles === -1) return 'Liftoff';
+  if (miles < 0.01) return 'On the ground';
+  if (miles < 100) {
+    // During ascent or descent — show feet with label at key altitudes
+    const feet = Math.round(miles * 5280);
+    return feet.toLocaleString() + ' ft';
+  }
+  return Math.round(miles).toLocaleString() + ' miles';
+}
+
+const ACOL = {sleep:"#1a237e",exercise:"#2e7d32",science:"#0277bd",piloting:"#e65100","suit-ops":"#6a1b9a",observation:"#ffd600","deep-obs":"#ffd600","reentry-prep":"#b71c1c",free:"#37474f"};
+const ALAB = {sleep:"Sleep",exercise:"Exercise",science:"Science & Testing",piloting:"Piloting & Burns","suit-ops":"Suit Ops",observation:"Lunar Observation","deep-obs":"Observation","reentry-prep":"Reentry Prep",free:"Free Time"};
+
+const SCHEDULE = [
+  {s:edt("2026-04-01 09:25:00"),e:edt("2026-04-01 12:50:00"),a:"free",l:"Pre-launch prep"},
+  {s:edt("2026-04-01 12:50:00"),e:edt("2026-04-01 14:30:00"),a:"suit-ops",l:"Suit up"},
+  {s:edt("2026-04-01 14:30:00"),e:edt("2026-04-01 17:45:25"),a:"free",l:"In spacecraft"},
+  {s:edt("2026-04-01 17:45:25"),e:edt("2026-04-01 23:00:00"),a:"piloting",l:"Launch & orbit ops"},
+  {s:edt("2026-04-01 23:00:00"),e:edt("2026-04-02 06:00:00"),a:"sleep",l:"Sleep (short)"},
+  {s:edt("2026-04-02 06:00:00"),e:edt("2026-04-02 08:00:00"),a:"free",l:"Wake & meals"},
+  {s:edt("2026-04-02 08:00:00"),e:edt("2026-04-02 12:00:00"),a:"science",l:"Systems checkout"},
+  {s:edt("2026-04-02 12:00:00"),e:edt("2026-04-02 19:49:00"),a:"piloting",l:"TLI prep"},
+  {s:edt("2026-04-02 19:49:00"),e:edt("2026-04-02 22:00:00"),a:"piloting",l:"TLI burn & post-burn checkout"},
+  {s:edt("2026-04-02 22:00:00"),e:edt("2026-04-03 01:30:00"),a:"deep-obs",l:"First deep-space photography"},
+  {s:edt("2026-04-03 01:30:00"),e:edt("2026-04-03 11:00:00"),a:"sleep",l:"Sleep"},
+  {s:edt("2026-04-03 11:00:00"),e:edt("2026-04-03 13:00:00"),a:"exercise",l:"Exercise"},
+  {s:edt("2026-04-03 13:00:00"),e:edt("2026-04-03 18:00:00"),a:"science",l:"Correction burn prep"},
+  {s:edt("2026-04-03 18:00:00"),e:edt("2026-04-04 01:00:00"),a:"free",l:"Free time, meals & photography"},
+  {s:edt("2026-04-04 01:00:00"),e:edt("2026-04-04 11:35:00"),a:"sleep",l:"Sleep"},
+  {s:edt("2026-04-04 11:35:00"),e:edt("2026-04-04 14:00:00"),a:"exercise",l:"Exercise"},
+  {s:edt("2026-04-04 14:00:00"),e:edt("2026-04-04 20:00:00"),a:"piloting",l:"Manual piloting demo"},
+  {s:edt("2026-04-04 20:00:00"),e:edt("2026-04-05 00:30:00"),a:"free",l:"Free time & photography"},
+  {s:edt("2026-04-05 00:30:00"),e:edt("2026-04-05 12:00:00"),a:"sleep",l:"Sleep"},
+  {s:edt("2026-04-05 12:00:00"),e:edt("2026-04-05 15:00:00"),a:"suit-ops",l:"Suit pressure tests"},
+  {s:edt("2026-04-05 15:00:00"),e:edt("2026-04-05 17:00:00"),a:"science",l:"CPR demo & medical"},
+  {s:edt("2026-04-05 17:00:00"),e:edt("2026-04-06 00:00:00"),a:"science",l:"Flyby prep & photography"},
+  {s:edt("2026-04-06 00:00:00"),e:edt("2026-04-06 10:50:00"),a:"sleep",l:"Sleep"},
+  {s:edt("2026-04-06 10:50:00"),e:edt("2026-04-06 13:30:00"),a:"science",l:"Flyby prep"},
+  {s:edt("2026-04-06 13:30:00"),e:edt("2026-04-06 14:45:00"),a:"science",l:"Science briefing"},
+  {s:edt("2026-04-06 14:45:00"),e:edt("2026-04-07 02:45:00"),a:"observation",l:"LUNAR FLYBY & post-flyby photography"},
+  {s:edt("2026-04-07 02:45:00"),e:edt("2026-04-07 11:00:00"),a:"sleep",l:"Sleep"},
+  {s:edt("2026-04-07 11:00:00"),e:edt("2026-04-07 13:00:00"),a:"free",l:"Group photo & meals"},
+  {s:edt("2026-04-07 13:00:00"),e:edt("2026-04-07 18:00:00"),a:"science",l:"Science activities"},
+  {s:edt("2026-04-07 18:00:00"),e:edt("2026-04-08 00:00:00"),a:"piloting",l:"Return correction burn & photography"},
+  {s:edt("2026-04-08 00:00:00"),e:edt("2026-04-08 11:00:00"),a:"sleep",l:"Sleep"},
+  {s:edt("2026-04-08 11:00:00"),e:edt("2026-04-08 14:00:00"),a:"science",l:"Orthostatic garment test"},
+  {s:edt("2026-04-08 14:00:00"),e:edt("2026-04-08 18:00:00"),a:"exercise",l:"Exercise"},
+  {s:edt("2026-04-08 18:00:00"),e:edt("2026-04-08 22:00:00"),a:"piloting",l:"Manual piloting demo 2"},
+  {s:edt("2026-04-08 22:00:00"),e:edt("2026-04-09 11:00:00"),a:"sleep",l:"Sleep"},
+  {s:edt("2026-04-09 11:00:00"),e:edt("2026-04-09 18:00:00"),a:"reentry-prep",l:"Stowage & reentry prep"},
+  {s:edt("2026-04-09 18:00:00"),e:edt("2026-04-09 22:00:00"),a:"free",l:"Final free time"},
+  {s:edt("2026-04-09 22:00:00"),e:edt("2026-04-10 10:00:00"),a:"sleep",l:"Sleep"},
+  {s:edt("2026-04-10 10:00:00"),e:edt("2026-04-10 15:00:00"),a:"reentry-prep",l:"Final reentry prep"},
+  {s:edt("2026-04-10 15:00:00"),e:edt("2026-04-10 19:53:00"),a:"suit-ops",l:"Suited for reentry"},
+  {s:edt("2026-04-10 19:53:00"),e:edt("2026-04-10 20:07:00"),a:"piloting",l:"REENTRY & LANDING"},
+];
+
+const AUDIO = [
+  {t:edt("2026-04-01 14:30:00"),f:"artemis-ii-launch-crew-walkout.mp3",desc:"Crew walkout"},
+  {t:edt("2026-04-01 17:00:00"),f:"artemis-ii-launch-go-no-go-poll.mp3",desc:"Go/No-Go poll"},
+  {t:edt("2026-04-01 17:20:00"),f:"artemis-ii-launch-integrity-voice-check.mp3",desc:"Integrity voice check"},
+  {t:edt("2026-04-01 17:30:00"),f:"artemis-ii-launch-launch-director-message.mp3",desc:"Launch Director message"},
+  {t:edt("2026-04-01 17:40:00"),f:"artemis-ii-launch-full-send.mp3",desc:"Full send"},
+  {t:edt("2026-04-01 17:45:25"),f:"artemis-ii-liftoff.mp3",desc:"Liftoff!"},
+  {t:edt("2026-04-01 17:50:00"),f:"artemis-ii-launch-orion-communications-check.mp3",desc:"Orion comms check"},
+  {t:edt("2026-04-01 17:55:00"),f:"artemis-ii-houston-we-have-you-loud-and-clear-1.mp3",desc:"Houston loud and clear"},
+  {t:edt("2026-04-01 18:00:00"),f:"artemis-ii-launch-beautiful-moonrise-and-were-headed-right-at-it.mp3",desc:"Beautiful moonrise"},
+  {t:edt("2026-04-01 19:40:00"),f:"artemis-ii-go-for-translunar-injection.mp3",desc:"Go for TLI"},
+  {t:edt("2026-04-01 19:58:00"),f:"artemis-ii-good-burn.mp3",desc:"Good burn"},
+  {t:edt("2026-04-04 15:00:00"),f:"artemis-ii-message-from-apollo-astronaut-jim-lovell.mp3",desc:"Message from Jim Lovell"},
+  {t:edt("2026-04-05 10:00:00"),f:"artemis-ii-message-from-apollo-astronaut-charlie-duke.mp3",desc:"Message from Charlie Duke"},
+  {t:edt("2026-04-06 13:56:00"),f:"artemis-ii-breaks-apollo-13-distance-record.mp3",desc:"Breaks Apollo 13 distance record"},
+  {t:edt("2026-04-06 15:59:12"),f:"artemis-ii-amaze-amaze-amaze.mp3",desc:"Amaze, amaze, amaze"},
+  {t:edt("2026-04-06 18:41:00"),f:"artemis-ii-los.wav",desc:"Loss of signal — Earthset"},
+  {t:edt("2026-04-06 18:44:00"),f:"artemis-ii-hey-babe-love-you-from-the-moon.mp3",desc:"We love you, from the Moon"},
+  {t:edt("2026-04-06 19:00:00"),f:"artemis-ii-closest-point-to-moon.wav",desc:"Closest approach to Moon"},
+  {t:edt("2026-04-06 19:24:00"),f:"artemis-ii-we-will-explore.wav",desc:"Contact restored — We will explore"},
+  {t:edt("2026-04-06 20:00:00"),f:"artemis-ii-names-new-craters-integrity-and-carroll.mp3",desc:"Names new craters"},
+  {t:edt("2026-04-06 20:35:00"),f:"victor-the-terminator.wav",desc:"Eclipse / impact-flash observations"},
+  {t:edt("2026-04-09 12:00:00"),f:"artemis-ii-humanity-has-shown-what-we-are-capable-of.mp3",desc:"What we are capable of"},
+  {t:edt("2026-04-10 20:07:00"),f:"artemis-ii-splashdown-shorter.mp3",desc:"Splashdown"},
+];
+
+let currentPhotoIdx = 0;
+let filteredPhotos = PHOTOS;
+let printBannerDismissed = false;
+let audioMuted = true;
+let currentAudio = null;
+let lastAudioClip = null;
+
+// Full timeline range
+const T_START = PHOTOS[0].t;
+const T_END = PHOTOS[PHOTOS.length - 1].t;
+const T_SPAN = T_END - T_START;
+
+// Zoom/pan state
+let viewStart = T_START;
+let viewEnd = T_END;
+const MIN_VIEW_SPAN = 2 * 3600000;
+
+function formatTime(ts) {
+  const d = new Date(ts);
+  const mon = d.toLocaleString('en-US', {month:'short',timeZone:'America/New_York'});
+  const day = d.toLocaleString('en-US', {day:'2-digit',timeZone:'America/New_York'});
+  const h = d.toLocaleString('en-US', {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true,timeZone:'America/New_York'});
+  return `${mon} ${day}, ${h}`;
+}
+
+function formatTimeShort(ts) {
+  const d = new Date(ts);
+  return d.toLocaleString('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
+}
+
+function timeToViewPercent(t) {
+  const span = viewEnd - viewStart;
+  if (span <= 0) return 50;
+  return Math.max(-5, Math.min(105, ((t - viewStart) / span) * 100));
+}
+
+// Find what activity is happening at a given time
+function getActivityAt(t) {
+  for (const s of SCHEDULE) {
+    if (t >= s.s && t < s.e) return s;
+  }
+  return null;
+}
+
+// Render activity color bars on the timeline
+let lastBarViewStart = null, lastBarViewEnd = null;
+function renderActivityBars(force) {
+  if (!force && lastBarViewStart === viewStart && lastBarViewEnd === viewEnd) return;
+  lastBarViewStart = viewStart; lastBarViewEnd = viewEnd;
+  const container = document.getElementById('activityBars');
+  const containerWidth = container.offsetWidth || document.querySelector('.timeline-track').offsetWidth || 800;
+  let html = '';
+  SCHEDULE.forEach(s => {
+    const leftPct = timeToViewPercent(s.s);
+    const rightPct = timeToViewPercent(s.e);
+    if (rightPct < 0 || leftPct > 100) return;
+    const left = Math.max(0, leftPct);
+    const width = Math.min(100, rightPct) - left;
+    if (width > 0) {
+      const pxWidth = (width / 100) * containerWidth;
+      const label = pxWidth > 40 ? ALAB[s.a] : '';
+      const extraCls = s.a === 'observation' ? ' observation-bar' : (s.a === 'deep-obs' ? ' observation-bar-plain' : '');
+      html += `<div class="timeline-activity-bar${extraCls}" style="left:${left}%;width:${width}%;background:${ACOL[s.a]}" title="${s.l}">${label}</div>`;
+    }
+  });
+  container.innerHTML = html;
+}
+
+// Render photo dots + event ticks + activity bars + playhead
+function renderTimeline() {
+  const dotsContainer = document.getElementById('photoDots');
+  const markersContainer = document.getElementById('eventMarkers');
+
+  // Activity bars
+  renderActivityBars();
+
+  // Photo dots
+  let dotsHtml = '';
+  filteredPhotos.forEach((p, i) => {
+    const pct = timeToViewPercent(p.t);
+    if (pct < -2 || pct > 102) return;
+    const cls = 'photo-dot' + (p.sc ? ' spacecraft' : '') + (i === currentPhotoIdx ? ' active' : '');
+    dotsHtml += `<div class="${cls}" style="left:${pct}%" data-idx="${i}"></div>`;
+  });
+  dotsContainer.innerHTML = dotsHtml;
+
+  dotsContainer.querySelectorAll('.photo-dot').forEach(dot => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentPhotoIdx = parseInt(dot.dataset.idx);
+      updatePhoto();
+    });
+  });
+
+  // Audio dots
+  const audioDotsContainer = document.getElementById('audioDots');
+  const currentClip = getAudioForTimestamp(filteredPhotos[currentPhotoIdx].t);
+  let audioDotsHtml = '';
+  AUDIO.forEach((a, ai) => {
+    const pct = timeToViewPercent(a.t);
+    if (pct < -2 || pct > 102) return;
+    const playing = currentClip && currentClip.f === a.f ? ' playing' : '';
+    audioDotsHtml += `<div class="audio-dot${playing}" style="left:${pct}%" data-audio-idx="${ai}"><span class="audio-tip">🔊 ${a.desc}</span></div>`;
+  });
+  audioDotsContainer.innerHTML = audioDotsHtml;
+  audioDotsContainer.querySelectorAll('.audio-dot').forEach(dot => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const ai = parseInt(dot.dataset.audioIdx);
+      const clip = AUDIO[ai];
+      // Find nearest photo to this audio clip
+      let bestIdx = 0, bestDiff = Infinity;
+      filteredPhotos.forEach((p, pi) => {
+        const diff = Math.abs(p.t - clip.t);
+        if (diff < bestDiff) { bestDiff = diff; bestIdx = pi; }
+      });
+      currentPhotoIdx = bestIdx;
+      updatePhoto();
+    });
+  });
+
+  // Event ticks with tooltips
+  let ticksHtml = '';
+  EVENTS.forEach(ev => {
+    const pct = timeToViewPercent(ev.t);
+    if (pct < -2 || pct > 102) return;
+    ticksHtml += `<div class="timeline-event-tick" style="left:${pct}%"><span class="tick-tooltip">${ev.icon} ${ev.title}</span></div>`;
+  });
+  markersContainer.innerHTML = ticksHtml;
+
+  // Playhead
+  const photo = filteredPhotos[currentPhotoIdx];
+  document.getElementById('playhead').style.left = timeToViewPercent(photo.t) + '%';
+
+  updateTimelineLabels();
+}
+
+function updateTimelineLabels() {
+  const labelsContainer = document.querySelector('.timeline-labels');
+  const span = viewEnd - viewStart;
+  const numLabels = 11;
+  let html = '';
+  for (let i = 0; i < numLabels; i++) {
+    const t = viewStart + (span * i / (numLabels - 1));
+    const d = new Date(t);
+    let label;
+    if (span < 24 * 3600000) {
+      label = d.toLocaleString('en-US', {hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
+    } else if (span < 3 * 24 * 3600000) {
+      label = d.toLocaleString('en-US', {month:'short',day:'numeric',hour:'numeric',hour12:true,timeZone:'America/New_York'});
+    } else {
+      label = d.toLocaleString('en-US', {month:'short',day:'numeric',timeZone:'America/New_York'});
+    }
+    html += `<span>${label}</span>`;
+  }
+  labelsContainer.innerHTML = html;
+}
+
+// === Trajectory Diagram ===
+// Spacecraft: 214 hourly points, ecliptic XY (km), starting Apr 02 02:00 TDB (~Apr 01 22:00 EDT)
+const TRAJ_SC = [[-24603,-14662],[-29093,-27111],[-31024,-37309],[-31496,-45814],[-31012,-52942],[-29834,-58891],[-28120,-63789],[-25980,-67721],[-23485,-70740],[-20697,-72881],[-17671,-74168],[-14424,-74597],[-11007,-74156],[-7456,-72813],[-3808,-70520],[-106,-67200],[3596,-62745],[7219,-56991],[10640,-49688],[13627,-40422],[15644,-28423],[14877,-11922],[-4168,6428],[-24384,-8223],[-34379,-21911],[-41528,-33902],[-47240,-44746],[-52054,-54749],[-56241,-64095],[-59960,-72910],[-63311,-81278],[-66364,-89266],[-69171,-96920],[-71767,-104280],[-74182,-111377],[-76440,-118236],[-78557,-124877],[-80550,-131320],[-82429,-137580],[-84208,-143668],[-85894,-149597],[-87495,-155376],[-89018,-161016],[-90468,-166523],[-91852,-171906],[-93173,-177169],[-94435,-182320],[-95643,-187362],[-96799,-192302],[-97906,-197144],[-98968,-201890],[-99986,-206546],[-100963,-211115],[-101901,-215599],[-102802,-220002],[-103667,-224326],[-104496,-228570],[-105296,-232745],[-106064,-236848],[-106802,-240882],[-107513,-244848],[-108197,-248749],[-108854,-252586],[-109487,-256361],[-110096,-260075],[-110682,-263731],[-111246,-267328],[-111788,-270870],[-112310,-274356],[-112813,-277788],[-113296,-281168],[-113761,-284496],[-114209,-287773],[-114647,-290997],[-115067,-294174],[-115453,-297313],[-115837,-300398],[-116206,-303437],[-116562,-306431],[-116904,-309380],[-117234,-312285],[-117551,-315148],[-117857,-317967],[-118152,-320745],[-118436,-323482],[-118714,-326176],[-119050,-328800],[-119312,-331415],[-119566,-333990],[-119812,-336527],[-120052,-339026],[-120286,-341488],[-120515,-343912],[-120739,-346299],[-120960,-348651],[-121175,-350968],[-121392,-353248],[-121608,-355493],[-121819,-357705],[-122032,-359882],[-122249,-362024],[-122471,-364132],[-122701,-366204],[-122942,-368243],[-123194,-370246],[-123464,-372214],[-123754,-374146],[-124070,-376041],[-124418,-377896],[-124807,-379709],[-125247,-381475],[-125755,-383187],[-126354,-384832],[-127068,-386387],[-127941,-387807],[-129029,-389003],[-130373,-389782],[-131854,-389831],[-133067,-389024],[-133737,-387688],[-133944,-386157],[-133836,-384570],[-133515,-382971],[-133043,-381369],[-132459,-379766],[-131788,-378160],[-131047,-376548],[-130247,-374927],[-129398,-373294],[-128500,-371650],[-127568,-369986],[-126603,-368305],[-125606,-366603],[-124581,-364880],[-123529,-363135],[-122452,-361365],[-121351,-359570],[-120228,-357749],[-119083,-355901],[-117918,-354025],[-116733,-352120],[-115529,-350185],[-114306,-348220],[-113065,-346222],[-111808,-344193],[-110532,-342130],[-109240,-340034],[-107928,-337904],[-106601,-335738],[-105258,-333536],[-103899,-331298],[-102523,-329022],[-101131,-326708],[-99723,-324355],[-98300,-321962],[-96860,-319528],[-95404,-317053],[-93930,-314537],[-92442,-311976],[-90938,-309372],[-89419,-306722],[-87883,-304026],[-86332,-301283],[-84764,-298493],[-83181,-295653],[-81581,-292762],[-79965,-289821],[-78332,-286826],[-76683,-283778],[-75018,-280674],[-73335,-277514],[-71636,-274295],[-69919,-271016],[-68186,-267676],[-66435,-264273],[-64666,-260805],[-62872,-257274],[-61067,-253670],[-59244,-249995],[-57402,-246247],[-55542,-242423],[-53663,-238520],[-51764,-234536],[-49847,-230468],[-47909,-226312],[-45952,-222065],[-43973,-217723],[-41971,-213282],[-39951,-208738],[-37910,-204085],[-35847,-199319],[-33762,-194433],[-31654,-189421],[-29524,-184277],[-27375,-178991],[-25202,-173555],[-23006,-167960],[-20785,-162194],[-18541,-156244],[-16273,-150096],[-13982,-143733],[-11667,-137135],[-9330,-130278],[-6973,-123133],[-4597,-115666],[-2207,-107835],[192,-99584],[2589,-90842],[4969,-81514],[7303,-71462],[9542,-60482],[11575,-48237],[13127,-34098],[13211,-16561]];
+// Moon: 36 6-hourly points, ecliptic XY (km), same start
+const TRAJ_MOON = [[-384666,-80852],[-380383,-102024],[-374947,-122886],[-368382,-143376],[-360716,-163434],[-351978,-183002],[-342200,-202024],[-331418,-220445],[-319668,-238214],[-306992,-255283],[-293429,-271605],[-279025,-287134],[-263824,-301830],[-247874,-315652],[-231222,-328565],[-213920,-340534],[-196017,-351527],[-177567,-361515],[-158622,-370472],[-139238,-378374],[-119469,-385199],[-99371,-390928],[-79000,-395546],[-58415,-399038],[-37672,-401395],[-16829,-402606],[4054,-402667],[24919,-401573],[45707,-399326],[66358,-395925],[86813,-391377],[107012,-385688],[126896,-378870],[146405,-370934],[165480,-361898],[184062,-351779]];
+
+const TRAJ_START = edt("2026-04-01 22:00:00"); // Apr 02 02:00 TDB
+const TRAJ_STEP_SC = 3600000;   // 1 hour
+const TRAJ_STEP_MOON = 21600000; // 6 hours
+
+function getTrajIndex(ts) {
+  const elapsed = ts - TRAJ_START;
+  const idx = elapsed / TRAJ_STEP_SC;
+  return Math.max(0, Math.min(TRAJ_SC.length - 1, idx));
+}
+
+function interpTraj(arr, step, ts) {
+  const elapsed = ts - TRAJ_START;
+  const fi = elapsed / step;
+  const i = Math.max(0, Math.min(arr.length - 2, Math.floor(fi)));
+  const frac = Math.max(0, Math.min(1, fi - i));
+  return [
+    arr[i][0] + (arr[Math.min(i+1, arr.length-1)][0] - arr[i][0]) * frac,
+    arr[i][1] + (arr[Math.min(i+1, arr.length-1)][1] - arr[i][1]) * frac
+  ];
+}
+
+// Rotate so Earth is left, flyby is right: 108.7 deg
+const TRAJ_ROT = 108.7 * Math.PI / 180;
+const TRAJ_COS = Math.cos(TRAJ_ROT), TRAJ_SIN = Math.sin(TRAJ_ROT);
+function rotXY(x, y) { return [x*TRAJ_COS - y*TRAJ_SIN, x*TRAJ_SIN + y*TRAJ_COS]; }
+
+function getMoonDistKm(ts) {
+  const scPos = interpTraj(TRAJ_SC, TRAJ_STEP_SC, ts);
+  const moonPos = interpTraj(TRAJ_MOON, TRAJ_STEP_MOON, ts);
+  const dx = scPos[0] - moonPos[0], dy = scPos[1] - moonPos[1];
+  return Math.sqrt(dx*dx + dy*dy);
+}
+
+function drawTrajectory(ts) {
+  const canvas = document.getElementById('trajCanvas');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const W = rect.width;
+  const H = Math.round(W * 0.32); // wide & short
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, W, H);
+
+  // Bounds from spacecraft trajectory + Earth only (ignore Moon arc extent)
+  const pad = 12;
+  const allPts = TRAJ_SC.concat([[0,0]]);
+  let minRX = Infinity, maxRX = -Infinity, minRY = Infinity, maxRY = -Infinity;
+  for (const p of allPts) {
+    const [rx, ry] = rotXY(p[0], p[1]);
+    if (rx < minRX) minRX = rx; if (rx > maxRX) maxRX = rx;
+    if (ry < minRY) minRY = ry; if (ry > maxRY) maxRY = ry;
+  }
+  // Add padding to Y range so the thin trajectory isn't cramped
+  const rw = (maxRX - minRX) * 1.01;
+  const ryRange = (maxRY - minRY);
+  const rh = Math.max(ryRange * 1.2, rw * 0.18); // ensure minimum height
+  const rcx = (minRX + maxRX) / 2, rcy = (minRY + maxRY) / 2;
+  const scaleX = (W - 2*pad) / rw, scaleY = (H - 2*pad) / rh;
+  const scale = Math.min(scaleX, scaleY);
+
+  function toCanvas(x, y) {
+    const [rx, ry] = rotXY(x, y);
+    return [
+      W/2 + (rx - rcx) * scale,
+      H/2 - (ry - rcy) * scale
+    ];
+  }
+
+  // How far along are we
+  const trajIdx = getTrajIndex(ts);
+  const completedIdx = Math.floor(trajIdx);
+
+  // Full trajectory path (dim)
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(79,195,247,0.12)';
+  ctx.lineWidth = 1.5;
+  for (let i = 0; i < TRAJ_SC.length; i++) {
+    const [px, py] = toCanvas(TRAJ_SC[i][0], TRAJ_SC[i][1]);
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.stroke();
+
+  // Completed path (gradient)
+  if (completedIdx > 0) {
+    const maxI = Math.min(completedIdx + 1, TRAJ_SC.length);
+    for (let i = 1; i < maxI; i++) {
+      const frac = i / TRAJ_SC.length;
+      const [x0, y0] = toCanvas(TRAJ_SC[i-1][0], TRAJ_SC[i-1][1]);
+      const [x1, y1] = toCanvas(TRAJ_SC[i][0], TRAJ_SC[i][1]);
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1);
+      let r, g, b;
+      if (frac < 0.5) { const t=frac*2; r=Math.round(79+(255-79)*t); g=Math.round(195+(255-195)*t); b=Math.round(247+(255-247)*t); }
+      else { const t=(frac-0.5)*2; r=255; g=Math.round(255-(255-140)*t); b=Math.round(255-(255-60)*t); }
+      ctx.strokeStyle = `rgba(${r},${g},${b},0.7)`;
+      ctx.lineWidth = 2; ctx.stroke();
+    }
+  }
+
+  // Earth (left side)
+  const [ex, ey] = toCanvas(0, 0);
+  ctx.beginPath(); ctx.arc(ex, ey, 4, 0, Math.PI*2); ctx.fillStyle = '#4488cc'; ctx.fill();
+  ctx.beginPath(); ctx.arc(ex, ey, 6, 0, Math.PI*2); ctx.strokeStyle = 'rgba(68,136,204,0.3)'; ctx.lineWidth = 1; ctx.stroke();
+  ctx.fillStyle = '#6699bb'; ctx.font = '8px Inter, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('Earth', ex, ey - 8);
+
+  // Moon dot at current time (just a reference point, not full arc)
+  const moonPos = interpTraj(TRAJ_MOON, TRAJ_STEP_MOON, ts);
+  const [mx, my] = toCanvas(moonPos[0], moonPos[1]);
+  // Only draw if it's within canvas bounds (with some slack)
+  if (mx > -20 && mx < W+20 && my > -20 && my < H+20) {
+    ctx.beginPath(); ctx.arc(mx, my, 3, 0, Math.PI*2); ctx.fillStyle = '#888'; ctx.fill();
+    ctx.fillStyle = '#666'; ctx.font = '7px Inter, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Moon', mx, my - 7);
+  }
+
+  // Spacecraft current position
+  const scPos = interpTraj(TRAJ_SC, TRAJ_STEP_SC, ts);
+  const [sx, sy] = toCanvas(scPos[0], scPos[1]);
+  const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, 10);
+  glow.addColorStop(0, 'rgba(79,195,247,0.6)'); glow.addColorStop(1, 'rgba(79,195,247,0)');
+  ctx.beginPath(); ctx.arc(sx, sy, 10, 0, Math.PI*2); ctx.fillStyle = glow; ctx.fill();
+  ctx.beginPath(); ctx.arc(sx, sy, 3, 0, Math.PI*2); ctx.fillStyle = '#4FC3F7'; ctx.fill();
+  ctx.strokeStyle = '#fff'; ctx.lineWidth = 0.8; ctx.stroke();
+
+  // "Orion" label — position dynamically to avoid overlap
+  ctx.fillStyle = '#4FC3F7'; ctx.font = 'bold 7px Inter, sans-serif';
+  if (sy > H/2) { ctx.textAlign = 'center'; ctx.fillText('Orion', sx, sy - 8); }
+  else { ctx.textAlign = 'center'; ctx.fillText('Orion', sx, sy + 12); }
+
+  // Flyby label at the rightmost point
+  const [fx, fy] = toCanvas(TRAJ_SC[117][0], TRAJ_SC[117][1]);
+  ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '7px Inter, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('Flyby', fx, fy - 7);
+
+  // Update label below canvas with both distances
+  const label = document.getElementById('trajLabel');
+  if (label) {
+    if (ts < TRAJ_START || ts > TRAJ_START + TRAJ_SC.length * TRAJ_STEP_SC) {
+      label.textContent = 'Trajectory · JPL Horizons data';
+    } else {
+      const dist = getDisplayDistance(ts);
+      const moonDistKm = getMoonDistKm(ts);
+      const moonDistMi = Math.round((moonDistKm - 1737.4) * 0.621371); // subtract Moon radius
+      const earthStr = dist === -1 ? 'Liftoff' : (dist < 1 ? 'Near Earth' : Math.round(dist).toLocaleString() + ' mi from Earth');
+      const moonStr = moonDistMi > 0 ? moonDistMi.toLocaleString() + ' mi from Moon' : 'At the Moon';
+      label.textContent = earthStr + '  ·  ' + moonStr;
+    }
+  }
+}
+
+function updatePhoto() {
+  const photo = filteredPhotos[currentPhotoIdx];
+  const safeSrc = encodeURIComponent(photo.f);
+  document.getElementById('currentPhoto').src = 'web/' + safeSrc;
+  document.getElementById('downloadLink').href = safeSrc;
+  document.getElementById('downloadLink').download = photo.f;
+  document.getElementById('metaPhotographer').textContent = photo.p;
+  document.getElementById('metaLocation').textContent = photo.loc;
+  document.getElementById('metaTime').textContent = formatTime(photo.t);
+  document.getElementById('metaDistance').textContent = formatDistance(getDisplayDistance(photo.t));
+  // Moon distance
+  if (photo.t >= TRAJ_START && photo.t <= TRAJ_START + TRAJ_SC.length * TRAJ_STEP_SC) {
+    const moonKm = getMoonDistKm(photo.t);
+    const moonMi = Math.round((moonKm - 1737.4) * 0.621371); // surface-to-surface
+    document.getElementById('metaMoonDist').textContent = moonMi > 0 ? moonMi.toLocaleString() + ' miles' : 'At the Moon';
+  } else {
+    document.getElementById('metaMoonDist').textContent = photo.t < TRAJ_START ? '~239,000 miles' : '—';
+  }
+  document.getElementById('metaCamera').textContent = photo.cam;
+  document.getElementById('metaSettings').textContent = photo.set;
+  document.getElementById('photoCounter').textContent = `${currentPhotoIdx + 1} / ${filteredPhotos.length}`;
+  if (photo.desc) {
+    document.getElementById('descSection').style.display = '';
+    document.getElementById('metaDesc').textContent = photo.desc;
+  } else {
+    document.getElementById('descSection').style.display = 'none';
+  }
+  // Show print banner only on select photos (placeholder: first photo), unless dismissed
+  document.getElementById('printBanner').style.display = (currentPhotoIdx === 0 && !printBannerDismissed) ? '' : 'none';
+
+  // updateEventAndQuote(photo.t);
+  drawTrajectory(photo.t);
+  updateAudio(photo.t);
+  renderTimeline();
+}
+
+// Each audio clip "owns" the segment from its timestamp to the next clip's timestamp.
+// As you cross into a new segment, that clip plays automatically.
+function getAudioForTimestamp(ts) {
+  let best = null;
+  for (const clip of AUDIO) {
+    if (clip.t <= ts) {
+      if (!best || clip.t > best.t) best = clip;
+    }
+  }
+  return best;
+}
+
+function updateAudio(ts) {
+  const clip = getAudioForTimestamp(ts);
+  const audioNow = document.getElementById('audioNow');
+
+  if (audioMuted || !clip) {
+    audioNow.textContent = '';
+    if (currentAudio) { currentAudio.pause(); currentAudio = null; lastAudioClip = null; }
+    return;
+  }
+
+  audioNow.textContent = '🔊 ' + clip.desc;
+
+  // Same clip still active — let it keep playing
+  if (lastAudioClip === clip.f) return;
+
+  // Crossed into a new clip's segment — play it
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  currentAudio = new Audio(clip.f.replace(/ /g, '%20'));
+  currentAudio.volume = 0.7;
+  currentAudio.play().catch(() => {});
+  lastAudioClip = clip.f;
+}
+
+function updateEventAndQuote(ts) {
+  let past = EVENTS.filter(e => e.t <= ts);
+  let nearest = past.length > 0 ? past[past.length - 1] : EVENTS[0];
+  const isFuture = nearest.t > ts;
+  const eventEl = document.getElementById('eventBox');
+  eventEl.innerHTML = `<div class="event-title">${nearest.icon} ${nearest.title}</div><div class="event-desc">${nearest.desc}</div><div class="event-time">${formatTime(nearest.t)}</div>`;
+  eventEl.style.opacity = isFuture ? '0.4' : '1';
+
+  let q = QUOTES.reduce((best, qt) => Math.abs(qt.t - ts) < Math.abs(best.t - ts) ? qt : best);
+  const quoteEl = document.getElementById('quoteBox');
+  const qDist = Math.abs(q.t - ts);
+  quoteEl.innerHTML = `<div class="quote-text">"${q.text}"</div><div class="quote-speaker">— ${q.who}</div>`;
+  quoteEl.style.opacity = qDist > 3600000 ? '0.3' : '1';
+}
+
+// --- Timeline hover tooltip showing activity ---
+const hoverTip = document.getElementById('timelineHoverTip');
+const tipTime = document.getElementById('tipTime');
+const tipActivity = document.getElementById('tipActivity');
+
+document.getElementById('timelineTrack').addEventListener('mousemove', function(e) {
+  if (isDragging) { hoverTip.style.display = 'none'; return; }
+  const rect = this.getBoundingClientRect();
+  const frac = (e.clientX - rect.left) / rect.width;
+  const t = viewStart + (viewEnd - viewStart) * frac;
+  if (t < T_START || t > T_END) { hoverTip.style.display = 'none'; return; }
+
+  tipTime.textContent = formatTimeShort(t);
+  const act = getActivityAt(t);
+  if (act) {
+    tipActivity.innerHTML = `<span class="tip-dot" style="background:${ACOL[act.a]}"></span><span class="tip-label">${act.l}</span>`;
+  } else {
+    tipActivity.innerHTML = `<span class="tip-label" style="color:#555">No scheduled activity</span>`;
+  }
+  hoverTip.style.display = 'block';
+  // Position at cursor X
+  const leftPx = e.clientX - rect.left;
+  const maxLeft = rect.width - 120;
+  hoverTip.style.left = Math.max(60, Math.min(maxLeft, leftPx)) + 'px';
+});
+
+document.getElementById('timelineTrack').addEventListener('mouseleave', function() {
+  hoverTip.style.display = 'none';
+});
+
+// --- Zoom & Pan ---
+function zoomTimeline(factor, anchorFraction) {
+  const span = viewEnd - viewStart;
+  const newSpan = Math.max(MIN_VIEW_SPAN, Math.min(T_SPAN, span * factor));
+  const anchor = viewStart + span * anchorFraction;
+  let newStart = anchor - newSpan * anchorFraction;
+  let newEnd = newStart + newSpan;
+  if (newStart < T_START) { newStart = T_START; newEnd = newStart + newSpan; }
+  if (newEnd > T_END) { newEnd = T_END; newStart = newEnd - newSpan; }
+  if (newStart < T_START) newStart = T_START;
+  viewStart = newStart;
+  viewEnd = newEnd;
+  renderTimeline();
+}
+
+document.getElementById('timelineTrack').addEventListener('wheel', function(e) {
+  e.preventDefault();
+  const rect = this.getBoundingClientRect();
+  const anchorFrac = (e.clientX - rect.left) / rect.width;
+  // Horizontal swipe → pan, pinch (ctrlKey) → zoom, vertical scroll → ignore
+  if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+    const span = viewEnd - viewStart;
+    const shift = (e.deltaX / rect.width) * span;
+    viewStart += shift;
+    viewEnd += shift;
+    if (viewStart < T_START) { viewEnd += T_START - viewStart; viewStart = T_START; }
+    if (viewEnd > T_END) { viewStart -= viewEnd - T_END; viewEnd = T_END; }
+    if (viewStart < T_START) viewStart = T_START;
+    renderTimeline();
+  } else if (e.ctrlKey) {
+    // Pinch-to-zoom on trackpad sets ctrlKey
+    const factor = e.deltaY > 0 ? 1.15 : 0.87;
+    zoomTimeline(factor, anchorFrac);
+  }
+}, { passive: false });
+
+// Drag to pan
+let isDragging = false;
+let dragStartX = 0;
+let dragStartViewStart = 0;
+let dragStartViewEnd = 0;
+
+document.getElementById('timelineTrack').addEventListener('mousedown', function(e) {
+  if (e.target.classList.contains('photo-dot') || e.target.classList.contains('audio-dot') || e.target.classList.contains('zoom-btn')) return;
+  isDragging = true;
+  dragStartX = e.clientX;
+  dragStartViewStart = viewStart;
+  dragStartViewEnd = viewEnd;
+  hoverTip.style.display = 'none';
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', function(e) {
+  if (!isDragging) return;
+  const track = document.getElementById('timelineTrack');
+  const rect = track.getBoundingClientRect();
+  const dx = e.clientX - dragStartX;
+  const frac = dx / rect.width;
+  const span = dragStartViewEnd - dragStartViewStart;
+  let shift = -frac * span;
+  let ns = dragStartViewStart + shift;
+  let ne = dragStartViewEnd + shift;
+  if (ns < T_START) { ns = T_START; ne = ns + span; }
+  if (ne > T_END) { ne = T_END; ns = ne - span; }
+  if (ns < T_START) ns = T_START;
+  viewStart = ns;
+  viewEnd = ne;
+  renderTimeline();
+});
+
+document.addEventListener('mouseup', function(e) {
+  if (isDragging) {
+    isDragging = false;
+    if (Math.abs(e.clientX - dragStartX) < 4) {
+      const track = document.getElementById('timelineTrack');
+      const rect = track.getBoundingClientRect();
+      const frac = (e.clientX - rect.left) / rect.width;
+      const clickTime = viewStart + (viewEnd - viewStart) * frac;
+      let best = 0, bestDist = Infinity;
+      filteredPhotos.forEach((p, i) => {
+        const d = Math.abs(p.t - clickTime);
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      currentPhotoIdx = best;
+      updatePhoto();
+    }
+  }
+});
+
+// Zoom buttons
+document.getElementById('zoomInBtn').addEventListener('click', (e) => { e.stopPropagation(); zoomTimeline(0.5, 0.5); });
+document.getElementById('zoomOutBtn').addEventListener('click', (e) => { e.stopPropagation(); zoomTimeline(2, 0.5); });
+document.getElementById('zoomResetBtn').addEventListener('click', (e) => { e.stopPropagation(); viewStart = T_START; viewEnd = T_END; renderTimeline(); });
+
+// --- Navigation ---
+function ensurePhotoInView() {
+  const t = filteredPhotos[currentPhotoIdx].t;
+  if (t < viewStart || t > viewEnd) {
+    const span = viewEnd - viewStart;
+    viewStart = t - span / 2;
+    viewEnd = t + span / 2;
+    if (viewStart < T_START) { viewStart = T_START; viewEnd = viewStart + span; }
+    if (viewEnd > T_END) { viewEnd = T_END; viewStart = viewEnd - span; }
+    if (viewStart < T_START) viewStart = T_START;
+    renderTimeline();
+  }
+}
+
+function goPrev() { if (currentPhotoIdx > 0) { currentPhotoIdx--; updatePhoto(); ensurePhotoInView(); } }
+function goNext() { if (currentPhotoIdx < filteredPhotos.length - 1) { currentPhotoIdx++; updatePhoto(); ensurePhotoInView(); } }
+document.getElementById('prevBtn').addEventListener('click', goPrev);
+document.getElementById('nextBtn').addEventListener('click', goNext);
+
+
+function clearAllFilters() {
+  document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('[data-crew]').forEach(b => b.classList.remove('active'));
+}
+
+document.querySelectorAll('[data-filter]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    clearAllFilters();
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    filteredPhotos = filter === 'all' ? PHOTOS : PHOTOS.filter(p => p.sc);
+    currentPhotoIdx = 0;
+    viewStart = T_START; viewEnd = T_END;
+    updatePhoto();
+  });
+});
+
+document.querySelectorAll('[data-crew]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const wasActive = this.classList.contains('active');
+    clearAllFilters();
+    if (wasActive) {
+      // Toggle off — go back to all
+      document.querySelector('[data-filter="all"]').classList.add('active');
+      filteredPhotos = PHOTOS;
+    } else {
+      this.classList.add('active');
+      const name = this.dataset.crew;
+      filteredPhotos = PHOTOS.filter(p => p.p && p.p.includes(name));
+    }
+    currentPhotoIdx = 0;
+    viewStart = T_START; viewEnd = T_END;
+    updatePhoto();
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft' && currentPhotoIdx > 0) { currentPhotoIdx--; updatePhoto(); ensurePhotoInView(); }
+  if (e.key === 'ArrowRight' && currentPhotoIdx < filteredPhotos.length - 1) { currentPhotoIdx++; updatePhoto(); ensurePhotoInView(); }
+});
+
+document.getElementById('printClose').addEventListener('click', () => {
+  printBannerDismissed = true;
+  document.getElementById('printBanner').style.display = 'none';
+});
+
+document.getElementById('muteBtn').addEventListener('click', function() {
+  audioMuted = !audioMuted;
+  this.textContent = audioMuted ? 'Add Audio' : 'Audio On';
+  this.classList.toggle('active', !audioMuted);
+  document.getElementById('audioDots').style.display = audioMuted ? 'none' : 'block';
+  if (audioMuted && currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+    lastAudioClip = null;
+    document.getElementById('audioNow').textContent = '';
+  } else if (!audioMuted) {
+    const photo = filteredPhotos[currentPhotoIdx];
+    updateAudio(photo.t);
+    renderTimeline();
+  }
+});
+
+updatePhoto();
+</script>
+</body>
+</html>
