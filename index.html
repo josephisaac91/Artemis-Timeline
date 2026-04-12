@@ -33,7 +33,6 @@
   #header h1 { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: -0.5px; white-space: nowrap; }
   #header h1 span { color: #4FC3F7; }
   #header .subtitle { color: #fff; font-size: 12px; }
-  #header .crew { color: #fff; font-size: 11px; }
 
   /* Timeline bar — single line at top */
   .timeline-bar {
@@ -44,17 +43,11 @@
   }
   .timeline-track {
     position: relative;
-    height: 54px;
+    height: 24px;
     cursor: pointer;
   }
   .timeline-track-bg {
-    position: absolute;
-    top: 17px;
-    left: 0;
-    right: 0;
-    height: 6px;
-    background: #1a1a2e;
-    border-radius: 3px;
+    display: none;
   }
   .timeline-dot {
     position: absolute;
@@ -72,9 +65,9 @@
   .timeline-dot.cluster { width: 14px; height: 14px; top: 7px; transform: translateX(-7px); }
   .timeline-playhead {
     position: absolute;
-    top: 4px;
+    top: 0;
     width: 3px;
-    height: 46px;
+    height: 24px;
     background: #4FC3F7;
     transform: translateX(-1.5px);
     pointer-events: none;
@@ -87,46 +80,7 @@
     color: #555;
     margin-top: 2px;
   }
-  .timeline-event-markers {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 54px;
-    pointer-events: none;
-  }
-  .timeline-event-tick {
-    position: absolute;
-    top: 0;
-    width: 4px;
-    height: 14px;
-    background: rgba(79,195,247,0.5);
-    border-radius: 2px;
-    pointer-events: auto;
-    cursor: pointer;
-    transform: translateX(-2px);
-  }
-  .timeline-event-tick:hover {
-    background: rgba(79,195,247,1);
-    height: 16px;
-  }
-  .timeline-event-tick .tick-tooltip {
-    display: none;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #1a1a2e;
-    border: 1px solid #333;
-    color: #ddd;
-    font-size: 11px;
-    padding: 5px 10px;
-    border-radius: 4px;
-    white-space: nowrap;
-    z-index: 20;
-    pointer-events: none;
-  }
-  .timeline-event-tick:hover .tick-tooltip { display: block; }
+  /* Event markers removed — dots above the line instead */
 
   /* Photo dots on timeline */
   .timeline-photo-dots {
@@ -134,12 +88,12 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 54px;
+    height: 24px;
     pointer-events: none;
   }
   .photo-dot {
     position: absolute;
-    top: 26px;
+    top: 8px;
     width: 7px;
     height: 7px;
     border-radius: 50%;
@@ -149,8 +103,8 @@
     cursor: pointer;
     transition: all 0.1s;
   }
-  .photo-dot:hover { background: #4FC3F7; transform: translateX(-5px); width: 10px; height: 10px; top: 24px; }
-  .photo-dot.active { background: #4FC3F7; width: 9px; height: 9px; top: 25px; transform: translateX(-4.5px); box-shadow: 0 0 6px rgba(79,195,247,0.5); }
+  .photo-dot:hover { background: #4FC3F7; transform: translateX(-5px); width: 10px; height: 10px; top: 7px; }
+  .photo-dot.active { background: #4FC3F7; width: 9px; height: 9px; top: 7px; transform: translateX(-4.5px); box-shadow: 0 0 6px rgba(79,195,247,0.5); }
   .photo-dot.spacecraft { background: #7B68EE; }
   .photo-dot.spacecraft:hover { background: #9B88FF; }
   .photo-dot.spacecraft.active { background: #9B88FF; box-shadow: 0 0 6px rgba(123,104,238,0.5); }
@@ -159,14 +113,14 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 54px;
+    height: 24px;
     pointer-events: none;
     display: none;
   }
   .timeline-audio-dots { z-index: 15; }
   .audio-dot {
     position: absolute;
-    top: 26px;
+    top: 8px;
     width: 7px;
     height: 7px;
     border-radius: 50%;
@@ -176,8 +130,8 @@
     cursor: pointer;
     transition: all 0.1s;
   }
-  .audio-dot:hover { background: #ffea00; width: 10px; height: 10px; top: 24px; transform: translateX(-5px); }
-  .audio-dot.playing { background: #ffea00; width: 9px; height: 9px; top: 25px; transform: translateX(-4.5px); }
+  .audio-dot:hover { background: #ffea00; width: 10px; height: 10px; top: 7px; transform: translateX(-5px); }
+  .audio-dot.playing { background: #ffea00; width: 9px; height: 9px; top: 7px; transform: translateX(-4.5px); }
   .audio-dot .audio-tip {
     display: none;
     position: absolute;
@@ -648,7 +602,6 @@
 <div id="header">
   <h1>ARTEMIS <span>II</span> PHOTO TIMELINE</h1>
   <div class="subtitle">April 1–10, 2026</div>
-  <div class="crew">Wiseman • Glover • Koch • Hansen</div>
 </div>
 
 <!-- Timeline bar -->
@@ -658,7 +611,6 @@
     <div class="timeline-activity-bars" id="activityBars"></div>
     <div class="timeline-photo-dots" id="photoDots"></div>
     <div class="timeline-audio-dots" id="audioDots"></div>
-    <div class="timeline-event-markers" id="eventMarkers"></div>
     <div class="timeline-playhead" id="playhead"></div>
     <div class="timeline-hover-tip" id="timelineHoverTip">
       <div class="tip-time" id="tipTime"></div>
@@ -688,6 +640,8 @@
   <button class="filter-btn crew-filter" data-crew="Koch">Koch</button>
   <button class="filter-btn crew-filter" data-crew="Hansen">Hansen</button>
   <span class="filter-sep">|</span>
+  <button class="filter-btn" data-batch="1">Released Before April 12</button>
+  <span class="filter-sep">|</span>
   <button class="filter-btn" id="muteBtn" title="Toggle mission audio">Add Audio</button>
   <span class="audio-now" id="audioNow"></span>
   <div class="controls-spacer"></div>
@@ -716,6 +670,9 @@
       <div class="traj-label" id="trajLabel"></div>
     </div>
     <div class="meta-section">
+      <div id="photoTitleRow" class="meta-field" style="display:none">
+        <div class="meta-value highlight" id="metaTitle" style="font-size:15px;font-weight:600;color:#e0e0e0;line-height:1.3"></div>
+      </div>
       <div class="meta-field">
         <div class="meta-label">Time (EDT)</div>
         <div class="meta-value highlight time-value" id="metaTime">—</div>
@@ -766,234 +723,618 @@
 <script>
 function edt(s) { return new Date(s.replace(' ','T') + "-04:00").getTime(); }
 
+function getFlickrId(filename) {
+  const m = filename.match(/^(\d{11})[_-]/);
+  return m ? m[1] : null;
+}
+
+const FLICKR_TITLES = {
+  '55184586022': 'Artemis II Looking Back at Earth',
+  '55184731952': 'Artemis II Captures the Terminator Line',
+  '55185622941': 'Artemis II Captures Dark Side of the Earth',
+  '55185633398': 'Hello, World',
+  '55186454418': 'Hello, Moon',
+  '55186615484': 'Orion Snaps a Selfie During External Inspection',
+  '55186770575': 'Orion and the Moon on Flight Day 2',
+  '55186902076': 'To the Moon',
+  '55186933788': 'CSA Astronaut Jeremy Hansen Takes a Look Through Orion\'s Window',
+  '55187055368': 'Illuminated in Orion',
+  '55187172560': 'A Crescent Earth',
+  '55187189317': 'Home, Seen from Orion.',
+  '55187293546': 'Spaceship Earth',
+  '55187298155': 'Crescent Earth',
+  '55187348577': 'Closing in on the Moon',
+  '55187684915': 'Thinking of You, Earth',
+  '55188864542': 'Eyes on Earth',
+  '55189594357': 'Goodnight Moon',
+  '55189687036': 'One Day Closer to the Moon',
+  '55189767696': 'Our Home Planet',
+  '55189799111': 'A Peek at Earth',
+  '55190036409': 'A Unique Perspective of Home',
+  '55190158269': 'The Nearside of the Moon',
+  '55190200376': 'Mother Earth',
+  '55190298147': 'Home, Sweet Home',
+  '55190303117': 'Rest Before Lunar Flyby',
+  '55190613700': 'All in a Day\'s Work',
+  '55191180896': 'Jeremy Hansen Looks Back Home',
+  '55191185696': 'A Quick Shave Before Lunar Flyby',
+  '55191331293': 'Lunar Looking',
+  '55191439024': 'Orientale on Display',
+  '55191470911': 'Even Closer Now',
+  '55191585995': 'Reflections of Earth with Victor Glover',
+  '55192084847': 'Earthset',
+  '55192123432': 'The Edge of Two Worlds',
+  '55192132107': 'A New View of the Moon',
+  '55192164982': 'Crew Scientist',
+  '55192173787': 'Artemis II Total Solar Eclipse, Partial Frame',
+  '55192657082': 'Orion POV: Destination and Home',
+  '55192683067': 'Solar Eclipse of the Heart',
+  '55193002296': 'Shadows Across Vavilov Crater',
+  '55193049251': 'A Moment with the Moon',
+  '55193053886': 'Keeper of the Night Sky',
+  '55193054686': 'Artemis Era Earthrise',
+  '55193054741': 'Artemis II in Eclipse',
+  '55193069001': 'Choreographed Camera Work',
+  '55193071311': 'Lunar Selfie',
+  '55193137293': 'Shadows at the Edge of Lunar Day',
+  '55193149063': 'Ready for a Close Up',
+  '55193178333': 'A Setting Earth',
+  '55193180468': 'Peeking at the Earth',
+  '55193194643': 'Framing the Shot',
+  '55193206753': 'It\'s All in the Details',
+  '55193207303': 'Solar Eclipse Emergence from Orion',
+  '55193207308': 'Eclipse Safety First',
+  '55193337359': 'Photographer at Work',
+  '55193360877': 'Rise and Shine',
+  '55193368072': 'Science Officers in Mission Control',
+  '55193414680': 'Earthset Over the Lunar Limb',
+  '55193462360': 'Final Flyby Preparations',
+  '55193566011': 'Eclipsed: A View from Orion',
+  '55193772547': 'Artemis II Crew "Rise-ing" To the Occasion',
+  '55193772552': 'Moon Joy',
+  '55193784989': 'Drawn by the Moon',
+  '55193828029': 'A Sunrise for Orion',
+  '55193946135': 'Orion in the Spotlight',
+  '55194334756': 'Capture My Good Side \u2013 The Moon',
+  '55194361976': 'Vavilov Crater Along the Hertzsprung Basin Rim',
+  '55194399918': 'Lunar Flyby in Mission Control',
+  '55194459003': 'Guiding the Journey',
+  '55194494274': 'Details of Orion',
+  '55194517308': 'The Powerhouse of the Orion Spacecraft',
+  '55194523579': 'Starstruck',
+  '55194529188': 'A Tapestry of Lunar Landmarks',
+  '55194598974': 'Seriously Moonstruck',
+  '55194619544': 'Ancient Lava on the Moon',
+  '55194627304': 'A "Handprint" on the Moon',
+  '55194627309': 'Swoon at the Moon',
+  '55194639639': 'A Cross Section of Lunar Geology',
+  '55194658516': 'Artemis II Group Shoot',
+  '55194659885': 'Presidential Call',
+  '55194762480': 'The Rings of the Orientale Basin',
+  '55194768276': 'A Moodier Moon',
+  '55194789840': 'NASA\'s Orion Spacecraft',
+  '55194789845': 'Orion in Flight',
+  '55194917013': 'Still Life',
+  '55194920222': 'Christina Koch and Reid Wiseman Take a Selfie in Orion',
+  '55194920227': 'A Crew Selfie with Rise in Orion',
+  '55195026049': 'A Room With a View',
+  '55195066435': 'Four Thumbs Up',
+  '55195410937': 'Monitoring the Mission',
+  '55195413602': 'A Distant Crescent of Home',
+  '55195674427': 'Setting the Course',
+  '55195796542': 'A Mesmerizing Moon',
+  '55195796552': 'Window Seat for the Flyby',
+  '55195894708': 'A Crater of Remembrance',
+  '55195952067': 'Long Distance Call',
+  '55195952087': 'Long Distance Chat with Friends',
+  '55195961058': 'Jeremy Hansen Takes a Selfie in Orion',
+  '55196010752': 'Dark Craters, Bright Views',
+  '55196075694': 'The Edge of Darkness',
+  '55196252006': 'Manual Piloting NASA\'s Orion Spacecraft',
+  '55196404298': 'Preparing for Liftoff',
+  '55196453768': 'Moon\'s Farside in the Foreground, Earth Beyond',
+  '55196507489': 'Proximity Operations Demonstration from Mission Control',
+  '55196534939': 'Communicating with the Crew from Console',
+  '55196543334': 'The Artemis II Flight Control Team Monitoring the TLI Burn',
+  '55196663265': 'Lead Flight Director Jeff Radigan During Prox Ops Demo',
+  '55196698385': 'Capsule Communicator',
+  '55196704886': 'Lunar Flyby Observations \u2013 Victor Glover and Christina Koch',
+  '55196710272': 'Over the Moon, Bea',
+  '55196937384': 'A Quiet Moment for Observations',
+  '55196961359': 'Lunar Flyby Observations \u2013 Victor Glover',
+  '55197007576': 'The Moon\'s Great Scar',
+  '55197095240': 'Capturing the Lunar Flyby from Orion',
+  '55197095290': 'Observing the Features of the Moon',
+  '55197506830': 'A Solar Eclipse Like No Other',
+  '55197552725': 'Craters of Time',
+  '55197737178': 'Crescent Earth Over Lunar Horizon',
+  '55197995935': 'Crossing into the Lunar Farside',
+  '55198256277': 'Craters Along the Lunar Terminator',
+  '55198362617': 'Poynting and Keeler Craters on the Lunar Far Side',
+  '55198598917': 'A Breathtaking Earthset from Orion',
+  '55198608122': 'Artemis II Lunar Science Team \u2013 Amber Turner',
+  '55198687567': 'Taking a Peek at Earth from the Far Side of the Moon',
+  '55199141754': 'Birkhoff Crater in Low-Light Detail',
+  '55199243981': 'Artemis Lunar Science Team \u2013 Alexandra Constantinou',
+  '55199312161': 'Distant Waning Crescent Earth',
+  '55199404085': 'Overexposed Moon for Analysis',
+  '55199492814': 'Artemis Lunar Science Team',
+  '55199492819': 'Artemis Lunar Science Team \u2013 Aaron Regberg',
+  '55199649540': 'Science Team in the Mission Operations Room',
+  '55199650003': 'Critical Observations with the Lunar Science Team',
+  '55199774765': 'A Terrain of Ancient Impacts',
+  '55199789389': 'Artemis II Science Officers \u2013 Trevor Graff and Kelsey Young',
+  '55199812540': 'Earth\'s Crescent from Lunar Orbit',
+  '55199856318': 'Artemis II Splashdown',
+  '55199856343': 'Artemis II Splashdown',
+  '55199984595': 'Hertzsprung in Light and Shadow',
+  '55200077344': 'Artemis II Flight Control Team During Splashdown',
+  '55200530422': 'Artemis II Crew Return',
+  '55201409941': 'Artemis II Crew Return',
+  '55201409946': 'Artemis II Crew Return',
+  '55201410186': 'Artemis II Crew Return',
+  '55201424021': 'Artemis II Crew Return',
+  '55201424106': 'Artemis II Crew Return',
+  '55201424136': 'Artemis II Crew Return',
+  '55201553518': 'Artemis II Splashdown',
+  '55201562128': 'Artemis II Crew Return',
+  '55201562253': 'Artemis II Crew Return',
+  '55201576368': 'Artemis II Crew Return',
+  '55201576423': 'Artemis II Crew Return',
+  '55201576443': 'Artemis II Crew Return',
+  '55201661154': 'Artemis II Crew Return',
+  '55201661244': 'Artemis II Crew Return',
+  '55201661254': 'Artemis II Crew Return',
+  '55201661369': 'Artemis II Crew Return',
+  '55201675544': 'Artemis II Crew Return',
+  '55201805415': 'Artemis II Splashdown',
+  '55201813500': 'Artemis II Crew Return',
+  '55201813565': 'Artemis II Crew Return',
+  '55201813575': 'Artemis II Crew Return',
+  '55201813860': 'Artemis II Splashdown',
+  '55201827775': 'Artemis II Crew Return',
+  '55181686977': 'Artemis II Launch',
+  '55181746722': 'Artemis II Launch',
+  '55182696113': 'Artemis II Launch',
+  '55182789108': 'Artemis II Launch',
+  '55182980490': 'Artemis II Launch',
+  '55182992165': 'Artemis II Launch',
+  '55183079963': 'Artemis II Launch',
+  '55183089523': 'Artemis II Launch',
+  '55198801842': 'Artemis II Recovery',
+  '55198811582': 'Artemis II Recovery',
+  '55198907367': 'Artemis II Recovery',
+  '55198951957': 'Artemis II Recovery',
+  '55198952237': 'Artemis II Recovery',
+  '55198960402': 'Artemis II Recovery',
+  '55199324306': 'Artemis II Recovery Preparations',
+  '55199507598': 'Artemis II Recovery Preparations',
+  '55199520466': 'Artemis II Recovery',
+  '55199526571': 'Artemis II Recovery',
+  '55199558901': 'Artemis II Recovery',
+  '55199685771': 'Artemis II Recovery',
+  '55199695136': 'Artemis II Recovery',
+  '55199695466': 'Artemis II Recovery',
+  '55199709323': 'Artemis II Recovery',
+  '55199853946': 'Artemis II Recovery',
+  '55199854793': 'Artemis II Recovery',
+  '55199854926': 'Artemis II Recovery',
+  '55199857746': 'Artemis II Recovery',
+  '55199878669': 'Artemis II Recovery',
+  '55199878864': 'Artemis II Recovery',
+  '55199935584': 'Artemis II Recovery',
+  '55199953168': 'Artemis II Recovery',
+  '55199996653': 'Artemis II Recovery',
+  '55199997948': 'Artemis II Recovery',
+  '55199998298': 'Artemis II Recovery',
+  '55199999093': 'Artemis II Recovery',
+  '55200000228': 'Artemis II Recovery',
+  '55200002168': 'Artemis II Recovery',
+  '55200004673': 'Artemis II Recovery',
+  '55200008149': 'Artemis II Recovery',
+  '55200049934': 'Artemis II Recovery',
+  '55200091055': 'Artemis II Recovery',
+  '55200096939': 'Artemis II Recovery',
+  '55200099409': 'Artemis II Recovery',
+  '55200100035': 'Artemis II Recovery',
+  '55200101349': 'Artemis II Recovery',
+  '55200103109': 'Artemis II Recovery',
+  '55200207020': 'Artemis II Recovery',
+  '55200207390': 'Artemis II Recovery',
+  '55200255400': 'Artemis II Recovery',
+  '55200256115': 'Artemis II Recovery',
+  '55185571468': 'A Waxing Gibbous Moon Above Earth from the ISS',
+  '55199431156': 'Artemis II Lunar Crescent View',
+  '55198981287': 'Artemis II Recovery (NHQ202604100056)',
+  '55198982147': 'Artemis II Recovery (NHQ202604100058)',
+  '55199863796': 'Artemis II Recovery (NHQ202604100047)',
+  '55199868461': 'Artemis II Recovery (NHQ202604100051)',
+  '55199869846': 'Artemis II Recovery (NHQ202604100052)',
+  '55199872986': 'Artemis II Recovery (NHQ202604100054)',
+  '55200013283': 'Artemis II Recovery (NHQ202604100048)',
+  '55200111364': 'Artemis II Recovery (NHQ202604100046)',
+  '55200119619': 'Artemis II Recovery (NHQ202604100053)',
+  '55200122669': 'Artemis II Recovery (NHQ202604100055)',
+  '55183574561': 'Artemis II Preflight (NHQ202603310018)',
+  '53206117714': 'Artemis II Day of Launch Demonstration Test ISSV-1A',
+  '53204851972': 'Artemis II Day of Launch Demonstration Test ISSV-1A',
+  '55182326218': 'Artemis II Walkout (NHQ202604010001)',
+  '55182417729': 'Artemis II Walkout (NHQ202604010003)',
+  '55182419584': 'Artemis II Walkout (NHQ202604010009)',
+  '55182420389': 'Artemis II Walkout (NHQ202604010011)',
+  '55182564820': 'Artemis II Walkout (NHQ202604010014)',
+  '55182566490': 'Artemis II Walkout (NHQ202604010019)',
+  '55182566975': 'Artemis II Walkout (NHQ202604010021)',
+  '55182399029': 'Artemis II Preflight (NHQ202604010202)',
+  '55182336933': 'Artemis II Preflight (NHQ202604010205)',
+  '55186418959': 'Artemis II Preflight (NHQ202604010117)',
+  '55182525528': 'Artemis II Launch',
+  '54424847440': 'NASA astronaut and Artemis II Pilot Victor Glover inside of the Orion spacecraft mockup during Post Insertion and Deorbit Preparation Training',
+  '55185130710': 'Artemis II Launch (NHQ202604010025)',
+  '55183849497': 'Artemis II Launch (NHQ202604010025)',
+  '55184740196': 'Artemis II Launch (NHQ202604010025)',
+  '55183854612': 'Artemis II Launch (NHQ202604010025)',
+  '55182918876': 'Artemis II Launch (NHQ202604010224)',
+  '55184539204': 'Artemis II Launch (NHQ202604010257)',
+  '55182911249': 'Artemis II Launch (NHQ202604010224)',
+  '55181691437': 'Artemis II Launch (NHQ202604010107)',
+  '55184537894': 'Artemis II Launch (NHQ202604010263)',
+  '55183122230': 'Artemis II Launch (NHQ202604010225)',
+  '55181836272': 'Artemis II Launch (NHQ202604010226)',
+  '55181712417': 'Artemis II Launch (NHQ202604010309)',
+  '55182788563': 'Artemis II Launch (NHQ202604010213)',
+  '55182858034': 'Artemis II Launch (NHQ202604010310)',
+  '55181733197': 'Artemis II Launch (NHQ202604010216)',
+  '55184745301': 'Artemis II Launch (NHQ202604010050)',
+  '55185003259': 'Artemis II Launch (NHQ202604010051)',
+  '55185144555': 'Artemis II Launch (NHQ202604010054)',
+  '55186154951': 'Artemis II Launch (NHQ202604010059)',
+  '55194365312': 'Artemis II Recovery Director (NHQ202604070020)',
+  '55194733465': 'Artemis II Recovery Preparations (NHQ202604070017)',
+  '55197019103': 'Artemis II Recovery Preparations (NHQ202604080008)',
+  '55197162528': 'Artemis II Assistant NASA Recovery Director (NHQ202604090001)',
+  '55197806006': 'Artemis II Recovery Preparations (NHQ202604090003)',
+  '55196918247': 'Artemis II Recovery Preparations (NHQ202604090006)',
+  '55196921082': 'Artemis II Recovery Preparations (NHQ202604090010)',
+  '55201073550': 'Artemis II Recovery Preparations (NHQ202604100066)',
+  '55199318256': 'Artemis II Recovery Preparations (NHQ202604100001)',
+  '55198634897': 'Artemis II Recovery (NHQ202604100012)',
+  '55199775909': 'Artemis II Recovery (NHQ202604100014)',
+  '55198865542': 'Artemis II Recovery (NHQ202604100211)',
+  '55200126804': 'Artemis II Recovery (NHQ202604100059)',
+  '55200289498': 'Artemis II Recovery (NHQ202604100082)',
+  '55200118501': 'Artemis II Recovery (NHQ202604100076)',
+  '55199224857': 'Artemis II Recovery (NHQ202604100084)',
+  '55200548925': 'Artemis II Recovery (NHQ202604100083)',
+  '55199225947': 'Artemis II Recovery (NHQ202604100086)',
+  '55200369004': 'Artemis II Recovery (NHQ202604110001)',
+  '55200550355': 'Artemis II Recovery (NHQ202604110013)',
+  '55200122336': 'Artemis II Recovery (NHQ202604110003)',
+  '55200123351': 'Artemis II Recovery (NHQ202604110004)',
+  '55200125776': 'Artemis II Recovery (NHQ202604110006)',
+  '55200126486': 'Artemis II Recovery (NHQ202604110007)',
+  '55200304123': 'Artemis II Recovery (NHQ202604110018)',
+  '55200377684': 'Artemis II Recovery (NHQ202604110010)',
+  '55199636042': 'Artemis II Recovery (NHQ202604110022)',
+  '55201805059': 'Artemis II Recovery (NHQ202604110114)',
+  '55200884574': 'Artemis II Recovery (NHQ202604110104)',
+  '55200885704': 'Artemis II Recovery (NHQ202604110106)',
+  '55201044335': 'Artemis II Recovery (NHQ202604110108)',
+  '55200638441': 'Artemis II Recovery (NHQ202604110109)',
+  '55201048580': 'Artemis II Recovery (NHQ202604110111)',
+  '55200794328': 'Artemis II Recovery (NHQ202604110113)',
+  '55201553321': 'Artemis II Recovery (NHQ202604110116)',
+  '55200659842': 'Artemis II Recovery (NHQ202604110117)'
+};
+
 const PHOTOS = [
-  {t:edt("2026-04-01 15:05:27"),f:"55196404298_f9af1764ea_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 20mm f/1.8 S",set:"20mm · f/2.8 · 1/200s · ISO 2500",sc:false},
-  {t:edt("2026-04-01 17:45:25"),f:"55182696113-0c4398702d-o-2.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"400mm · f/8.0 · 1/2000s · ISO 100",sc:false},
-  {t:edt("2026-04-01 17:45:25"),f:"55182696113-0c4398702d-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"400mm · f/8.0 · 1/2000s · ISO 100",sc:false},
-  {t:edt("2026-04-01 17:47:00"),f:"55181686977-7e768c5ab5-o.jpg",p:"NASA/Keegan Barber",loc:"Liftoff",cam:"NIKON Z 6_2 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/16.0 · 180s · ISO 100",sc:false},
-  {t:edt("2026-04-01 17:47:05"),f:"55182980490-8608942e35-o.jpg",p:"NASA/Keegan Barber",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 180-600mm f/5.6-6.3 VR",set:"480mm · f/8.0 · 1/4000s · ISO 360",sc:false},
-  {t:edt("2026-04-01 17:47:10"),f:"55182992165-bcbb710703-o.jpg",p:"NASA/Keegan Barber",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 180-600mm f/5.6-6.3 VR",set:"180mm · f/8.0 · 1/4000s · ISO 280",sc:false},
-  {t:edt("2026-04-01 17:47:15"),f:"55182789108-f13e3eb9ec-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"800mm · f/9.0 · 1/1000s · ISO 250",sc:false},
-  {t:edt("2026-04-01 17:47:20"),f:"55183079963-98d70178ff-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS 6D + EF20mm f/2.8 USM",set:"20mm · f/6.3 · 1/4000s · ISO 100",sc:false},
-  {t:edt("2026-04-01 17:47:25"),f:"55183089523-2832f9419d-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS 6D + EF20mm f/2.8 USM",set:"20mm · f/6.3 · 1/4000s · ISO 100",sc:false},
-  {t:edt("2026-04-01 17:47:30"),f:"55181746722-0c6113480d-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/2000s · ISO 1250",sc:false},
-  {t:edt("2026-04-01 21:27:22"),f:"55196507489_63cc22c484_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"59mm · f/2.8 · 1/100s · ISO 2500",sc:false},
-  {t:edt("2026-04-01 21:45:05"),f:"55196663265_ef59978360_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"89mm · f/2.8 · 1/250s · ISO 2500",sc:false},
-  {t:edt("2026-04-01 22:21:15"),f:"55196252006_59544763b0_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"28mm · f/2.8 · 1/160s · ISO 2500",sc:false},
-  {t:edt("2026-04-02 18:24:11"),f:"55196698385_b79957418c_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/250s · ISO 3200",sc:false},
-  {t:edt("2026-04-02 18:27:51"),f:"55196534939_e4bc5a438e_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/250s · ISO 3200",sc:false},
-  {t:edt("2026-04-02 18:28:00"),f:"55195674427_a68aba74ca_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"43mm · f/2.8 · 1/250s · ISO 3200",sc:false},
-  {t:edt("2026-04-02 19:45:21"),f:"55196543334_5797e7293a_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"31mm · f/3.2 · 1/160s · ISO 2000",sc:false},
-  {t:edt("2026-04-02 20:00:03"),f:"55195410937_bbbe00800f_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"43mm · f/2.8 · 1/160s · ISO 3200",sc:false},
-  {t:edt("2026-04-02 21:55:15"),f:"55184731952_c2bde0bcc6_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/14.0 · 1/320s · ISO 400",sc:true},
-  {t:edt("2026-04-02 23:41:23"),f:"55187684915_d91051b281_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/1000s · ISO 32",sc:false},
-  {t:edt("2026-04-02 23:42:35"),f:"55187189317_52ff04bc9a_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/1250s · ISO 40",sc:false},
-  {t:edt("2026-04-02 23:44:38"),f:"55187293546_43c21e2ef2_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/180s · ISO 20",sc:false},
-  {t:edt("2026-04-02 23:53:12"),f:"55184586022_5fcdc8cc94_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/20.0 · 1/250s · ISO 250",sc:true},
-  {t:edt("2026-04-02 23:53:13"),f:"55184586022_5fcdc8cc94_o (2).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/20.0 · 1/250s · ISO 250",sc:true},
-  {t:edt("2026-04-03 01:27:20"),f:"55185622941_3e571fdc44_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"22mm · f/5.6 · 1/15s · ISO 51200",sc:true},
-  {t:edt("2026-04-03 01:27:39"),f:"55185633398_0374c915ce_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"22mm · f/4.0 · 1/4s · ISO 51200",sc:true},
-  {t:edt("2026-04-03 13:48:33"),f:"55186615484_510014958c_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/670s · ISO 100",sc:false},
-  {t:edt("2026-04-03 15:12:38"),f:"55186454418_1410110fe9_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2000s · ISO 100",sc:false},
-  {t:edt("2026-04-03 15:21:47"),f:"55186770575_d987f9c852_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/3900s · ISO 100",sc:false},
-  {t:edt("2026-04-03 19:30:32"),f:"55187172560_359bfaccb9_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.0 · 1/26000s · ISO 400",sc:true},
-  {t:edt("2026-04-04 00:32:38"),f:"55188864542_695985d1a6_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/16.0 · 1/500s · ISO 500",sc:true},
-  {t:edt("2026-04-04 00:38:22"),f:"55189799111_138617a557_o (1).jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/14.0 · 1/320s · ISO 400",sc:true},
-  {t:edt("2026-04-04 00:38:59"),f:"55187298155_0f0187a6de_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"150mm · f/18.0 · 1/640s · ISO 500",sc:true},
-  {t:edt("2026-04-04 00:44:47"),f:"55186902076_0f58231a29_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/16.0 · 1/500s · ISO 500",sc:true},
-  {t:edt("2026-04-04 00:48:56"),f:"55186933788_b4a8045c8e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/2.8 · 1/13s · ISO 51200",sc:true},
-  {t:edt("2026-04-04 00:49:20"),f:"55187055368_7ab1e4c6a4_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/2.8 · 1/20s · ISO 51200",sc:true},
-  {t:edt("2026-04-04 03:03:18"),f:"55187348577_9a3666de4f_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/18.0 · 1/640s · ISO 500",sc:true},
-  {t:edt("2026-04-04 05:34:19"),f:"55190036409_b8751c9d86_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-04 06:06:49"),f:"55189767696_27cf3376e4_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-04 17:20:54"),f:"55190303117_0330a107be_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/2s · ISO 32000",sc:false},
-  {t:edt("2026-04-04 23:49:45"),f:"55190613700_1beec64e98_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.2 · 1/30s · ISO 400",sc:true},
-  {t:edt("2026-04-05 00:02:50"),f:"55190158269_06db61345b_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + VR 80-400mm f/4.5-5.6G",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-05 00:23:11"),f:"55195961058_8ac0d8b4af_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/15s · ISO 141",sc:false},
-  {t:edt("2026-04-05 00:23:14"),f:"55194920227_1ced7587f1_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/30s · ISO 530",sc:false},
-  {t:edt("2026-04-05 00:23:41"),f:"55194920222_e6114d3da6_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/15s · ISO 397",sc:false},
-  {t:edt("2026-04-05 07:35:18"),f:"55189687036_7504c9280d_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/9.0 · 1/1250s · ISO 400",sc:true},
-  {t:edt("2026-04-05 07:39:36"),f:"55190200376_9170407d93_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/20.0 · 1/1000s · ISO 1250",sc:true},
-  {t:edt("2026-04-05 18:23:47"),f:"55191185696_f8cd3e9788_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/5.0 · 1/125s · ISO 10000",sc:true},
-  {t:edt("2026-04-05 22:10:46"),f:"55198608122_db1a277281_o.jpg",p:"NASA/Robert Markowitz",loc:"Science Evaluation Room, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/3.2 · 1/100s · ISO 3200",sc:false},
-  {t:edt("2026-04-05 23:28:49"),f:"55191439024_9460827fd4_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON Z 9 + VR 80-400mm f/4.5-5.6G",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 04:42:16"),f:"55191180896_93318c9e5e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true},
-  {t:edt("2026-04-06 04:43:29"),f:"55191585995_ce02dc566d_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true},
-  {t:edt("2026-04-06 04:45:53"),f:"55190298147_d6a1a8bb31_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true},
-  {t:edt("2026-04-06 04:48:55"),f:"55191331293_bb63acba64_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/22.0 · 1/250s · ISO 400",sc:true},
-  {t:edt("2026-04-06 06:45:17"),f:"55189594357_55ef58f817_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/22.0 · 1/250s · ISO 400",sc:true},
-  {t:edt("2026-04-06 13:33:24"),f:"55199650003_5df2686dc1_o.jpg",p:"NASA/Luna Posadas Nava",loc:"Science Evaluation Room, Houston",cam:"NIKON D5 + 24.0-70.0 mm f/2.8",set:"32mm · f/2.8 · 1/125s · ISO 800",sc:false},
-  {t:edt("2026-04-06 14:45:19"),f:"55197095290_da7fb6ece3_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.5 · 1/20s · ISO 10000",sc:true},
-  {t:edt("2026-04-06 14:55:26"),f:"55193194643_0c9eac774f_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.5 · 1/20s · ISO 16000",sc:true},
-  {t:edt("2026-04-06 15:57:39"),f:"55196704886_deccb80f7a_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/3.5 · 1/50s · ISO 16000",sc:true},
-  {t:edt("2026-04-06 15:59:12"),f:"55196961359_8ed5e86af3_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/4.5 · 1/80s · ISO 16000",sc:true},
-  {t:edt("2026-04-06 16:25:36"),f:"55191470911_ed6d17c2be_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"200mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 16:25:43"),f:"55193069001_940360cfdb_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/3.5 · 1/50s · ISO 20000",sc:true},
-  {t:edt("2026-04-06 18:10:17"),f:"55194917013_732620c66e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 18:13:31"),f:"55193462360_e4366d4b48_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/18s · ISO 800",sc:false},
-  {t:edt("2026-04-06 18:32:05"),f:"55195026049_90a254f6a3_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 18:33:35"),f:"55196453768_35ac350f09_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 18:33:44"),f:"55197737178_9b35dbcb12_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 18:35:56"),f:"55193368072_2d78e28314_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 20mm f/1.8 S",set:"20mm · f/2.8 · 1/125s · ISO 2500",sc:false},
-  {t:edt("2026-04-06 19:15:12"),f:"55195796542_759a8b698a_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/7.1 · 1/20s · ISO 5000",sc:true},
-  {t:edt("2026-04-06 19:15:22"),f:"55195796552_a8d5bffdc8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/7.1 · 1/20s · ISO 5000",sc:true},
-  {t:edt("2026-04-06 19:19:17"),f:"55199404085_fdf82b3e68_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 19:19:35"),f:"55193049251_43a64bf74d_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 19:22:45"),f:"55195413602_c4306fea38_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 19:41:43"),f:"55199312161_f84ab3fd2e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/22.0 · 1/1000s · ISO 2000",sc:true},
-  {t:edt("2026-04-06 19:43:49"),f:"55196937384_4d99b6bf96_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/3.5 · 1/50s · ISO 16000",sc:true},
-  {t:edt("2026-04-06 19:44:25"),f:"55192164982_b14b7d4a20_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/4.5 · 1/80s · ISO 16000",sc:true},
-  {t:edt("2026-04-06 19:48:09"),f:"55197095240_3d7a1b7391_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/2.8 · 1/20s · ISO 16000",sc:true},
-  {t:edt("2026-04-06 20:02:00"),f:"55194627304_c3cb06ab2f_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:04:00"),f:"55194619544_73f74ae5d0_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:05:44"),f:"55193053886_9071f0a61e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"140mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:06:26"),f:"55194762480_75e13bca20_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:06:43"),f:"55194361976_92f5a33949_o (1).jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:07:44"),f:"55194639639_2f9b1e8be0_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:08:18"),f:"55194598974_0173dc947b_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"290mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:09:26"),f:"55195894708_a9a94dba10_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:11:52"),f:"55194768276_c87d2884e2_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"85mm · f/11.0 · 1/2000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:12:02"),f:"55194334756_16d84a9ace_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"125mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:18:24"),f:"55193784989_3b532023c0_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false},
-  {t:edt("2026-04-06 20:25:21"),f:"55194529188_d90aa501b6_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"185mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:28:57"),f:"55194627309_3957207b4b_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:34:27"),f:"55196010752_5b3201ef0d_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:41:45"),f:"55193206753_03e267f92b_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"180mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 20:46:20"),f:"55197995935_c2a38d06b9_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"130mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 21:44:32"),f:"55194399918_813cc7ef06_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"24mm · f/2.8 · 1/160s · ISO 2500",sc:false},
-  {t:edt("2026-04-06 22:30:00"),f:"55193337359_950011bf2d_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/15s · ISO 800",sc:false},
-  {t:edt("2026-04-06 22:38:25"),f:"55194659885_32f13f28a3_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"55mm · f/3.5 · 1/250s · ISO 2000",sc:false},
-  {t:edt("2026-04-06 22:44:27"),f:"55196075694_3e4b1a789d_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 22:45:04"),f:"55197007576_c061c21cdb_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"340mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 22:46:35"),f:"55193137293_3b37051840_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 22:49:02"),f:"55197552725_311cf42abf_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 22:49:43"),f:"55193002296_dc7f150992_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 22:50:25"),f:"55193946135_2664677690_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2200s · ISO 100",sc:false},
-  {t:edt("2026-04-06 22:58:14"),f:"55193149063_81719d37c8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:02:22"),f:"55193071311_0170f32df8_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"19mm · f/1.9 · 1/7s · ISO 1000",sc:false},
-  {t:edt("2026-04-06 23:05:33"),f:"55193414680_6b40b7bc89_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:35:54"),f:"55192123432_66aed38dd0_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:40:47"),f:"55193180468_5de0cf977a_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"380mm · f/7.1 · 1/800s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:41:22"),f:"55192132107_00dc598014_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:41:37"),f:"55192084847_0b9940c4b9_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:41:58"),f:"55193178333_e4a5a133ed_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/7.1 · 1/800s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:42:14"),f:"55192657082_f72aa9aacb_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/3500s · ISO 100",sc:false},
-  {t:edt("2026-04-06 23:42:42"),f:"55198598917_7ab5bc48c9_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:42:45"),f:"55198687567_68fd1bd7e7_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"130mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-06 23:42:52"),f:"55199984595_1727ddf745_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true},
-  {t:edt("2026-04-07 00:01:17"),f:"55196710272_1289069236_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true},
-  {t:edt("2026-04-07 00:02:32"),f:"55199774765_6e77d97b51_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-07 00:03:06"),f:"55198362617_946e74e391_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/7.1 · 1/800s · ISO 400",sc:true},
-  {t:edt("2026-04-07 00:03:30"),f:"55199141754_7ff4708cb4_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true},
-  {t:edt("2026-04-07 00:09:30"),f:"55198256277_137a632358_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/7.1 · 1/800s · ISO 400",sc:true},
-  {t:edt("2026-04-07 00:22:30"),f:"55193054686_6ed51f4f15_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true},
-  {t:edt("2026-04-07 00:23:16"),f:"55199812540_b8facc0701_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/10.0 · 1/1600s · ISO 400",sc:true},
-  {t:edt("2026-04-07 01:35:31"),f:"55197506830_a07d2d54ba_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"350mm · f/5.6 · 1/25s · ISO 6400",sc:true},
-  {t:edt("2026-04-07 02:01:20"),f:"55192173787_b8322b1190_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/4.5 · 1/6s · ISO 40000",sc:true},
-  {t:edt("2026-04-07 02:01:20"),f:"55193054741_03c94834b0_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.0 · 2s · ISO 1600",sc:true},
-  {t:edt("2026-04-07 02:10:44"),f:"55193566011_0087fe82c1_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 5s · ISO 800",sc:false},
-  {t:edt("2026-04-07 02:11:49"),f:"55192683067_668f78b20c_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 15s · ISO 800",sc:false},
-  {t:edt("2026-04-07 02:28:36"),f:"55193207303_dd68355a57_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/5.3 · 1/100s · ISO 6400",sc:true},
-  {t:edt("2026-04-07 02:28:39"),f:"55193828029_dca505dae8_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2s · ISO 800",sc:false},
-  {t:edt("2026-04-07 02:32:01"),f:"55193207308_5031aaa6c0_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/40s · ISO 320",sc:false},
-  {t:edt("2026-04-07 09:37:06"),f:"55199492819_2388a0954b_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/200s · ISO 5000",sc:false},
-  {t:edt("2026-04-07 09:40:26"),f:"55199492814_a53ed1ea82_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"52mm · f/2.8 · 1/160s · ISO 4000",sc:false},
-  {t:edt("2026-04-07 10:06:59"),f:"55199243981_8577454010_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/4.0 · 1/160s · ISO 4000",sc:false},
-  {t:edt("2026-04-07 10:17:27"),f:"55199649540_122da08a21_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/3.5 · 1/160s · ISO 2500",sc:false},
-  {t:edt("2026-04-07 13:27:53"),f:"55194494274_e401f02494_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/1600s · ISO 100",sc:false},
-  {t:edt("2026-04-07 13:33:23"),f:"55193360877_04bff6ed5a_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/950s · ISO 100",sc:false},
-  {t:edt("2026-04-07 13:58:03"),f:"55194789840_d7cf899d17_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false},
-  {t:edt("2026-04-07 14:03:43"),f:"55194789845_74d1e2da75_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false},
-  {t:edt("2026-04-07 14:40:13"),f:"55195952067_f58158e8ab_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"17mm · f/2.8 · 1/250s · ISO 2500",sc:false},
-  {t:edt("2026-04-07 14:40:25"),f:"55194459003_3bae619a73_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2400s · ISO 100",sc:false},
-  {t:edt("2026-04-07 14:41:45"),f:"55194517308_b152775e40_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false},
-  {t:edt("2026-04-07 14:42:13"),f:"55195952087_cdbd0422a9_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/3.2 · 1/250s · ISO 2500",sc:false},
-  {t:edt("2026-04-07 15:04:59"),f:"55199789389_8449869349_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"57mm · f/2.8 · 1/125s · ISO 2500",sc:false},
-  {t:edt("2026-04-07 17:32:35"),f:"55194523579_bf4efc3d44_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.8 · 10s · ISO 12800",sc:true},
-  {t:edt("2026-04-07 23:34:49"),f:"55195066435_9f77676d65_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true},
-  {t:edt("2026-04-07 23:35:09"),f:"55194658516_0007ed5ba5_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true},
-  {t:edt("2026-04-07 23:35:25"),f:"55193772547_d9e3b1d0e8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true},
-  {t:edt("2026-04-07 23:35:33"),f:"55193772552_b8cfb47b7e_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/80s · ISO 4000",sc:true},
-  {t:edt("2026-04-10 16:11:05"),f:"55199324306-ac28f4dddd-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/6.3 · 1/320s · ISO 64",sc:false},
-  {t:edt("2026-04-10 16:11:33"),f:"55199507598-efe3d0a725-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"50mm · f/8.0 · 1/1000s · ISO 160",sc:false},
-  {t:edt("2026-04-10 17:52:06"),f:"55199520466-34d138dc13-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"135mm · f/2.8 · 1/3200s · ISO 125",sc:false},
-  {t:edt("2026-04-10 18:17:00"),f:"55199526571-c49720e4ba-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"18mm · f/8.0 · 1/1000s · ISO 220",sc:false},
-  {t:edt("2026-04-10 19:04:07"),f:"55199709323-8fe6819300-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"165mm · f/7.1 · 1/200s · ISO 80",sc:false},
-  {t:edt("2026-04-10 19:11:46"),f:"55199558901-750598e081-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/6.3 · 1/1000s · ISO 250",sc:false},
-  {t:edt("2026-04-10 20:04:30"),f:"55200049934-d149f06d5a-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
-  {t:edt("2026-04-10 20:04:32"),f:"55198907367-be08b9ca9d-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
-  {t:edt("2026-04-10 20:04:34"),f:"55200207020-dcf603c8cf-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
-  {t:edt("2026-04-10 20:04:36"),f:"55200207390-ab1f43b8b8-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
-  {t:edt("2026-04-10 20:04:56"),f:"55199953168-d2742b8861-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false},
-  {t:edt("2026-04-10 20:06:20"),f:"55201553518_2b828d9b20_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/16000s · ISO 2000",sc:false},
-  {t:edt("2026-04-10 20:06:39"),f:"55200077344_5014935964_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"18mm · f/3.5 · 1/125s · ISO 2000",sc:false},
-  {t:edt("2026-04-10 20:06:56"),f:"55201805415_0a912b8951_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/16000s · ISO 2000",sc:false},
-  {t:edt("2026-04-10 20:07:17"),f:"55199878864-41ff4d23f4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/7.1 · 1/2500s · ISO 400",sc:false},
-  {t:edt("2026-04-10 20:07:24"),f:"55199878669-257ddff58b-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/7.1 · 1/2500s · ISO 400",sc:false},
-  {t:edt("2026-04-10 20:07:26"),f:"55199856343_5a157820d0_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false},
-  {t:edt("2026-04-10 20:07:26"),f:"dsc-3398.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false},
-  {t:edt("2026-04-10 20:07:26"),f:"nhq202604100018.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 280",sc:false},
-  {t:edt("2026-04-10 20:07:29"),f:"55199856318_652c455baf_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false},
-  {t:edt("2026-04-10 20:07:29"),f:"dsc-3427.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false},
-  {t:edt("2026-04-10 20:07:36"),f:"55199685771-a20de6ebf3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 320",sc:false},
-  {t:edt("2026-04-10 20:07:43"),f:"55200091055-901e263aa4-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 280",sc:false},
-  {t:edt("2026-04-10 20:07:47"),f:"55199935584-7cd41d3d4a-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 360",sc:false},
-  {t:edt("2026-04-10 20:22:02"),f:"55200100035-733f23e750-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/1250s · ISO 400",sc:false},
-  {t:edt("2026-04-10 20:26:25"),f:"55198801842-c6f17d4041-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 300mm f/4E",set:"300mm · f/7.1 · 1/1000s · ISO 80",sc:false},
-  {t:edt("2026-04-10 20:28:43"),f:"55201813860_9e0777e100_o.jpg",p:"NASA/James Blair",loc:"USS John P. Murtha",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"800mm · f/14.0 · 1/5000s · ISO 2000",sc:false},
-  {t:edt("2026-04-10 20:29:32"),f:"55199695466-e0a2e1c3cc-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/400s · ISO 160",sc:false},
-  {t:edt("2026-04-10 20:37:18"),f:"55199695136-23fb9ed419-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/400s · ISO 200",sc:false},
-  {t:edt("2026-04-10 21:13:25"),f:"55198811582-9032c9d84c-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/800s · ISO 320",sc:false},
-  {t:edt("2026-04-10 21:14:04"),f:"55199854793-6863c5998c-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/1600s · ISO 800",sc:false},
-  {t:edt("2026-04-10 21:52:36"),f:"55200008149-09a5f1fc33-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/1250s · ISO 800",sc:false},
-  {t:edt("2026-04-10 22:05:57"),f:"55198951957-0f8ed6527b-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"58mm · f/4.0 · 1/200s · ISO 900",sc:false},
-  {t:edt("2026-04-10 22:06:02"),f:"55198952237-ba1b02a8eb-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 500",sc:false},
-  {t:edt("2026-04-10 22:06:08"),f:"55199996653-9e384a8235-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"35mm · f/4.0 · 1/200s · ISO 720",sc:false},
-  {t:edt("2026-04-10 22:06:30"),f:"55200096939-71021a8429-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"22mm · f/4.0 · 1/160s · ISO 900",sc:false},
-  {t:edt("2026-04-10 22:06:34"),f:"55199997948-73cd027a44-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"66mm · f/4.0 · 1/200s · ISO 900",sc:false},
-  {t:edt("2026-04-10 22:06:37"),f:"55199998298-845d964fd0-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"66mm · f/4.0 · 1/200s · ISO 900",sc:false},
-  {t:edt("2026-04-10 22:06:51"),f:"55199999093-35f97d59f4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"31mm · f/4.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-10 22:06:52"),f:"55200099409-ca39242549-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"64mm · f/4.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-10 22:07:29"),f:"55200000228-2210704fdd-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"15mm · f/4.0 · 1/160s · ISO 220",sc:false},
-  {t:edt("2026-04-10 22:08:09"),f:"55200255400-1f787b68e3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"55mm · f/4.0 · 1/200s · ISO 220",sc:false},
-  {t:edt("2026-04-10 22:08:11"),f:"55200256115-8e4a2a3c19-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 360",sc:false},
-  {t:edt("2026-04-10 22:08:19"),f:"55200101349-5474a342f9-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"28mm · f/4.0 · 1/200s · ISO 450",sc:false},
-  {t:edt("2026-04-10 22:08:38"),f:"55200002168-7f1077cdf3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/4.0 · 1/250s · ISO 900",sc:false},
-  {t:edt("2026-04-10 22:08:47"),f:"55199853946-2f65c26928-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"15mm · f/4.0 · 1/250s · ISO 900",sc:false},
-  {t:edt("2026-04-10 22:08:55"),f:"55200103109-b50ff40360-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 1800",sc:false},
-  {t:edt("2026-04-10 22:09:27"),f:"55199854926-a16b9b3e77-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"35mm · f/4.0 · 1/200s · ISO 160",sc:false},
-  {t:edt("2026-04-10 22:09:35"),f:"55198960402-0abbb32ff4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"32mm · f/4.0 · 1/200s · ISO 64",sc:false},
-  {t:edt("2026-04-10 22:09:51"),f:"55200004673-5ffb431c22-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"46mm · f/4.0 · 1/200s · ISO 320",sc:false},
-  {t:edt("2026-04-10 22:10:00"),f:"55199857746-07908c9d65-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"26mm · f/4.0 · 1/200s · ISO 1100",sc:false},
-  {t:edt("2026-04-11 15:48:38"),f:"55201576233_6118e4a62d_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"200mm · f/5.6 · 1/400s · ISO 6400",sc:false},
-  {t:edt("2026-04-11 15:57:48"),f:"55201661369_d473eacbfc_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"57mm · f/13.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:57:51"),f:"55201562253_163bb4ccd4_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"68mm · f/11.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:57:58"),f:"55201661254_440279afc1_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"97mm · f/11.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:57:59"),f:"55201661244_ac6e689903_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"92mm · f/11.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:58:03"),f:"55201813500_ec82522436_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"103mm · f/11.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:58:06"),f:"55201409946_7ff7864eef_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"89mm · f/11.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:58:10"),f:"55201562128_8162605d3a_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"37mm · f/11.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:58:14"),f:"55201661154_12a741d752_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"37mm · f/11.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:58:22"),f:"55201409941_743264a963_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"24mm · f/14.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 15:58:42"),f:"55201410186_78fbc1e3d0_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"26mm · f/14.0 · 1/200s · ISO 800",sc:false},
-  {t:edt("2026-04-11 16:56:56"),f:"55201813565_c377149276_o.jpg",p:"NASA/David DeHoyos",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"73mm · f/8.0 · 1/200s · ISO 160",sc:false},
-  {t:edt("2026-04-11 16:57:00"),f:"55201813575_d7059f1d7a_o.jpg",p:"NASA/David DeHoyos",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"98mm · f/7.1 · 1/200s · ISO 160",sc:false},
-  {t:edt("2026-04-11 17:00:02"),f:"55201576423_da7c6da6be_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"350mm · f/6.3 · 1/125s · ISO 8000",sc:false},
-  {t:edt("2026-04-11 17:00:15"),f:"55201576443_c26131ec35_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"190mm · f/6.3 · 1/125s · ISO 8000",sc:false},
-  {t:edt("2026-04-11 17:00:28"),f:"55201576368_eb58dd6430_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"500mm · f/6.3 · 1/125s · ISO 8000",sc:false},
-  {t:edt("2026-04-11 17:00:33"),f:"55201424106_98aa64778f_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"300mm · f/6.3 · 1/125s · ISO 8000",sc:false},
-  {t:edt("2026-04-11 17:00:41"),f:"55201424136_87b2702a88_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"120mm · f/4.5 · 1/200s · ISO 4000",sc:false},
-  {t:edt("2026-04-11 17:01:41"),f:"55200530422_383420cb6c_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"34mm · f/4.5 · 1/200s · ISO 4000",sc:false},
-  {t:edt("2026-04-11 17:21:12"),f:"55201827775_7fd56ee4d4_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"24mm · f/4.0 · 1/250s · ISO 4000",sc:false},
-  {t:edt("2026-04-11 17:21:13"),f:"55201424021_282d63f7af_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"32mm · f/4.0 · 1/250s · ISO 4000",sc:false},
-  {t:edt("2026-04-11 17:21:16"),f:"55201675544_799f745939_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"26mm · f/4.0 · 1/250s · ISO 4000",sc:false},
+  {t:edt("2026-04-01 13:51:24"),f:"55182326218_ab9ccb3392_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 6 + 17.0-35.0 mm f/2.8",set:"26mm · f/8.0 · 1/800s · ISO 1250",sc:false,b:1},
+  {t:edt("2026-04-01 13:51:24"),f:"55182417729_3e6cb18922_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"70mm · f/8.0 · 1/500s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-01 13:51:57"),f:"55182419584-b48c29ea4d-o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"79mm · f/8.0 · 1/500s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-01 13:53:11"),f:"55182420389_2f8485971f_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"200mm · f/8.0 · 1/500s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-01 13:54:05"),f:"55182564820_126108d6d4_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"125mm · f/8.0 · 1/500s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-01 13:54:50"),f:"55182566490-bf9f59635c-o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"100mm · f/5.6 · 1/500s · ISO 200",sc:false,b:1},
+  {t:edt("2026-04-01 13:55:08"),f:"55182566975-062618c0a9-o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"70mm · f/5.6 · 1/500s · ISO 200",sc:false,b:1},
+  {t:edt("2026-04-01 14:06:10"),f:"55182399029_cce4f42b2d_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"800mm · f/6.3 · 1/1000s · ISO 320",sc:false,b:1},
+  {t:edt("2026-04-01 14:20:56"),f:"55182336933_795d160b66_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/1000s · ISO 320",sc:false,b:1},
+  {t:edt("2026-04-01 15:05:27"),f:"55196404298_f9af1764ea_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 20mm f/1.8 S",set:"20mm · f/2.8 · 1/200s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-01 15:34:08"),f:"55186418959_a8d7bd9d97_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"24mm · f/8.0 · 1/1000s · ISO 250",sc:false,b:1},
+  {t:edt("2026-04-01 15:45:12"),f:"55182525528_3c55ff32d8_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"560mm · f/8.0 · 1/2000s · ISO 250",sc:false,b:1},
+  {t:edt("2026-04-01 15:46:20"),f:"54424847440-86cd37a196-o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON D5 + 70.0-200.0 mm f/2.8",set:"200mm · f/3.2 · 1/160s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-01 16:13:42"),f:"55183849497_1d2208a7d2_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"200mm · f/2.8 · 1/125s · ISO 1250",sc:false,b:1},
+  {t:edt("2026-04-01 16:19:32"),f:"55184740196_9b3e418443_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 50mm f/1.4",set:"50mm · f/2.8 · 1/160s · ISO 1000",sc:false,b:1},
+  {t:edt("2026-04-01 17:05:12"),f:"55183854612_bb166f5ce3_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 50mm f/1.4",set:"50mm · f/2.8 · 1/160s · ISO 1250",sc:false,b:1},
+  {t:edt("2026-04-01 18:34:38"),f:"55182918876_b7de1752f8_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"Canon EOS 5DS + EF20mm f/2.8 USM",set:"20mm · f/8.0 · 1/1000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-01 18:34:39"),f:"55184539204_f0d6690e0a_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"Canon EOS 5D Mark III + EF135mm f/2L USM",set:"135mm · f/10.0 · 1/500s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-01 18:34:41"),f:"55182911249_2705824375_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"LEICA M MONOCHROM (Typ 246) + not selected",set:"f/1.0 · 1/1000s · ISO 320",sc:false,b:1},
+  {t:edt("2026-04-01 18:35:17"),f:"55181691437_9b91f6bdbf_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 7_2 + NIKKOR Z 17-28mm f/2.8",set:"17mm · f/11.0 · 1/800s · ISO 2800",sc:false,b:1},
+  {t:edt("2026-04-01 18:35:19"),f:"55184537894_f616b0793e_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"Canon EOS 5D Mark II + EF50mm f/1.4 USM",set:"50mm · f/8.0 · 1/1000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-01 18:35:25"),f:"55182696113-0c4398702d-o-2.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"400mm · f/8.0 · 1/2000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-01 18:35:26"),f:"55186319833_165b4b7852_3k.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-01 18:35:37"),f:"55183122230_c572b07a81_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON D5 + 24.0-70.0 mm f/2.8",set:"31mm · f/8.0 · 1/1000s · ISO 500",sc:false,b:1},
+  {t:edt("2026-04-01 18:35:55"),f:"55181836272_bebca28238_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"Canon EOS 7D Mark II + EF20mm f/2.8 USM",set:"20mm · f/8.0 · 1/1000s · ISO 250",sc:false,b:1},
+  {t:edt("2026-04-01 18:35:57"),f:"55181712417_3daccb4ba9_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"24mm · f/5.0 · 1/1000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-01 18:36:13"),f:"55182788563_2a32202fbf_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"800mm · f/9.0 · 1/1000s · ISO 250",sc:false,b:1},
+  {t:edt("2026-04-01 18:36:32"),f:"55182858034_036b200e46_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"15mm · f/5.0 · 1/1000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-01 18:36:51"),f:"55181733197_6684b451f0_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"800mm · f/9.0 · 1/1600s · ISO 250",sc:false,b:1},
+  {t:edt("2026-04-01 18:37:05"),f:"55182980490-8608942e35-o.jpg",p:"NASA/Keegan Barber",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 180-600mm f/5.6-6.3 VR",set:"480mm · f/8.0 · 1/4000s · ISO 360",sc:false,b:1},
+  {t:edt("2026-04-01 18:37:10"),f:"55182992165-bcbb710703-o.jpg",p:"NASA/Keegan Barber",loc:"Liftoff",cam:"NIKON Z 9 + NIKKOR Z 180-600mm f/5.6-6.3 VR",set:"180mm · f/8.0 · 1/4000s · ISO 280",sc:false,b:1},
+  {t:edt("2026-04-01 18:37:15"),f:"55182789108-f13e3eb9ec-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"800mm · f/9.0 · 1/1000s · ISO 250",sc:false,b:1},
+  {t:edt("2026-04-01 18:37:20"),f:"55183079963-98d70178ff-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS 6D + EF20mm f/2.8 USM",set:"20mm · f/6.3 · 1/4000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-01 18:37:25"),f:"55183089523-2832f9419d-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS 6D + EF20mm f/2.8 USM",set:"20mm · f/6.3 · 1/4000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-01 18:37:30"),f:"55181746722-0c6113480d-o.jpg",p:"NASA/Joel Kowsky",loc:"Liftoff",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/2000s · ISO 1250",sc:false,b:1},
+  {t:edt("2026-04-01 18:44:11"),f:"55184745301_e224d74e3a_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"160mm · f/4.0 · 1/160s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-01 18:44:19"),f:"55185003259_242809884c_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"70mm · f/4.0 · 1/160s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-01 18:49:10"),f:"55185144555_4ecdcc2611_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"75mm · f/4.0 · 1/160s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-01 19:37:21"),f:"55186154951_6208feeb42_o.jpg",p:"NASA",loc:"Kennedy Space Center",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"24mm · f/5.6 · 1/160s · ISO 8000",sc:false,b:1},  {t:edt("2026-04-01 21:27:22"),f:"55196507489_63cc22c484_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"59mm · f/2.8 · 1/100s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-01 21:45:05"),f:"55196663265_ef59978360_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"89mm · f/2.8 · 1/250s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-01 22:21:15"),f:"55196252006_59544763b0_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"28mm · f/2.8 · 1/160s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-02 18:24:11"),f:"55196698385_b79957418c_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/250s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-02 18:27:51"),f:"55196534939_e4bc5a438e_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/250s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-02 18:28:00"),f:"55195674427_a68aba74ca_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"43mm · f/2.8 · 1/250s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-02 19:45:21"),f:"55196543334_5797e7293a_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"31mm · f/3.2 · 1/160s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-02 20:00:03"),f:"55195410937_bbbe00800f_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"43mm · f/2.8 · 1/160s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-02 21:55:15"),f:"55184731952_c2bde0bcc6_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/14.0 · 1/320s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-02 23:41:23"),f:"55187684915_d91051b281_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/1000s · ISO 32",sc:false,b:1},
+  {t:edt("2026-04-02 23:42:35"),f:"55187189317_52ff04bc9a_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/1250s · ISO 40",sc:false,b:1},
+  {t:edt("2026-04-02 23:44:38"),f:"55187293546_43c21e2ef2_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/180s · ISO 20",sc:false,b:1},
+  {t:edt("2026-04-02 23:53:12"),f:"55184586022_5fcdc8cc94_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/20.0 · 1/250s · ISO 250",sc:true,b:1},
+  {t:edt("2026-04-03 01:27:20"),f:"55185622941_3e571fdc44_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"22mm · f/5.6 · 1/15s · ISO 51200",sc:true,b:1},
+  {t:edt("2026-04-03 01:27:39"),f:"55185633398_0374c915ce_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"22mm · f/4.0 · 1/4s · ISO 51200",sc:true,b:1},
+  {t:edt("2026-04-03 13:48:33"),f:"55186615484_510014958c_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/670s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-03 15:12:38"),f:"55186454418_1410110fe9_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-03 15:21:47"),f:"55186770575_d987f9c852_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/3900s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-03 19:30:32"),f:"55187172560_359bfaccb9_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.0 · 1/26000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-04 00:32:38"),f:"55188864542_695985d1a6_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/16.0 · 1/500s · ISO 500",sc:true,b:1},
+  {t:edt("2026-04-04 00:38:22"),f:"55189799111_138617a557_o (1).jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/14.0 · 1/320s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-04 00:38:59"),f:"55187298155_0f0187a6de_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"150mm · f/18.0 · 1/640s · ISO 500",sc:true,b:1},
+  {t:edt("2026-04-04 00:44:47"),f:"55186902076_0f58231a29_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/16.0 · 1/500s · ISO 500",sc:true,b:1},
+  {t:edt("2026-04-04 00:48:56"),f:"55186933788_b4a8045c8e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/2.8 · 1/13s · ISO 51200",sc:true,b:1},
+  {t:edt("2026-04-04 00:49:20"),f:"55187055368_7ab1e4c6a4_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/2.8 · 1/20s · ISO 51200",sc:true,b:1},
+  {t:edt("2026-04-04 03:03:18"),f:"55187348577_9a3666de4f_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/18.0 · 1/640s · ISO 500",sc:true,b:1},
+  {t:edt("2026-04-04 05:34:19"),f:"55190036409_b8751c9d86_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-04 06:06:49"),f:"55189767696_27cf3376e4_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-04 17:20:54"),f:"55190303117_0330a107be_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/2s · ISO 32000",sc:false,b:1},
+  {t:edt("2026-04-04 23:49:45"),f:"55190613700_1beec64e98_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.2 · 1/30s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-05 00:02:50"),f:"55190158269_06db61345b_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + VR 80-400mm f/4.5-5.6G",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-05 00:23:11"),f:"55195961058_8ac0d8b4af_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/15s · ISO 141",sc:false,b:1},
+  {t:edt("2026-04-05 00:23:14"),f:"55194920227_1ced7587f1_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/30s · ISO 530",sc:false,b:1},
+  {t:edt("2026-04-05 00:23:41"),f:"55194920222_e6114d3da6_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/15s · ISO 397",sc:false,b:1},
+  {t:edt("2026-04-05 07:35:18"),f:"55189687036_7504c9280d_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/9.0 · 1/1250s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-05 07:39:36"),f:"55190200376_9170407d93_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/20.0 · 1/1000s · ISO 1250",sc:true,b:1},
+  {t:edt("2026-04-05 18:23:47"),f:"55191185696_f8cd3e9788_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/5.0 · 1/125s · ISO 10000",sc:true,b:1},
+  {t:edt("2026-04-05 22:10:46"),f:"55198608122_db1a277281_o.jpg",p:"NASA/Robert Markowitz",loc:"Science Evaluation Room, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/3.2 · 1/100s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-05 23:28:49"),f:"55191439024_9460827fd4_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON Z 9 + VR 80-400mm f/4.5-5.6G",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 04:42:16"),f:"55191180896_93318c9e5e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 04:43:29"),f:"55191585995_ce02dc566d_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 04:45:53"),f:"55190298147_d6a1a8bb31_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/16.0 · 1/250s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 04:48:55"),f:"55191331293_bb63acba64_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/22.0 · 1/250s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 06:45:17"),f:"55189594357_55ef58f817_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 35.0 mm f/2.0",set:"35mm · f/22.0 · 1/250s · ISO 400",sc:true,b:1},  {t:edt("2026-04-06 13:33:24"),f:"55199650003_5df2686dc1_o.jpg",p:"NASA/Luna Posadas Nava",loc:"Science Evaluation Room, Houston",cam:"NIKON D5 + 24.0-70.0 mm f/2.8",set:"32mm · f/2.8 · 1/125s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-06 14:45:19"),f:"55197095290_da7fb6ece3_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.5 · 1/20s · ISO 10000",sc:true,b:1},
+  {t:edt("2026-04-06 14:55:26"),f:"55193194643_0c9eac774f_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.5 · 1/20s · ISO 16000",sc:true,b:1},
+  {t:edt("2026-04-06 15:57:39"),f:"55196704886_deccb80f7a_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/3.5 · 1/50s · ISO 16000",sc:true,b:1},
+  {t:edt("2026-04-06 15:59:12"),f:"55196961359_8ed5e86af3_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/4.5 · 1/80s · ISO 16000",sc:true,b:1},
+  {t:edt("2026-04-06 16:25:36"),f:"55191470911_ed6d17c2be_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"200mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 16:25:43"),f:"55193069001_940360cfdb_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/3.5 · 1/50s · ISO 20000",sc:true,b:1},  {t:edt("2026-04-06 18:10:17"),f:"55194917013_732620c66e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 18:13:31"),f:"55193462360_e4366d4b48_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/18s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-06 18:32:05"),f:"55195026049_90a254f6a3_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 18:33:35"),f:"55196453768_35ac350f09_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 18:33:44"),f:"55197737178_9b35dbcb12_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 18:35:56"),f:"55193368072_2d78e28314_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 20mm f/1.8 S",set:"20mm · f/2.8 · 1/125s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-06 19:15:12"),f:"55195796542_759a8b698a_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/7.1 · 1/20s · ISO 5000",sc:true,b:1},
+  {t:edt("2026-04-06 19:15:22"),f:"55195796552_a8d5bffdc8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/7.1 · 1/20s · ISO 5000",sc:true,b:1},
+  {t:edt("2026-04-06 19:19:17"),f:"55199404085_fdf82b3e68_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 19:19:35"),f:"55193049251_43a64bf74d_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 19:22:45"),f:"55195413602_c4306fea38_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 19:41:43"),f:"55199312161_f84ab3fd2e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/22.0 · 1/1000s · ISO 2000",sc:true,b:1},
+  {t:edt("2026-04-06 19:43:49"),f:"55196937384_4d99b6bf96_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/3.5 · 1/50s · ISO 16000",sc:true,b:1},
+  {t:edt("2026-04-06 19:44:25"),f:"55192164982_b14b7d4a20_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/4.5 · 1/80s · ISO 16000",sc:true,b:1},
+  {t:edt("2026-04-06 19:48:09"),f:"55197095240_3d7a1b7391_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"14mm · f/2.8 · 1/20s · ISO 16000",sc:true,b:1},
+  {t:edt("2026-04-06 20:02:00"),f:"55194627304_c3cb06ab2f_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:04:00"),f:"55194619544_73f74ae5d0_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:05:44"),f:"55193053886_9071f0a61e_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"140mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:06:26"),f:"55194762480_75e13bca20_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:06:43"),f:"55194361976_92f5a33949_o (1).jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:07:44"),f:"55194639639_2f9b1e8be0_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:08:18"),f:"55194598974_0173dc947b_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"290mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:09:26"),f:"55195894708_a9a94dba10_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:11:52"),f:"55194768276_c87d2884e2_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"85mm · f/11.0 · 1/2000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:12:02"),f:"55194334756_16d84a9ace_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"125mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:18:24"),f:"55193784989_3b532023c0_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-06 20:25:21"),f:"55194529188_d90aa501b6_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"185mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:28:57"),f:"55194627309_3957207b4b_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:34:27"),f:"55196010752_5b3201ef0d_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 20:41:45"),f:"55193206753_03e267f92b_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"180mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},  {t:edt("2026-04-06 20:46:20"),f:"55197995935_c2a38d06b9_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"130mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},  {t:edt("2026-04-06 21:44:32"),f:"55194399918_813cc7ef06_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"24mm · f/2.8 · 1/160s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-06 22:30:00"),f:"55193337359_950011bf2d_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/15s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-06 22:38:25"),f:"55194659885_32f13f28a3_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"55mm · f/3.5 · 1/250s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-06 22:44:27"),f:"55196075694_3e4b1a789d_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 22:45:04"),f:"55197007576_c061c21cdb_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"340mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 22:46:35"),f:"55193137293_3b37051840_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 22:49:02"),f:"55197552725_311cf42abf_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 22:49:43"),f:"55193002296_dc7f150992_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 22:50:25"),f:"55193946135_2664677690_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2200s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-06 22:58:14"),f:"55193149063_81719d37c8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:02:22"),f:"55193071311_0170f32df8_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"19mm · f/1.9 · 1/7s · ISO 1000",sc:false,b:1},
+  {t:edt("2026-04-06 23:05:33"),f:"55193414680_6b40b7bc89_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:35:54"),f:"55192123432_66aed38dd0_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"210mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:40:47"),f:"55193180468_5de0cf977a_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"380mm · f/7.1 · 1/800s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:41:22"),f:"55192132107_00dc598014_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:41:37"),f:"55192084847_0b9940c4b9_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:41:58"),f:"55193178333_e4a5a133ed_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/7.1 · 1/800s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:42:14"),f:"55192657082_f72aa9aacb_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/3500s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-06 23:42:42"),f:"55198598917_7ab5bc48c9_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:42:45"),f:"55198687567_68fd1bd7e7_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"130mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-06 23:42:52"),f:"55199984595_1727ddf745_o.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-07 00:01:17"),f:"55196710272_1289069236_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/7.1 · 1/800s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-07 00:02:32"),f:"55199774765_6e77d97b51_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-07 00:03:06"),f:"55198362617_946e74e391_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/7.1 · 1/800s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-07 00:03:30"),f:"55199141754_7ff4708cb4_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-07 00:09:30"),f:"55198256277_137a632358_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/7.1 · 1/800s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-07 00:22:30"),f:"55193054686_6ed51f4f15_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-07 00:23:16"),f:"55199812540_b8facc0701_o.jpg",p:"Victor Glover",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/10.0 · 1/1600s · ISO 400",sc:true,b:1},
+  {t:edt("2026-04-07 01:35:31"),f:"55197506830_a07d2d54ba_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"350mm · f/5.6 · 1/25s · ISO 6400",sc:true,b:1},
+  {t:edt("2026-04-07 02:01:20"),f:"55192173787_b8322b1190_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/4.5 · 1/6s · ISO 40000",sc:true,b:1},
+  {t:edt("2026-04-07 02:01:20"),f:"55193054741_03c94834b0_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.0 · 2s · ISO 1600",sc:true,b:1},
+  {t:edt("2026-04-07 02:10:44"),f:"55193566011_0087fe82c1_o (1).jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 5s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-07 02:11:49"),f:"55192683067_668f78b20c_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 15s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-07 02:28:36"),f:"55193207303_dd68355a57_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"220mm · f/5.3 · 1/100s · ISO 6400",sc:true,b:1},
+  {t:edt("2026-04-07 02:28:39"),f:"55193828029_dca505dae8_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-07 02:32:01"),f:"55193207308_5031aaa6c0_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"30mm · f/1.9 · 1/40s · ISO 320",sc:false,b:1},
+  {t:edt("2026-04-07 09:37:06"),f:"55199492819_2388a0954b_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/2.8 · 1/200s · ISO 5000",sc:false,b:1},
+  {t:edt("2026-04-07 09:40:26"),f:"55199492814_a53ed1ea82_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"52mm · f/2.8 · 1/160s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-07 10:06:59"),f:"55199243981_8577454010_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"70mm · f/4.0 · 1/160s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-07 10:17:27"),f:"55199649540_122da08a21_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/3.5 · 1/160s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-07 13:27:53"),f:"55194494274_e401f02494_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/1600s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-07 13:33:23"),f:"55193360877_04bff6ed5a_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/950s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-07 13:58:03"),f:"55194789840_d7cf899d17_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-07 14:03:43"),f:"55194789845_74d1e2da75_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-07 14:30:02"),f:"55194365312_b62c206001_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 135mm f/1.8 S Plena",set:"135mm · f/2.0 · 1/125s · ISO 900",sc:false,b:1},
+  {t:edt("2026-04-07 14:40:13"),f:"55195952067_f58158e8ab_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"17mm · f/2.8 · 1/250s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-07 14:40:25"),f:"55194459003_3bae619a73_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/2400s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-07 14:41:45"),f:"55194517308_b152775e40_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-07 14:42:13"),f:"55195952087_cdbd0422a9_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/3.2 · 1/250s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-07 15:04:59"),f:"55199789389_8449869349_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S",set:"57mm · f/2.8 · 1/125s · ISO 2500",sc:false,b:1},
+  {t:edt("2026-04-07 17:32:35"),f:"55194523579_bf4efc3d44_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/2.8 · 10s · ISO 12800",sc:true,b:1},
+  {t:edt("2026-04-07 19:30:48"),f:"55194733465_29355a7bca_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"48mm · f/14.0 · 1/200s · ISO 90",sc:false,b:1},
+  {t:edt("2026-04-07 23:34:49"),f:"55195066435_9f77676d65_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true,b:1},
+  {t:edt("2026-04-07 23:35:09"),f:"55194658516_0007ed5ba5_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true,b:1},
+  {t:edt("2026-04-07 23:35:25"),f:"55193772547_d9e3b1d0e8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/60s · ISO 4000",sc:true,b:1},
+  {t:edt("2026-04-07 23:35:33"),f:"55193772552_b8cfb47b7e_o (1).jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/10.0 · 1/80s · ISO 4000",sc:true,b:1},
+  {t:edt("2026-04-08 12:00:00"),f:"55199431156_eb43ddc6be_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"Unknown",set:"Unknown",sc:true,b:1},  {t:edt("2026-04-08 17:14:12"),f:"55197019103_990dff0021_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 35mm f/1.2 S",set:"35mm · f/2.0 · 1/1000s · ISO 500",sc:false,b:1},
+  {t:edt("2026-04-09 11:34:59"),f:"55197162528_0c6a732d79_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 135mm f/1.8 S Plena",set:"135mm · f/2.0 · 1/200s · ISO 1100",sc:false,b:1},
+  {t:edt("2026-04-09 13:12:59"),f:"55197806006_51d6c66a41_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"40mm · f/2.8 · 1/60s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-09 13:45:35"),f:"55196918247_ce5d00edbe_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/8.0 · 1/250s · ISO 125",sc:false,b:1},
+  {t:edt("2026-04-09 16:06:34"),f:"55196921082_58347f5449_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/7.1 · 1/1000s · ISO 200",sc:false,b:1},
+  {t:edt("2026-04-10 15:36:40"),f:"55201073550_f6a8cd338e_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON D6 + 14-24mm f/2.8G",set:"15mm · f/18.0 · 1/200s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-10 16:05:51"),f:"55199318256_1f738a83ba_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/16.0 · 1/250s · ISO 125",sc:false,b:1},
+  {t:edt("2026-04-10 16:11:05"),f:"55199324306-ac28f4dddd-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/6.3 · 1/320s · ISO 64",sc:false,b:1},
+  {t:edt("2026-04-10 16:11:33"),f:"55199507598-efe3d0a725-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"50mm · f/8.0 · 1/1000s · ISO 160",sc:false,b:1},
+  {t:edt("2026-04-10 17:52:06"),f:"55199520466-34d138dc13-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"135mm · f/2.8 · 1/3200s · ISO 125",sc:false,b:1},
+  {t:edt("2026-04-10 18:16:47"),f:"55198634897_1719724db5_o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"24mm · f/8.0 · 1/1000s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 18:17:00"),f:"55199526571-c49720e4ba-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"18mm · f/8.0 · 1/1000s · ISO 220",sc:false,b:1},
+  {t:edt("2026-04-10 18:17:41"),f:"55199775909_7a8444dc2d_o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/2.8 · 1/4000s · ISO 180",sc:false,b:1},
+  {t:edt("2026-04-10 19:04:07"),f:"55199709323-8fe6819300-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"165mm · f/7.1 · 1/200s · ISO 80",sc:false,b:1},
+  {t:edt("2026-04-10 19:11:46"),f:"55199558901-750598e081-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/6.3 · 1/1000s · ISO 250",sc:false,b:1},
+  {t:edt("2026-04-10 20:04:30"),f:"55200049934-d149f06d5a-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 20:04:32"),f:"55198907367-be08b9ca9d-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 20:04:34"),f:"55200207020-dcf603c8cf-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 20:04:36"),f:"55200207390-ab1f43b8b8-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 20:04:56"),f:"55199953168-d2742b8861-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/8.0 · 1/2000s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 20:06:20"),f:"55201553518_2b828d9b20_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/16000s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-10 20:06:39"),f:"55200077344_5014935964_o.jpg",p:"NASA/Robert Markowitz",loc:"Mission Control, Houston",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"18mm · f/3.5 · 1/125s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-10 20:06:56"),f:"55201805415_0a912b8951_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/16000s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:00"),f:"jsc2026e022251~large.jpg",p:"NASA/JSC",loc:"Mission Control, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:17"),f:"55199878864-41ff4d23f4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/7.1 · 1/2500s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:24"),f:"55199878669-257ddff58b-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/7.1 · 1/2500s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:26"),f:"55199856343_5a157820d0_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:26"),f:"dsc-3398.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:26"),f:"nhq202604100018.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 280",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:29"),f:"55199856318_652c455baf_o.jpg",p:"Unknown",loc:"Pacific Ocean, off San Diego",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:29"),f:"dsc-3427.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 800mm f/6.3 VR S",set:"800mm · f/8.0 · 1/8000s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:36"),f:"55199685771-a20de6ebf3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 320",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:43"),f:"55200091055-901e263aa4-o-1.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 280",sc:false,b:1},
+  {t:edt("2026-04-10 20:07:47"),f:"55199935584-7cd41d3d4a-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 800mm f/5.6E",set:"1000mm · f/8.0 · 1/4000s · ISO 360",sc:false,b:1},
+  {t:edt("2026-04-10 20:15:00"),f:"JB5_0746~large.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:17:00"),f:"JB5_0814~large.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:19:00"),f:"JB5_0855~large.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:22:02"),f:"55200100035-733f23e750-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/1250s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-10 20:26:25"),f:"55198801842-c6f17d4041-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 300mm f/4E",set:"300mm · f/7.1 · 1/1000s · ISO 80",sc:false,b:1},
+  {t:edt("2026-04-10 20:28:43"),f:"55201813860_9e0777e100_o.jpg",p:"NASA/James Blair",loc:"USS John P. Murtha",cam:"NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S",set:"800mm · f/14.0 · 1/5000s · ISO 2000",sc:false,b:1},
+  {t:edt("2026-04-10 20:29:32"),f:"55199695466-e0a2e1c3cc-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/400s · ISO 160",sc:false,b:1},
+  {t:edt("2026-04-10 20:37:18"),f:"55199695136-23fb9ed419-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/400s · ISO 200",sc:false,b:1},
+  {t:edt("2026-04-10 20:42:00"),f:"55200111364_d9b54c1e7e_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:43:00"),f:"55199863796_16582c725f_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:44:00"),f:"55200013283_2e53db356a_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:46:00"),f:"55199868461_8d940863c6_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:47:00"),f:"55199869846_89d52282b1_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:48:00"),f:"55200119619_85e4d36722_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:49:00"),f:"55199872986_98e68fba84_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:50:00"),f:"55200122669_2460f5a46b_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:51:00"),f:"55198981287_a056e0d410_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 20:52:00"),f:"55198982147_4bed483fe3_o~large.jpg",p:"NASA/Bill Ingalls",loc:"USS John P. Murtha",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-10 21:13:25"),f:"55198811582-9032c9d84c-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/800s · ISO 320",sc:false,b:1},
+  {t:edt("2026-04-10 21:14:04"),f:"55199854793-6863c5998c-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM +2x III",set:"1600mm · f/11.0 · 1/1600s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-10 21:52:36"),f:"55200008149-09a5f1fc33-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"Canon EOS R5 + EF800mm f/5.6L IS USM",set:"800mm · f/10.0 · 1/1250s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-10 21:59:00"),f:"55198865542_f8f931cfc1_o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + VR 300mm f/4E",set:"300mm · f/6.3 · 1/125s · ISO 64",sc:false,b:1},
+  {t:edt("2026-04-10 22:05:57"),f:"55198951957-0f8ed6527b-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"58mm · f/4.0 · 1/200s · ISO 900",sc:false,b:1},
+  {t:edt("2026-04-10 22:06:02"),f:"55198952237-ba1b02a8eb-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 500",sc:false,b:1},
+  {t:edt("2026-04-10 22:06:08"),f:"55199996653-9e384a8235-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"35mm · f/4.0 · 1/200s · ISO 720",sc:false,b:1},
+  {t:edt("2026-04-10 22:06:30"),f:"55200096939-71021a8429-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"22mm · f/4.0 · 1/160s · ISO 900",sc:false,b:1},
+  {t:edt("2026-04-10 22:06:34"),f:"55199997948-73cd027a44-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"66mm · f/4.0 · 1/200s · ISO 900",sc:false,b:1},
+  {t:edt("2026-04-10 22:06:37"),f:"55199998298-845d964fd0-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"66mm · f/4.0 · 1/200s · ISO 900",sc:false,b:1},
+  {t:edt("2026-04-10 22:06:51"),f:"55199999093-35f97d59f4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"31mm · f/4.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-10 22:06:52"),f:"55200099409-ca39242549-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"64mm · f/4.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-10 22:07:29"),f:"55200000228-2210704fdd-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"15mm · f/4.0 · 1/160s · ISO 220",sc:false,b:1},
+  {t:edt("2026-04-10 22:08:09"),f:"55200255400-1f787b68e3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"55mm · f/4.0 · 1/200s · ISO 220",sc:false,b:1},
+  {t:edt("2026-04-10 22:08:11"),f:"55200256115-8e4a2a3c19-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 360",sc:false,b:1},
+  {t:edt("2026-04-10 22:08:19"),f:"55200101349-5474a342f9-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"28mm · f/4.0 · 1/200s · ISO 450",sc:false,b:1},
+  {t:edt("2026-04-10 22:08:38"),f:"55200002168-7f1077cdf3-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"14mm · f/4.0 · 1/250s · ISO 900",sc:false,b:1},
+  {t:edt("2026-04-10 22:08:47"),f:"55199853946-2f65c26928-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"15mm · f/4.0 · 1/250s · ISO 900",sc:false,b:1},
+  {t:edt("2026-04-10 22:08:55"),f:"55200103109-b50ff40360-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"70mm · f/4.0 · 1/200s · ISO 1800",sc:false,b:1},
+  {t:edt("2026-04-10 22:09:27"),f:"55199854926-a16b9b3e77-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"35mm · f/4.0 · 1/200s · ISO 160",sc:false,b:1},
+  {t:edt("2026-04-10 22:09:35"),f:"55198960402-0abbb32ff4-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"32mm · f/4.0 · 1/200s · ISO 64",sc:false,b:1},
+  {t:edt("2026-04-10 22:09:51"),f:"55200004673-5ffb431c22-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"46mm · f/4.0 · 1/200s · ISO 320",sc:false,b:1},
+  {t:edt("2026-04-10 22:10:00"),f:"55199857746-07908c9d65-o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"26mm · f/4.0 · 1/200s · ISO 1100",sc:false,b:1},
+  {t:edt("2026-04-10 22:13:34"),f:"55200126804_a4f57d8174_o.jpg",p:"NASA",loc:"Pacific Ocean Recovery Zone",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"24mm · f/4.0 · 1/125s · ISO 8000",sc:false,b:1},
+  {t:edt("2026-04-11 01:57:47"),f:"55200289498_1b7341ddf8_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"200mm · f/2.8 · 1/100s · ISO 7200",sc:false,b:1},
+  {t:edt("2026-04-11 02:36:26"),f:"55200118501_982d3436a6_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 35mm f/1.2 S",set:"35mm · f/1.2 · 1/500s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-11 02:46:24"),f:"55199224857_9c4f8b957d_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"135mm · f/2.8 · 1/80s · ISO 10000",sc:false,b:1},
+  {t:edt("2026-04-11 02:50:41"),f:"55200548925_8913c7c5bd_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"38mm · f/2.8 · 1/125s · ISO 2800",sc:false,b:1},
+  {t:edt("2026-04-11 02:52:59"),f:"55199225947_c8037c6ef6_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 35mm f/1.2 S",set:"35mm · f/1.2 · 1/160s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-11 03:02:52"),f:"55200369004_64c96923e1_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"100mm · f/2.8 · 1/100s · ISO 10000",sc:false,b:1},
+  {t:edt("2026-04-11 03:22:37"),f:"55200550355_700921002c_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"200mm · f/2.8 · 1/200s · ISO 6400",sc:false,b:1},
+  {t:edt("2026-04-11 03:23:42"),f:"55200122336_6ec4eafa17_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"70mm · f/2.8 · 1/60s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-11 03:23:53"),f:"55200123351_35b41c97b4_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"200mm · f/2.8 · 1/60s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-11 03:24:28"),f:"55200125776_b1dc50dabb_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 35mm f/1.2 S",set:"35mm · f/1.2 · 1/250s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-11 03:25:42"),f:"55200126486_082edd2c14_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 35mm f/1.2 S",set:"35mm · f/1.2 · 1/250s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-11 03:34:18"),f:"55200304123_cbfd44c26b_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"24mm · f/4.0 · 1/100s · ISO 6400",sc:false,b:1},
+  {t:edt("2026-04-11 03:53:32"),f:"55200377684_b495185125_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"70mm · f/2.8 · 1/160s · ISO 3200",sc:false,b:1},
+  {t:edt("2026-04-11 09:11:07"),f:"55199636042_1cc0781960_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"24mm · f/2.8 · 1/160s · ISO 12800",sc:false,b:1},
+  {t:edt("2026-04-11 10:08:03"),f:"55201805059_e1de29736d_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 100-400mm f/4.5-5.6 VR S",set:"400mm · f/6.3 · 1/1000s · ISO 640",sc:false,b:1},
+  {t:edt("2026-04-11 10:09:41"),f:"55200884574_d1661204b7_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"55mm · f/4.0 · 1/250s · ISO 64",sc:false,b:1},
+  {t:edt("2026-04-11 10:09:53"),f:"55200885704_19fc523ba0_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 100-400mm f/4.5-5.6 VR S",set:"100mm · f/6.3 · 1/1600s · ISO 900",sc:false,b:1},
+  {t:edt("2026-04-11 10:10:12"),f:"55201044335_c619efe374_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"24mm · f/4.0 · 1/250s · ISO 100",sc:false,b:1},
+  {t:edt("2026-04-11 10:10:24"),f:"55200638441_f815aa148a_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"28mm · f/4.0 · 1/250s · ISO 200",sc:false,b:1},
+  {t:edt("2026-04-11 10:11:45"),f:"55201048580_ba5d633330_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"35mm · f/8.0 · 1/160s · ISO 280",sc:false,b:1},
+  {t:edt("2026-04-11 10:12:48"),f:"55200794328_0c8a64f49d_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 24-70mm f/2.8 S II",set:"32mm · f/8.0 · 1/160s · ISO 400",sc:false,b:1},
+  {t:edt("2026-04-11 10:15:29"),f:"55201553321_4c470fe44a_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"21mm · f/2.8 · 1/200s · ISO 4500",sc:false,b:1},
+  {t:edt("2026-04-11 10:16:18"),f:"55200659842_0730167a5b_o.jpg",p:"NASA",loc:"USS John P. Murtha, Pacific Ocean",cam:"NIKON Z 9 + NIKKOR Z 14-24mm f/2.8 S",set:"24mm · f/2.8 · 1/200s · ISO 1800",sc:false,b:1},  {t:edt("2026-04-11 15:57:48"),f:"55201661369_d473eacbfc_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"57mm · f/13.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:57:51"),f:"55201562253_163bb4ccd4_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"68mm · f/11.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:57:58"),f:"55201661254_440279afc1_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"97mm · f/11.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:57:59"),f:"55201661244_ac6e689903_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"92mm · f/11.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:58:03"),f:"55201813500_ec82522436_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"103mm · f/11.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:58:06"),f:"55201409946_7ff7864eef_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"89mm · f/11.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:58:10"),f:"55201562128_8162605d3a_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"37mm · f/11.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:58:14"),f:"55201661154_12a741d752_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"37mm · f/11.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:58:22"),f:"55201409941_743264a963_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"24mm · f/14.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:58:42"),f:"55201410186_78fbc1e3d0_o.jpg",p:"NASA/Robert Markowitz",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"26mm · f/14.0 · 1/200s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-11 15:59:00"),f:"jsc2026e022281~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-11 15:59:30"),f:"jsc2026e022320~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-11 16:00:00"),f:"jsc2026e022321~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-11 16:56:56"),f:"55201813565_c377149276_o.jpg",p:"NASA/David DeHoyos",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"73mm · f/8.0 · 1/200s · ISO 160",sc:false,b:1},
+  {t:edt("2026-04-11 16:57:00"),f:"55201813575_d7059f1d7a_o.jpg",p:"NASA/David DeHoyos",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"98mm · f/7.1 · 1/200s · ISO 160",sc:false,b:1},
+  {t:edt("2026-04-11 17:00:02"),f:"55201576423_da7c6da6be_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"350mm · f/6.3 · 1/125s · ISO 8000",sc:false,b:1},
+  {t:edt("2026-04-11 17:00:15"),f:"55201576443_c26131ec35_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"190mm · f/6.3 · 1/125s · ISO 8000",sc:false,b:1},
+  {t:edt("2026-04-11 17:00:28"),f:"55201576368_eb58dd6430_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"500mm · f/6.3 · 1/125s · ISO 8000",sc:false,b:1},
+  {t:edt("2026-04-11 17:00:33"),f:"55201424106_98aa64778f_o.jpg",p:"NASA/Bill Stafford",loc:"Ellington Field, Houston",cam:"NIKON D5 + 150.0-500.0 mm f/5.0-6.3",set:"300mm · f/6.3 · 1/125s · ISO 8000",sc:false,b:1},
+  {t:edt("2026-04-11 17:00:41"),f:"55201424136_87b2702a88_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"120mm · f/4.5 · 1/200s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-11 17:01:41"),f:"55200530422_383420cb6c_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"34mm · f/4.5 · 1/200s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-11 17:21:12"),f:"55201827775_7fd56ee4d4_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"24mm · f/4.0 · 1/250s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-11 17:21:13"),f:"55201424021_282d63f7af_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"32mm · f/4.0 · 1/250s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-11 17:21:16"),f:"55201675544_799f745939_o.jpg",p:"NASA/Helen Arase Vargas",loc:"Ellington Field, Houston",cam:"NIKON Z 9 + NIKKOR Z 24-120mm f/4 S",set:"26mm · f/4.0 · 1/250s · ISO 4000",sc:false,b:1},
+  {t:edt("2026-04-11 17:25:00"),f:"jsc2026e022287~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-11 17:30:00"),f:"jsc2026e022290~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-11 17:32:00"),f:"jsc2026e022292~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-11 17:35:00"),f:"jsc2026e022293~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-11 17:40:00"),f:"jsc2026e022310~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
+  {t:edt("2026-04-11 17:42:00"),f:"jsc2026e022312~large.jpg",p:"NASA/JSC",loc:"Ellington Field, Houston",cam:"Unknown",set:"Unknown",sc:false,b:1},
 ];
 
 const EVENTS = [
   {t:edt("2026-04-01 09:25:00"),title:"Crew Wake-Up",desc:"Astronauts wake at Kennedy Space Center",icon:"☀️"},
   {t:edt("2026-04-01 12:50:00"),title:"Suit Up",desc:"Crew dons orange Orion suits",icon:"🧑‍🚀"},
   {t:edt("2026-04-01 14:30:00"),title:"Board Orion",desc:"Crew boards spacecraft at Pad 39B",icon:"🚀"},
-  {t:edt("2026-04-01 17:45:25"),title:"LIFTOFF",desc:"SLS launches from Kennedy Space Center",icon:"🔥"},
+  {t:edt("2026-04-01 18:35:25"),title:"LIFTOFF",desc:"SLS launches from Kennedy Space Center",icon:"🔥"},
   {t:edt("2026-04-02 19:49:00"),title:"Trans Lunar Injection",desc:"5:50 burn toward the Moon",icon:"🌙"},
   {t:edt("2026-04-06 00:37:00"),title:"Lunar Sphere of Influence",desc:"Orion enters Moon's gravity",icon:"🌑"},
   {t:edt("2026-04-06 13:56:00"),title:"DISTANCE RECORD",desc:"252,756 miles from Earth",icon:"🏆"},
@@ -1005,7 +1346,7 @@ const EVENTS = [
 ];
 
 const QUOTES = [
-  {t:edt("2026-04-01 17:45:25"),who:"Launch Director",text:"Liftoff of Artemis II — America returns to the Moon with crew!"},
+  {t:edt("2026-04-01 18:35:25"),who:"Launch Director",text:"Liftoff of Artemis II — America returns to the Moon with crew!"},
   {t:edt("2026-04-02 19:55:00"),who:"CAPCOM",text:"Integrity, TLI is complete. You are on your way to the Moon."},
   {t:edt("2026-04-06 13:56:00"),who:"CAPCOM",text:"You have just traveled farther from Earth than any human in history."},
   {t:edt("2026-04-06 18:41:00"),who:"CAPCOM",text:"Going behind the Moon. We'll see you on the other side."},
@@ -1018,16 +1359,16 @@ const QUOTES = [
 // JPL Horizons ephemeris — range from Earth surface in miles, hourly
 // Source: NASA/JPL Horizons API, target -1024 (Artemis II), center Earth (399)
 const DIST_WAYPOINTS = [
-  {t:edt("2026-04-01 17:45:25"),d:0},
-  {t:edt("2026-04-01 17:45:55"),d:0.95},
-  {t:edt("2026-04-01 17:46:25"),d:3.8},
-  {t:edt("2026-04-01 17:47:00"),d:11.4},
-  {t:edt("2026-04-01 17:47:37"),d:29.9},
-  {t:edt("2026-04-01 17:48:55"),d:37.9},
-  {t:edt("2026-04-01 17:50:25"),d:56.8},
-  {t:edt("2026-04-01 17:53:29"),d:97.5},
-  {t:edt("2026-04-01 17:53:41"),d:98.5},
-  {t:edt("2026-04-01 17:54:00"),d:155},
+  {t:edt("2026-04-01 18:35:25"),d:0},
+  {t:edt("2026-04-01 18:35:55"),d:0.95},
+  {t:edt("2026-04-01 18:36:25"),d:3.8},
+  {t:edt("2026-04-01 18:37:00"),d:11.4},
+  {t:edt("2026-04-01 18:37:37"),d:29.9},
+  {t:edt("2026-04-01 18:38:55"),d:37.9},
+  {t:edt("2026-04-01 18:40:25"),d:56.8},
+  {t:edt("2026-04-01 18:43:29"),d:97.5},
+  {t:edt("2026-04-01 18:43:41"),d:98.5},
+  {t:edt("2026-04-01 18:44:00"),d:155},
   {t:edt("2026-04-01 19:30:00"),d:155},
   {t:edt("2026-04-01 20:30:00"),d:155},
   {t:edt("2026-04-01 21:30:00"),d:155},
@@ -1431,8 +1772,8 @@ function getDistanceAtTime(ts) {
 }
 
 const SPLASHDOWN_T = edt("2026-04-10 20:07:00");
-const LIFTOFF_T = edt("2026-04-01 17:45:25");
-const SRB_SEP_T = edt("2026-04-01 17:47:37");
+const LIFTOFF_T = edt("2026-04-01 18:35:25");
+const SRB_SEP_T = edt("2026-04-01 18:37:37");
 function getDisplayDistance(ts) {
   // Recovery photos after splashdown are on the ground
   if (ts >= SPLASHDOWN_T) return 0;
@@ -1457,8 +1798,8 @@ const ALAB = {sleep:"Sleep",exercise:"Exercise",science:"Science & Testing",pilo
 const SCHEDULE = [
   {s:edt("2026-04-01 09:25:00"),e:edt("2026-04-01 12:50:00"),a:"free",l:"Pre-launch prep"},
   {s:edt("2026-04-01 12:50:00"),e:edt("2026-04-01 14:30:00"),a:"suit-ops",l:"Suit up"},
-  {s:edt("2026-04-01 14:30:00"),e:edt("2026-04-01 17:45:25"),a:"free",l:"In spacecraft"},
-  {s:edt("2026-04-01 17:45:25"),e:edt("2026-04-01 23:00:00"),a:"piloting",l:"Launch & orbit ops"},
+  {s:edt("2026-04-01 14:30:00"),e:edt("2026-04-01 18:35:25"),a:"free",l:"In spacecraft"},
+  {s:edt("2026-04-01 18:35:25"),e:edt("2026-04-01 23:00:00"),a:"piloting",l:"Launch & orbit ops"},
   {s:edt("2026-04-01 23:00:00"),e:edt("2026-04-02 06:00:00"),a:"sleep",l:"Sleep (short)"},
   {s:edt("2026-04-02 06:00:00"),e:edt("2026-04-02 08:00:00"),a:"free",l:"Wake & meals"},
   {s:edt("2026-04-02 08:00:00"),e:edt("2026-04-02 12:00:00"),a:"science",l:"Systems checkout"},
@@ -1504,10 +1845,10 @@ const AUDIO = [
   {t:edt("2026-04-01 17:20:00"),f:"artemis-ii-launch-integrity-voice-check.mp3",desc:"Integrity voice check"},
   {t:edt("2026-04-01 17:30:00"),f:"artemis-ii-launch-launch-director-message.mp3",desc:"Launch Director message"},
   {t:edt("2026-04-01 17:40:00"),f:"artemis-ii-launch-full-send.mp3",desc:"Full send"},
-  {t:edt("2026-04-01 17:45:25"),f:"artemis-ii-liftoff.mp3",desc:"Liftoff!"},
-  {t:edt("2026-04-01 17:50:00"),f:"artemis-ii-launch-orion-communications-check.mp3",desc:"Orion comms check"},
   {t:edt("2026-04-01 17:55:00"),f:"artemis-ii-houston-we-have-you-loud-and-clear-1.mp3",desc:"Houston loud and clear"},
   {t:edt("2026-04-01 18:00:00"),f:"artemis-ii-launch-beautiful-moonrise-and-were-headed-right-at-it.mp3",desc:"Beautiful moonrise"},
+  {t:edt("2026-04-01 18:35:25"),f:"artemis-ii-liftoff.mp3",desc:"Liftoff!"},
+  {t:edt("2026-04-01 18:40:00"),f:"artemis-ii-launch-orion-communications-check.mp3",desc:"Orion comms check"},
   {t:edt("2026-04-01 19:40:00"),f:"artemis-ii-go-for-translunar-injection.mp3",desc:"Go for TLI"},
   {t:edt("2026-04-01 19:58:00"),f:"artemis-ii-good-burn.mp3",desc:"Good burn"},
   {t:edt("2026-04-04 15:00:00"),f:"artemis-ii-message-from-apollo-astronaut-jim-lovell.mp3",desc:"Message from Jim Lovell"},
@@ -1608,7 +1949,6 @@ function renderActivityBars(force) {
 // Render photo dots + event ticks + activity bars + playhead
 function renderTimeline() {
   const dotsContainer = document.getElementById('photoDots');
-  const markersContainer = document.getElementById('eventMarkers');
 
   // Activity bars
   renderActivityBars();
@@ -1658,14 +1998,7 @@ function renderTimeline() {
     });
   });
 
-  // Event ticks with tooltips
-  let ticksHtml = '';
-  EVENTS.forEach(ev => {
-    const pct = timeToViewPercent(ev.t);
-    if (pct < -2 || pct > 102) return;
-    ticksHtml += `<div class="timeline-event-tick" style="left:${pct}%"><span class="tick-tooltip">${ev.icon} ${ev.title}</span></div>`;
-  });
-  markersContainer.innerHTML = ticksHtml;
+  // Event markers removed
 
   // Playhead
   const photo = filteredPhotos[currentPhotoIdx];
@@ -1858,7 +2191,19 @@ function drawTrajectory(ts) {
 function updatePhoto() {
   const photo = filteredPhotos[currentPhotoIdx];
   const safeSrc = encodeURIComponent(photo.f);
-  document.getElementById('currentPhoto').src = 'web/' + safeSrc;
+  const flickrId = getFlickrId(photo.f);
+  const nasaTitle = flickrId ? FLICKR_TITLES[flickrId] || '' : '';
+  const imgEl = document.getElementById('currentPhoto');
+  imgEl.src = 'web/' + safeSrc;
+  imgEl.alt = nasaTitle || (photo.p + ' — ' + photo.loc);
+  const titleRow = document.getElementById('photoTitleRow');
+  const titleEl = document.getElementById('metaTitle');
+  if (nasaTitle) {
+    titleEl.textContent = nasaTitle;
+    titleRow.style.display = '';
+  } else {
+    titleRow.style.display = 'none';
+  }
   document.getElementById('downloadLink').href = safeSrc;
   document.getElementById('downloadLink').download = photo.f;
   document.getElementById('metaPhotographer').textContent = photo.p;
@@ -2096,6 +2441,7 @@ document.getElementById('nextBtn').addEventListener('click', goNext);
 function clearAllFilters() {
   document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('[data-crew]').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('[data-batch]').forEach(b => b.classList.remove('active'));
 }
 
 document.querySelectorAll('[data-filter]').forEach(btn => {
@@ -2115,13 +2461,30 @@ document.querySelectorAll('[data-crew]').forEach(btn => {
     const wasActive = this.classList.contains('active');
     clearAllFilters();
     if (wasActive) {
-      // Toggle off — go back to all
       document.querySelector('[data-filter="all"]').classList.add('active');
       filteredPhotos = PHOTOS;
     } else {
       this.classList.add('active');
       const name = this.dataset.crew;
       filteredPhotos = PHOTOS.filter(p => p.p && p.p.includes(name));
+    }
+    currentPhotoIdx = 0;
+    viewStart = T_START; viewEnd = T_END;
+    updatePhoto();
+  });
+});
+
+document.querySelectorAll('[data-batch]').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const wasActive = this.classList.contains('active');
+    clearAllFilters();
+    if (wasActive) {
+      document.querySelector('[data-filter="all"]').classList.add('active');
+      filteredPhotos = PHOTOS;
+    } else {
+      this.classList.add('active');
+      const batch = parseInt(this.dataset.batch);
+      filteredPhotos = PHOTOS.filter(p => p.b === batch);
     }
     currentPhotoIdx = 0;
     viewStart = T_START; viewEnd = T_END;
