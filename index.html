@@ -575,12 +575,36 @@
   .timeline-hover-tip .tip-label { color: #bbb; font-size: 10px; }
 
   /* --- Mobile / narrow screens --- */
+  /* Mobile activity label — hidden on desktop */
+  .mobile-activity {
+    display: none;
+    padding: 8px 16px;
+    background: #0d0d1a;
+    border-bottom: 1px solid #1a1a2e;
+    text-align: center;
+    font-size: 12px;
+    color: #ccc;
+    flex-shrink: 0;
+  }
+  .mobile-activity .activity-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .mobile-activity .activity-name {
+    vertical-align: middle;
+  }
+
   @media (max-width: 768px) {
     body { height: auto; overflow: auto; }
     #header { flex-wrap: wrap; gap: 6px 12px; padding: 8px 12px; }
     #header h1 { font-size: 18px; }
     #header .crew { display: none; }
-    .timeline-bar { padding: 8px 12px; }
+    .timeline-bar { display: none; }
+    .mobile-activity { display: block; }
     .controls-row { padding: 6px 12px; gap: 6px; }
 
     /* Stack viewer vertically */
@@ -640,6 +664,9 @@
   </div>
 </div>
 
+<!-- Mobile activity label (replaces timeline on small screens) -->
+<div class="mobile-activity" id="mobileActivity"></div>
+
 <!-- Controls row -->
 <div class="controls-row">
   <button class="filter-btn active" data-filter="all">All Photos</button>
@@ -673,6 +700,10 @@
     <a id="downloadLink" class="download-link" download>Download full quality</a>
   </div>
   <div class="meta-panel">
+    <div class="traj-section">
+      <canvas id="trajCanvas" width="400" height="200"></canvas>
+      <div class="traj-label" id="trajLabel"></div>
+    </div>
     <div class="meta-section">
       <div class="meta-field">
         <div class="meta-label">Time (EDT)</div>
@@ -706,10 +737,6 @@
     <div class="meta-section" id="descSection" style="display:none">
       <h3>Description</h3>
       <div class="meta-desc" id="metaDesc"></div>
-    </div>
-    <div class="traj-section">
-      <canvas id="trajCanvas" width="400" height="200"></canvas>
-      <div class="traj-label" id="trajLabel"></div>
     </div>
     <div class="calendar-promo">
       <div class="calendar-promo-inner">
@@ -1836,6 +1863,14 @@ function updatePhoto() {
 
   // updateEventAndQuote(photo.t);
   drawTrajectory(photo.t);
+  // Mobile activity label
+  const mAct = getActivityAt(photo.t);
+  const mEl = document.getElementById('mobileActivity');
+  if (mAct) {
+    mEl.innerHTML = `<span class="activity-dot" style="background:${ACOL[mAct.a]}"></span><span class="activity-name">${mAct.l}</span>`;
+  } else {
+    mEl.innerHTML = `<span class="activity-name" style="color:#555">Between activities</span>`;
+  }
   updateAudio(photo.t);
   renderTimeline();
 }
