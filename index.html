@@ -792,7 +792,9 @@ function edt(s) { return new Date(s.replace(' ','T') + "-04:00").getTime(); }
 
 function getFlickrId(filename) {
   const m = filename.match(/^(\d{11})[_-]/);
-  return m ? m[1] : null;
+  if (m) return m[1];
+  const n = filename.match(/^(art\d+e\d+)/);
+  return n ? n[1] : null;
 }
 
 const FLICKR_TITLES = {
@@ -1096,7 +1098,11 @@ const FLICKR_TITLES = {
   '55201048580': 'Artemis II Recovery (NHQ202604110111)',
   '55200794328': 'Artemis II Recovery (NHQ202604110113)',
   '55201553321': 'Artemis II Recovery (NHQ202604110116)',
-  '55200659842': 'Artemis II Recovery (NHQ202604110117)'
+  '55200659842': 'Artemis II Recovery (NHQ202604110117)',
+  'art002e014256': 'Sharing a Unique Perspective',
+  'art002e016165': 'Lunar Flyby Observations \u2013 Reid Wiseman',
+  'art002e016171': 'Lunar Flyby Observations \u2013 Jeremy Hansen',
+  'art002e016172': 'Lunar Flyby Observations \u2013 Christina Koch'
 };
 
 const FLICKR_DESCS = {
@@ -1396,6 +1402,10 @@ const FLICKR_DESCS = {
   "55201813575": "jsc2026e022270 (April 11, 2026) - Artemis II Pilot Victor Glover returns home to Houston, stepping off a plane at Ellington Airport near NASA's Johnson Space Center, on Saturday, April 11, 2026, following his 10-day mission around the Moon. He and his three fellow crew members launched April 1, 2026, from NASA’s Kennedy Space Center in Florida, and splashed down off the coast of California on Friday, April 10, 2026. Photo Credit: NASA/David DeHoyos",
   "55201813860": "jsc2026e022266 (April 10, 2026) - NASA's Orion spacecraft carrying Artemis II Commander Reid Wiseman, Pilot Victor Glover, and Mission Specialist Christina Koch from NASA, along with Mission Specialist Jeremy Hansen from the CSA (Canadian Space Agency), splashes down in the Pacific Ocean near San Diego, California, at 5:07 p.m. PDT, (8:07 p.m. EDT) on Friday, April 10, 2026. The Artemis II test flight launched on Wednesday, April 1, from NASA’s Kennedy Space Center in Florida to begin its 10-day journey around the Moon for scientific discovery, economic benefits, and to build on our foundation for the first crewed missions to Mars. NASA’s Landing and Recovery team and the U.S. military are coordinating efforts to extract the Artemis II crew from the Orion spacecraft. Credit: NASA/James Blair",
   "55201827775": "jsc2026e022310 (April 11, 2026) - NASA’s Artemis II crew, NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, shared brief remarks with friends, family, and colleagues after they landed at Ellington Airport near NASA’s Johnson Space Center in Houston on Saturday, April 11, 2026, after a nearly 10-day journey around the Moon and back to Earth. Credit: NASA/Helen Arase Vargas",
+  "art002e014256": "art002e014256 (April 6, 2026) \u2013 CSA (Canadian Space Agency) astronaut and Artemis II Mission Specialist Jeremy Hansen is seen making observations through the window of the Orion spacecraft early in the Artemis II lunar flyby. Hansen and his fellow crewmates spent approximately seven hours taking turns at the Orion windows capturing science data to share with their team back on Earth. Credit: NASA",
+  "art002e016165": "art002e016165 (April 6, 2026) \u2013 NASA astronaut and Artemis II Commander Reid Wiseman pictured here in the Orion spacecraft during the Artemis II lunar flyby. Wiseman and his fellow crewmates spent approximately seven hours taking turns at the Orion windows capturing science data to share with their team back on Earth. At closest approach, they came within 4,067 miles of the Moon\u2019s surface. Credit: NASA",
+  "art002e016171": "art002e016171 (April 6, 2026) \u2013 CSA (Canadian Space Agency) astronaut and Artemis II Mission Specialist Jeremy Hansen pictured here in the Orion spacecraft during the Artemis II lunar flyby. Hansen and his fellow crewmates spent approximately seven hours taking turns at the Orion windows capturing science data to share with their team back on Earth. Credit: NASA",
+  "art002e016172": "art002e016172 (April 6, 2026) \u2013 NASA astronaut and Artemis II Mission Specialist Christina Koch pictured here in the Orion spacecraft during the Artemis II lunar flyby. Koch and her fellow crewmates spent approximately seven hours taking turns at the Orion windows capturing science data to share with their team back on Earth. Credit: NASA"
 };
 
 
@@ -1512,6 +1522,7 @@ const PHOTOS = [
   {t:edt("2026-04-06 15:08:18"),f:"55194598974_0173dc947b_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"290mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1,cid:"d5a"},
   {t:edt("2026-04-06 15:09:26"),f:"55195894708_a9a94dba10_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"400mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1,cid:"d5a"},
   {t:edt("2026-04-06 15:11:52"),f:"55194768276_c87d2884e2_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"85mm · f/11.0 · 1/2000s · ISO 400",sc:true,b:1,cid:"d5a"},
+  {t:edt("2026-04-06 15:12:00"),f:"art002e014256~large.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"Unknown",set:"Unknown",sc:true,b:1},
   {t:edt("2026-04-06 15:12:02"),f:"55194334756_16d84a9ace_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"125mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1,cid:"d5a"},
   {t:edt("2026-04-06 15:18:24"),f:"55193784989_3b532023c0_o.jpg",p:"Unknown",loc:"Unknown",cam:"HERO4 Black",set:"15mm · f/2.8 · 1/4000s · ISO 100",sc:false,b:1},
   {t:edt("2026-04-06 15:25:21"),f:"55194529188_d90aa501b6_o.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"185mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1,cid:"d5a"},
@@ -1521,6 +1532,9 @@ const PHOTOS = [
   {t:edt("2026-04-06 15:46:20"),f:"55197995935_c2a38d06b9_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"130mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1,cid:"d5a"},
   {t:edt("2026-04-06 15:57:39"),f:"55196704886_deccb80f7a_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/3.5 · 1/50s · ISO 16000",sc:true,b:1,cid:"z9"},
   {t:edt("2026-04-06 15:59:12"),f:"55196961359_8ed5e86af3_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/4.5 · 1/80s · ISO 16000",sc:true,b:1,cid:"z9"},
+  {t:edt("2026-04-06 16:05:00"),f:"art002e016165~large.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"Unknown",set:"Unknown",sc:true,b:1},
+  {t:edt("2026-04-06 16:10:00"),f:"art002e016171~large.jpg",p:"Jeremy Hansen",loc:"Orion Spacecraft",cam:"Unknown",set:"Unknown",sc:true,b:1},
+  {t:edt("2026-04-06 16:15:00"),f:"art002e016172~large.jpg",p:"Christina Koch",loc:"Orion Spacecraft",cam:"Unknown",set:"Unknown",sc:true,b:1},
   {t:edt("2026-04-06 16:25:43"),f:"55193069001_940360cfdb_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + 35mm f/2D",set:"35mm · f/3.5 · 1/50s · ISO 20000",sc:true,b:1,cid:"z9"},
   {t:edt("2026-04-06 16:32:20"),f:"55209951780_e9ca7664b6_o.jpg",p:"Artemis Crew",loc:"Orion Spacecraft",cam:"NIKON Z 9 + NIKKOR Z 70-200mm f/2.8 VR S",set:"160mm · f/2.8 · 1/160s · ISO 1250",sc:true,b:1},
   {t:edt("2026-04-06 17:11:22"),f:"55207655441_f719675805_o.jpg",p:"Artemis Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 24.0-70.0 mm f/2.8",set:"70mm · f/3.2 · 1/125s · ISO 1600",sc:true,b:1},
