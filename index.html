@@ -461,64 +461,7 @@
   }
 
   /* Timeline hover tooltip */
-  /* Print availability overlay — bottom-right card */
-  .print-overlay {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    padding: 12px 14px;
-    background: rgba(10,10,20,0.88);
-    border: 1px solid rgba(255,214,0,0.25);
-    border-radius: 6px;
-    backdrop-filter: blur(8px);
-    z-index: 5;
-    max-width: 220px;
-    text-align: center;
-  }
-  .print-close {
-    position: absolute;
-    top: 4px;
-    right: 6px;
-    background: none;
-    border: none;
-    color: #777;
-    font-size: 16px;
-    cursor: pointer;
-    line-height: 1;
-    padding: 2px 5px;
-    border-radius: 3px;
-    transition: color 0.15s;
-  }
-  .print-close:hover { color: #fff; }
-  .print-badge {
-    display: inline-block;
-    font-size: 8px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    color: #ffd600;
-    background: rgba(255,214,0,0.12);
-    border: 1px solid rgba(255,214,0,0.25);
-    border-radius: 3px;
-    padding: 2px 8px;
-    margin-bottom: 6px;
-  }
-  .print-text {
-    display: block;
-    font-size: 11px;
-    color: #bbb;
-    line-height: 1.45;
-  }
-  .print-text strong { color: #e0e0e0; }
-  .print-link {
-    display: inline-block;
-    margin-top: 8px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #4FC3F7;
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  .print-link:hover { color: #81D4FA; }
+  /* Print availability overlay — removed for now, will return */
 
   /* Calendar promo — always visible */
   .calendar-promo {
@@ -717,12 +660,8 @@
       <video id="currentVideo" class="photo-img" style="display:none" controls playsinline preload="none"></video>
       <button class="nav-arrow nav-prev" id="prevBtn" title="Previous photo">‹</button>
       <button class="nav-arrow nav-next" id="nextBtn" title="Next photo">›</button>
-      <div id="printBanner" class="print-overlay" style="display:none">
-        <button class="print-close" id="printClose" title="Dismiss">×</button>
-        <span class="print-badge">PRINT AVAILABLE</span>
-        <span class="print-text">This image is available as a <strong>16×24 giclée print</strong> on archival paper.</span>
-        <a class="print-link" href="#">Order Print →</a>
-      </div>
+      <!-- Print banner placeholder — will return -->
+      <div id="printBanner" style="display:none"></div>
     </div>
     <div class="photo-links">
       <a id="downloadLink" class="download-link" download>Download full quality</a>
@@ -1107,6 +1046,7 @@ const FLICKR_TITLES = {
   'ig-earthshine-koch': 'Earthshine',
   'ig-fd8-evening-vibes': 'Flight Day 8 Evening Vibes',
   'ig-pink-pony-club': 'Pink Pony Club Morning',
+  'ig-nutella': 'Nutella in Zero-G',
   'ig-fd8-press-conference': 'Flight Day 8 Press Conference',
   'ig-welcome-aboard': 'Welcome Aboard Integrity',
   'ig-capsule-egress': 'Coming Home',
@@ -1418,6 +1358,7 @@ const FLICKR_DESCS = {
   "ig-earthshine-koch": "Earthshine. Artemis II astronaut Christina Koch captured this video of Earth outside the Orion spacecraft windows during the lunar flyby. \u2014 Christina Koch via Instagram",
   "ig-fd8-evening-vibes": "Flight Day 8 evening vibes. This day was so fun and productive because we had gotten our sea legs and were executing like a well-oiled machine. Sound on! \u2014 via Instagram",
   "ig-pink-pony-club": "What really happened on Pink Pony Club morning. Wake-up songs are a tradition at NASA, and this crew got Chappell Roan\u2019s Pink Pony Club on Flight Day 4. Sound on! \u2014 via Instagram",
+  "ig-nutella": "Nutella flying away in zero gravity, about four minutes before the Artemis II crew broke Apollo 13\u2019s record for the farthest distance from Earth by humans. Behind the far side of the Moon, 252,000+ miles from home. \u2014 via Reddit/Instagram",
   "ig-fd8-press-conference": "Flight Day 8 evening, before bed \u2014 the Artemis II crew during a press conference on their return journey to Earth. \u2014 via Instagram",
   "ig-welcome-aboard": "Jesse, Steve, Laddy, and Vlad\u2026 such an incredible feeling to welcome you aboard Integrity after your journey around the Moon. The recovery team opens the Orion capsule hatch aboard USS John P. Murtha. \u2014 via Instagram",
   "ig-capsule-egress": "The moments just after the capsule is opened \u2014 the Artemis II crew exits the Orion spacecraft aboard USS John P. Murtha following splashdown. \u2014 via Instagram",
@@ -1522,6 +1463,7 @@ const PHOTOS = [
   {t:edt("2026-04-06 11:25:36"),f:"55191470911_ed6d17c2be_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"200mm · f/8.0 · 1/1000s · ISO 400",sc:true,b:1,cid:"d5b"},
   {t:edt("2026-04-06 13:13:31"),f:"55193462360_e4366d4b48_o.jpg",p:"Unknown",loc:"Unknown",cam:"iPhone 17 Pro Max",set:"24mm · f/1.8 · 1/18s · ISO 800",sc:true,b:1},
   {t:edt("2026-04-06 13:33:24"),f:"55199650003_5df2686dc1_o.jpg",p:"NASA/Luna Posadas Nava",loc:"Science Evaluation Room, Houston",cam:"NIKON D5 + 24.0-70.0 mm f/2.8",set:"32mm · f/2.8 · 1/125s · ISO 800",sc:false,b:1},
+  {t:edt("2026-04-06 13:54:00"),f:"ig-nutella.mp4",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"Instagram Video",set:"1920×1080 · 12s",sc:true,b:1,v:true},
   {t:edt("2026-04-06 14:15:12"),f:"55195796542_759a8b698a_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/7.1 · 1/20s · ISO 5000",sc:true,b:1,cid:"d5b"},
   {t:edt("2026-04-06 14:15:22"),f:"55195796552_a8d5bffdc8_o.jpg",p:"Artemis II Crew",loc:"Orion Spacecraft",cam:"NIKON D5 + 14.0-24.0 mm f/2.8",set:"24mm · f/7.1 · 1/20s · ISO 5000",sc:true,b:1,cid:"d5b"},
   {t:edt("2026-04-06 14:19:17"),f:"55199404085_fdf82b3e68_o.jpg",p:"Reid Wiseman",loc:"Orion Spacecraft",cam:"NIKON D5 + 80.0-400.0 mm f/4.5-5.6",set:"80mm · f/5.6 · 1/500s · ISO 400",sc:true,b:1,cid:"d5a"},
@@ -2320,7 +2262,7 @@ const AUDIO = [
 
 let currentPhotoIdx = 0;
 let filteredPhotos = PHOTOS;
-let printBannerDismissed = false;
+// Print banner removed for now
 let audioMuted = true;
 let currentAudio = null;
 let lastAudioClip = null;
@@ -2715,8 +2657,7 @@ function updatePhoto() {
   } else {
     document.getElementById('descSection').style.display = 'none';
   }
-  // Show print banner only on select photos (placeholder: first photo), unless dismissed
-  document.getElementById('printBanner').style.display = (currentPhotoIdx === 0 && !printBannerDismissed) ? '' : 'none';
+  // Print banner removed for now
 
   // updateEventAndQuote(photo.t);
   drawTrajectory(photo.t);
@@ -3047,10 +2988,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' && currentPhotoIdx < filteredPhotos.length - 1) { currentPhotoIdx++; updatePhoto(); ensurePhotoInView(); }
 });
 
-document.getElementById('printClose').addEventListener('click', () => {
-  printBannerDismissed = true;
-  document.getElementById('printBanner').style.display = 'none';
-});
+// Print banner listener removed for now
 
 document.getElementById('muteBtn').addEventListener('click', function() {
   audioMuted = !audioMuted;
