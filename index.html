@@ -334,40 +334,35 @@
     padding: 5px 0;
     flex-shrink: 0;
   }
-  .download-link {
-    font-size: 11px;
-    color: #555;
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  .download-link:hover { color: #4FC3F7; }
   .desc-hover {
     position: relative;
-    font-size: 11px;
-    color: #555;
+    font-size: 12px;
+    color: #888;
     cursor: default;
+    letter-spacing: 0.3px;
     transition: color 0.15s;
   }
-  .desc-hover:hover { color: #4FC3F7; }
+  .desc-hover:hover { color: #B0BEC5; }
   .desc-hover-tip {
     display: none;
     position: absolute;
-    bottom: 24px;
+    bottom: 28px;
     left: 50%;
     transform: translateX(-50%);
-    background: #12121f;
-    border: 1px solid #333;
-    color: #ddd;
-    font-size: 12px;
-    line-height: 1.4;
-    padding: 8px 12px;
-    border-radius: 6px;
-    max-width: 400px;
+    background: rgba(12,12,24,0.95);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #ccc;
+    font-size: 12.5px;
+    line-height: 1.55;
+    padding: 12px 16px;
+    border-radius: 8px;
+    max-width: 440px;
     width: max-content;
     white-space: normal;
     z-index: 50;
     pointer-events: none;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+    backdrop-filter: blur(12px);
   }
   .desc-hover:hover .desc-hover-tip { display: block; }
 
@@ -582,7 +577,6 @@
     .meta-section { flex: 1; min-width: 140px; padding: 10px; }
     .meta-field { margin-bottom: 6px; }
     .meta-value.time-value { font-size: 13px; }
-    .download-link { font-size: 10px; padding: 3px 0; }
   }
 
   @media (max-width: 480px) {
@@ -664,9 +658,8 @@
       <div id="printBanner" style="display:none"></div>
     </div>
     <div class="photo-links">
-      <a id="downloadLink" class="download-link" download>Download full quality</a>
       <span class="desc-hover" id="descHover" style="display:none">
-        Image description
+        Image description ▾
         <span class="desc-hover-tip" id="descHoverTip"></span>
       </span>
     </div>
@@ -2634,8 +2627,6 @@ function updatePhoto() {
     titleRow.style.display = 'none';
     descHover.style.display = 'none';
   }
-  document.getElementById('downloadLink').href = photo.v ? ('web/' + safeSrc) : safeSrc;
-  document.getElementById('downloadLink').download = photo.f;
   document.getElementById('metaPhotographer').textContent = photo.p;
   document.getElementById('metaLocation').textContent = photo.loc;
   document.getElementById('metaTime').textContent = formatTime(photo.t);
