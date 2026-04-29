@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artemis II — Admin</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a14;
+  --bg-card: #12121f;
+  --bg-card-hover: #1a1a2e;
+  --bg-input: #0e0e1a;
+  --accent: #4FC3F7;
+  --accent-dim: #2a7da8;
+  --text: #e0e0e0;
+  --text-dim: #888;
+  --text-bright: #fff;
+  --border: #2a2a3e;
+  --enabled: #4caf50;
+  --disabled: #555;
+  --warning: #ffb300;
+  --danger: #ef5350;
+  --radius: 8px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+.header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-bright);
+  letter-spacing: 1px;
+}
+.header h1 span { color: var(--accent); }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.back-link { font-size: 14px; }
+.unsaved-indicator {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--warning);
+  font-weight: 500;
+}
+.unsaved-indicator.visible { display: flex; }
+.unsaved-dot {
+  width: 8px; height: 8px;
+  background: var(--warning);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Stats bar */
+.stats-bar {
+  padding: 12px 24px;
+  font-size: 13px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.stats-bar .stat { white-space: nowrap; }
+.stats-bar .stat strong { color: var(--text); }
+
+/* Toolbar */
+.toolbar {
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  margin-right: 12px;
+}
+.tab-btn {
+  padding: 7px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tab-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+.tab-btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+.tab-btn.active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+}
+
+/* Search */
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 8px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text-dim); }
+
+/* Filter buttons */
+.filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--accent-dim); color: var(--text); }
+.filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+/* Save button */
+.save-btn {
+  padding: 8px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #000;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.save-btn:hover { background: #6dd0ff; }
+
+/* Card list */
+.card-list {
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.card-list.hidden { display: none; }
+
+/* Photo card */
+.card {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: background 0.15s;
+  align-items: flex-start;
+}
+.card:hover { background: var(--bg-card-hover); }
+.card.disabled-card { opacity: 0.5; }
+
+.card-thumb {
+  width: 160px;
+  min-width: 160px;
+  height: 107px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #1a1a2e;
+}
+
+.card-toggle {
+  display: flex;
+  align-items: center;
+  min-width: 50px;
+  padding-top: 2px;
+}
+
+/* Toggle switch */
+.switch {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  cursor: pointer;
+}
+.switch input { display: none; }
+.switch .slider {
+  position: absolute;
+  inset: 0;
+  background: var(--disabled);
+  border-radius: 26px;
+  transition: background 0.2s;
+}
+.switch .slider::before {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  left: 3px; top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.switch input:checked + .slider { background: var(--enabled); }
+.switch input:checked + .slider::before { transform: translateX(20px); }
+
+/* Card body */
+.card-body { flex: 1; min-width: 0; }
+
+.card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.card-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+.card-field label {
+  color: var(--text-dim);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+.card-field input,
+.card-field textarea {
+  background: var(--bg-input);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  padding: 3px 8px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.card-field input:hover,
+.card-field textarea:hover { border-color: var(--border); }
+.card-field input:focus,
+.card-field textarea:focus { border-color: var(--accent); }
+.card-field input.title-input {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-bright);
+  width: 350px;
+  max-width: 100%;
+}
+.card-field input.time-input {
+  width: 210px;
+  color-scheme: dark;
+}
+.card-field input.short { width: 180px; }
+.card-field input.med { width: 260px; }
+.card-field textarea.desc-area {
+  width: 100%;
+  min-height: 60px;
+  resize: vertical;
+}
+
+.card-checks {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--text-dim);
+  align-items: center;
+}
+.card-checks label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.card-checks input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 15px; height: 15px;
+}
+
+/* Description toggle */
+.desc-toggle {
+  font-size: 12px;
+  color: var(--accent-dim);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px 0;
+  margin-top: 4px;
+}
+.desc-toggle:hover { color: var(--accent); }
+.desc-section { display: none; margin-top: 6px; }
+.desc-section.open { display: block; }
+
+/* Audio card */
+.audio-card {
+  display: flex;
+  gap: 14px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  align-items: center;
+  transition: background 0.15s;
+}
+.audio-card:hover { background: var(--bg-card-hover); }
+.audio-card.disabled-card { opacity: 0.5; }
+
+.audio-file {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.count-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  padding: 20px 24px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .header { padding: 12px 14px; }
+  .toolbar { padding: 12px 14px; }
+  .card-list { padding: 12px 14px; }
+  .card { flex-wrap: wrap; }
+  .card-field input.title-input { width: 100%; }
+  .card-field input.med { width: 100%; }
+}
+</style>
+<script src="photos.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <h1>ARTEMIS <span>II</span> — Admin</h1>
+  <div class="header-right">
+    <div id="unsaved" class="unsaved-indicator">
+      <div class="unsaved-dot"></div>
+      Unsaved changes
+    </div>
+    <a href="index.html" class="back-link">&larr; Back to Timeline</a>
+  </div>
+</div>
+
+<div class="stats-bar" id="stats-bar"></div>
+
+<div class="toolbar">
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="photos" onclick="switchTab('photos')">Photos / Videos</button>
+    <button class="tab-btn" data-tab="audio" onclick="switchTab('audio')">Audio</button>
+  </div>
+  <input type="text" class="search-input" id="search" placeholder="Search title, filename, photographer, location...">
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="enabled">Enabled Only</button>
+    <button class="filter-btn" data-filter="disabled">Disabled Only</button>
+    <button class="filter-btn" data-filter="videos">Videos Only</button>
+    <button class="filter-btn" data-filter="crew">Crew Photos Only</button>
+  </div>
+  <button class="save-btn" onclick="exportJSON()">Export photos.js</button>
+</div>
+
+<div class="card-list" id="photo-list"></div>
+<div class="card-list hidden" id="audio-list"></div>
+<div class="count-label" id="count-label"></div>
+
+<script>
+let data = null;
+let hasChanges = false;
+let currentTab = 'photos';
+let currentFilter = 'all';
+let searchQuery = '';
+
+// Load data from photos.js global
+data = PHOTO_DATA;
+updateStats();
+renderPhotos();
+renderAudio();
+
+function markChanged() {
+  hasChanges = true;
+  document.getElementById('unsaved').classList.add('visible');
+}
+
+function updateStats() {
+  if (!data) return;
+  const totalPhotos = data.photos.length;
+  const totalAudio = data.audio ? data.audio.length : 0;
+  const disabledPhotos = data.photos.filter(p => !p.enabled).length;
+  const disabledAudio = data.audio ? data.audio.filter(a => !a.enabled).length : 0;
+  const totalDisabled = disabledPhotos + disabledAudio;
+  const videos = data.photos.filter(p => p.video).length;
+  document.getElementById('stats-bar').innerHTML =
+    `<span class="stat"><strong>${totalPhotos}</strong> photos</span>` +
+    `<span class="stat"><strong>${videos}</strong> videos</span>` +
+    `<span class="stat"><strong>${totalAudio}</strong> audio</span>` +
+    `<span class="stat"><strong>${totalDisabled}</strong> disabled</span>`;
+}
+
+// Tabs
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('photo-list').classList.toggle('hidden', tab !== 'photos');
+  document.getElementById('audio-list').classList.toggle('hidden', tab !== 'audio');
+  updateCountLabel();
+}
+
+// Filters
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  currentFilter = btn.dataset.filter;
+  document.querySelectorAll('.filter-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.filter === currentFilter));
+  renderPhotos();
+  renderAudio();
+});
+
+// Search
+let searchTimer = null;
+document.getElementById('search').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchQuery = e.target.value.toLowerCase();
+    renderPhotos();
+    renderAudio();
+  }, 150);
+});
+
+function matchesSearch(item) {
+  if (!searchQuery) return true;
+  const fields = [
+    item.title || '', item.file || '', item.photographer || '',
+    item.location || '', item.desc || '', item.flickr_desc || ''
+  ];
+  return fields.some(f => f.toLowerCase().includes(searchQuery));
+}
+
+function matchesFilter(item) {
+  switch (currentFilter) {
+    case 'enabled': return item.enabled === true;
+    case 'disabled': return item.enabled === false;
+    case 'videos': return item.video === true;
+    case 'crew': return item.spacecraft === false && item.video === false;
+    default: return true;
+  }
+}
+
+// Time helpers
+function timeToDatetimeLocal(t) {
+  if (!t) return '';
+  return t.replace(' ', 'T');
+}
+function datetimeLocalToTime(v) {
+  if (!v) return '';
+  return v.replace('T', ' ');
+}
+
+// Render photos
+function renderPhotos() {
+  if (!data) return;
+  const container = document.getElementById('photo-list');
+  const filtered = data.photos.filter(p => matchesSearch(p) && matchesFilter(p));
+
+  const html = filtered.map((photo, _) => {
+    const idx = data.photos.indexOf(photo);
+    const disabledClass = photo.enabled ? '' : ' disabled-card';
+    return `<div class="card${disabledClass}" data-idx="${idx}">
+      <img class="card-thumb" src="web/${photo.file}" alt="" loading="lazy"
+           onerror="this.style.display='none'">
+      <div class="card-toggle">
+        <label class="switch">
+          <input type="checkbox" ${photo.enabled ? 'checked' : ''}
+                 onchange="setPhotoField(${idx},'enabled',this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="card-body">
+        <div class="card-row">
+          <div class="card-field">
+            <input class="title-input" value="${esc(photo.title || '')}"
+                   onchange="setPhotoField(${idx},'title',this.value)"
+                   placeholder="Title">
+          </div>
+          <div class="card-field">
+            <label>Time</label>
+            <input type="datetime-local" class="time-input"
+                   value="${timeToDatetimeLocal(photo.time)}"
+                   step="1"
+                   onchange="setPhotoField(${idx},'time',datetimeLocalToTime(this.value))">
+          </div>
+        </div>
+        <div class="card-row">
+          <div class="card-field">
+            <label>Photographer</label>
+            <input class="short" value="${esc(photo.photographer || '')}"
+                   onchange="setPhotoField(${idx},'photographer',this.value)">
+          </div>
+          <div class="card-field">
+            <label>Location</label>
+            <input class="short" value="${esc(photo.location || '')}"
+                   onchange="setPhotoField(${idx},'location',this.value)">
+          </div>
+        </div>
+        <div class="card-row">
+          <div class="card-field">
+            <label>Camera</label>
+            <input class="med" value="${esc(photo.camera || '')}"
+                   onchange="setPhotoField(${idx},'camera',this.value)">
+          </div>
+          <div class="card-field">
+            <label>Settings</label>
+            <input class="med" value="${esc(photo.settings || '')}"
+                   onchange="setPhotoField(${idx},'settings',this.value)">
+          </div>
+        </div>
+        <div class="card-row">
+          <div class="card-checks">
+            <label><input type="checkbox" ${photo.spacecraft ? 'checked' : ''}
+                   onchange="setPhotoField(${idx},'spacecraft',this.checked)"> Spacecraft</label>
+            <label><input type="checkbox" ${photo.video ? 'checked' : ''}
+                   onchange="setPhotoField(${idx},'video',this.checked)"> Video</label>
+            <label><input type="checkbox" ${photo.external ? 'checked' : ''}
+                   onchange="setPhotoField(${idx},'external',this.checked)"> External</label>
+          </div>
+          <span style="font-size:11px;color:var(--text-dim);font-family:monospace">${esc(photo.file)}</span>
+        </div>
+        <button class="desc-toggle" onclick="toggleDesc(this)">Show description</button>
+        <div class="desc-section">
+          <div class="card-field" style="width:100%">
+            <textarea class="desc-area" onchange="setPhotoField(${idx},'flickr_desc',this.value)"
+                      placeholder="Description...">${esc(photo.flickr_desc || '')}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = html;
+  updateCountLabel();
+}
+
+function renderAudio() {
+  if (!data || !data.audio) return;
+  const container = document.getElementById('audio-list');
+  const filtered = data.audio.filter(a => matchesSearch(a) && matchesFilterAudio(a));
+
+  const html = filtered.map((audio, _) => {
+    const idx = data.audio.indexOf(audio);
+    const disabledClass = audio.enabled ? '' : ' disabled-card';
+    return `<div class="audio-card${disabledClass}" data-aidx="${idx}">
+      <div class="card-toggle">
+        <label class="switch">
+          <input type="checkbox" ${audio.enabled ? 'checked' : ''}
+                 onchange="setAudioField(${idx},'enabled',this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="card-field">
+        <label>Time</label>
+        <input type="datetime-local" class="time-input"
+               value="${timeToDatetimeLocal(audio.time)}"
+               step="1"
+               onchange="setAudioField(${idx},'time',datetimeLocalToTime(this.value))">
+      </div>
+      <span class="audio-file">${esc(audio.file)}</span>
+      <div class="card-field" style="flex:1">
+        <label>Desc</label>
+        <input class="med" value="${esc(audio.desc || '')}"
+               onchange="setAudioField(${idx},'desc',this.value)">
+      </div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = html;
+  updateCountLabel();
+}
+
+function matchesFilterAudio(item) {
+  switch (currentFilter) {
+    case 'enabled': return item.enabled === true;
+    case 'disabled': return item.enabled === false;
+    case 'videos': return false;
+    case 'crew': return false;
+    default: return true;
+  }
+}
+
+function updateCountLabel() {
+  if (!data) return;
+  let count;
+  if (currentTab === 'photos') {
+    count = document.querySelectorAll('#photo-list .card').length;
+    document.getElementById('count-label').textContent = `Showing ${count} of ${data.photos.length} entries`;
+  } else {
+    count = document.querySelectorAll('#audio-list .audio-card').length;
+    const total = data.audio ? data.audio.length : 0;
+    document.getElementById('count-label').textContent = `Showing ${count} of ${total} entries`;
+  }
+}
+
+// Field setters
+function setPhotoField(idx, field, value) {
+  data.photos[idx][field] = value;
+  markChanged();
+  updateStats();
+  // Update disabled class visually
+  if (field === 'enabled') {
+    const card = document.querySelector(`.card[data-idx="${idx}"]`);
+    if (card) card.classList.toggle('disabled-card', !value);
+  }
+}
+
+function setAudioField(idx, field, value) {
+  data.audio[idx][field] = value;
+  markChanged();
+  updateStats();
+  if (field === 'enabled') {
+    const card = document.querySelector(`.audio-card[data-aidx="${idx}"]`);
+    if (card) card.classList.toggle('disabled-card', !value);
+  }
+}
+
+// Description toggle
+function toggleDesc(btn) {
+  const section = btn.nextElementSibling;
+  const open = section.classList.toggle('open');
+  btn.textContent = open ? 'Hide description' : 'Show description';
+}
+
+// Export
+function exportJSON() {
+  if (!data) return;
+  const json = JSON.stringify(data, null, 2);
+  // Export as photos.js (what the app actually loads)
+  const jsContent = 'const PHOTO_DATA = ' + json + ';\n';
+  const blob = new Blob([jsContent], { type: 'application/javascript' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'photos.js';
+  a.click();
+  URL.revokeObjectURL(url);
+  hasChanges = false;
+  document.getElementById('unsaved').classList.remove('visible');
+}
+
+// Warn on leave
+window.addEventListener('beforeunload', e => {
+  if (hasChanges) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
+// Escape HTML
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML.replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>
