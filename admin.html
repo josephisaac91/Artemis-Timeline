@@ -597,9 +597,11 @@ function renderPhotos() {
         <div class="card-row">
           <div class="card-checks">
             <label><input type="checkbox" ${photo.spacecraft ? 'checked' : ''}
-                   onchange="setPhotoField(${idx},'spacecraft',this.checked)"> Spacecraft</label>
+                   onchange="setPhotoField(${idx},'spacecraft',this.checked)"> Crew Photos</label>
             <label><input type="checkbox" ${photo.video ? 'checked' : ''}
                    onchange="setPhotoField(${idx},'video',this.checked)"> Video</label>
+            <label><input type="checkbox" ${photo.exterior ? 'checked' : ''}
+                   onchange="setPhotoField(${idx},'exterior',this.checked)"> Exterior</label>
             <label><input type="checkbox" ${photo.external ? 'checked' : ''}
                    onchange="setPhotoField(${idx},'external',this.checked)"> External</label>
           </div>

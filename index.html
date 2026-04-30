@@ -734,6 +734,7 @@
 <div class="controls-row">
   <button class="filter-btn active" data-filter="all">All Photos and Video</button>
   <button class="filter-btn" data-filter="spacecraft">Crew Photos Only</button>
+  <button class="filter-btn" data-filter="exterior">Spacecraft Exterior</button>
   <span class="filter-sep">|</span>
   <button class="filter-btn cam-filter" data-cam="d5a" title="Nikon D5 body 3500015 — on Orion">D5 #1</button>
   <button class="filter-btn cam-filter" data-cam="d5b" title="Nikon D5 body 3500017 — on Orion">D5 #2</button>
@@ -912,6 +913,8 @@ function loadPhotoData() {
       else if (c.includes('HERO')) entry.cid = 'gopro';
       else if (c.includes('IPHONE')) entry.cid = 'iphone';
     }
+    // Exterior camera flag — GoPro HERO cameras mounted on spacecraft exterior
+    if ((p.camera || '').includes('HERO') || p.exterior) entry.exterior = true;
     if (p.video) entry.v = true;
     if (p.external) entry.ext = true;
     if (p.desc) entry.desc = p.desc;
@@ -2127,7 +2130,7 @@ document.querySelectorAll('[data-filter]').forEach(btn => {
     clearAllFilters();
     this.classList.add('active');
     const filter = this.dataset.filter;
-    filteredPhotos = filter === 'all' ? PHOTOS : filter === 'videos' ? PHOTOS.filter(p => p.v) : PHOTOS.filter(p => p.sc);
+    filteredPhotos = filter === 'all' ? PHOTOS : filter === 'videos' ? PHOTOS.filter(p => p.v) : filter === 'exterior' ? PHOTOS.filter(p => p.exterior) : PHOTOS.filter(p => p.sc);
     currentPhotoIdx = 0;
     viewStart = T_START; viewEnd = T_END;
     updatePhoto();
