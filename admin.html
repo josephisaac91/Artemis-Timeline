@@ -520,7 +520,7 @@ function matchesFilter(item) {
     case 'enabled': return item.enabled === true;
     case 'disabled': return item.enabled === false;
     case 'videos': return item.video === true;
-    case 'crew': return item.spacecraft === false && item.video === false;
+    case 'crew': return item.spacecraft === true && item.video === false;
     default: return true;
   }
 }
@@ -709,7 +709,10 @@ function setAudioField(idx, field, value) {
   data.audio[idx][field] = value;
   markChanged();
   updateStats();
-  if (field === 'enabled') {
+  if (field === 'time') {
+    data.audio.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+    renderAudio();
+  } else if (field === 'enabled') {
     const card = document.querySelector(`.audio-card[data-aidx="${idx}"]`);
     if (card) card.classList.toggle('disabled-card', !value);
   }
@@ -764,6 +767,8 @@ function toggleDesc(btn) {
 // Export
 function exportJSON() {
   if (!data) return;
+  data.photos.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+  if (data.audio) data.audio.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
   const json = JSON.stringify(data, null, 2);
   // Export as photos.js (what the app actually loads)
   const jsContent = 'const PHOTO_DATA = ' + json + ';\n';
