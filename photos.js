@@ -835,7 +835,8 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "A Crescent View of Home",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-02 08:26:45",
@@ -849,7 +850,8 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "Earth Up Close from Orbit",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-02 14:45:18",
@@ -863,7 +865,8 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "Watching Earth Shrink",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-02 14:53:12",
@@ -878,7 +881,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Artemis II Looking Back at Earth",
       "flickr_desc": "art002e000191 (April 3, 2026) - A view of Earth taken by NASA astronaut and Artemis II commander Reid Wiseman from one of the Orion spacecraft's four main windows after completing the translunar injection burn on April 2, 2026. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-02 16:55:15",
@@ -893,7 +897,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Artemis II Captures the Terminator Line",
       "flickr_desc": "art002e000190 (April 3, 2026) - A view of Earth taken by NASA astronaut and Artemis II Commander Reid Wiseman from one of the Orion spacecraft's four windows after completing the translunar injection burn on April 2, 2026. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-02 17:05:29",
@@ -907,7 +912,8 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "Earth from the Outbound Coast",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-02 18:24:11",
@@ -1026,7 +1032,8 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "Earth Through Orion's Window",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-02 19:45:21",
@@ -1071,7 +1078,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Artemis II Captures Dark Side of the Earth",
       "flickr_desc": "art002e000193 (April 3, 2026) - A view of a backlit Earth taken by NASA astronaut and Artemis II Commander Reid Wiseman from one of the Orion spacecraft's window after completing the translunar injection burn on April 2, 2026. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-02 20:27:39",
@@ -1086,7 +1094,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Hello, World",
       "flickr_desc": "art002e000192 (April 3, 2026) - A view of Earth taken by NASA astronaut and Artemis II Commander Reid Wiseman from one of the Orion spacecraft's window after completing the translunar injection burn on April 2, 2026. The image features two auroras (top right and bottom left) and zodiacal light (bottom right) is visible as the Earth eclipses the Sun. Venus is shown on the bottom right of the image. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-03 08:48:33",
@@ -1161,7 +1170,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Eyes on Earth",
       "flickr_desc": "art002e009166 (April 3, 2026) - A sliver of Earth is illuminated against the blackness of space in this photo taken by an Artemis II crew member through an Orion spacecraft window on the third day of the mission. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-03 19:38:22",
@@ -1176,7 +1186,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Peek at Earth",
       "flickr_desc": "art002e009174 (April 3, 2026) - Peering out the window of the Orion spacecraft at a sliver of the Earth illuminated by the blackness of space. This image was taken by an Artemis II crew member on the third day of the mission. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-03 19:38:59",
@@ -1191,7 +1202,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Crescent Earth",
       "flickr_desc": "art002e004437 (April 3, 2026) - A sliver of Earth is illuminated against the blackness of space in this photo taken by an Artemis II crew member through an Orion spacecraft window on the third day of the mission. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-03 19:44:47",
@@ -1206,7 +1218,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "To the Moon",
       "flickr_desc": "art002e004438 (April 3, 2026) - A view of the Moon taken by an Artemis II crewmember through the window of the Orion spacecraft on the third day of the mission. The image includes a portion of the Orientale basin (far left), a first for humans and human eyes. Until today, only robotic imagers have seen this region of our Moon. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-03 19:48:56",
@@ -1221,7 +1234,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "CSA Astronaut Jeremy Hansen Takes a Look Through Orion's Window",
       "flickr_desc": "art002e004439 (April 3, 2026) - CSA (Canadian Space Agency) astronaut Jeremy Hansen \u2013 in the center of the image \u2013 peers out the window of the Orion spacecraft on day 3 of NASA's Artemis II mission. The controls over the commander and pilot seats are illuminated in the foreground, but the cabin is otherwise dark to avoid unnecessary glares on the windows. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-03 19:49:20",
@@ -1236,7 +1250,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Illuminated in Orion",
       "flickr_desc": "art002e004440 (April 3, 2026) - NASA astronaut Christina Koch is illuminated by a screen inside the darkened Orion spacecraft on the third day of the agency's Artemis II mission. To the right of the image's center, CSA (Canadian Space Agency) astronaut Jeremy Hansen is seen in profile peering out of one of Orion's windows. Lights are turned off to avoid glare on the windows. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-03 22:03:18",
@@ -1251,7 +1266,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Closing in on the Moon",
       "flickr_desc": "art002e009006 (April 4, 2026) - The Artemis II crew took this photo on day 4 of their journey to the Moon. In it, the Moon is oriented with the South Pole at the top and are beginning to see parts of the lunar far side. Orientale basin is on the right edge of the lunar disk in this image. Artemis II marks the first time that humans have seen the entire basin. The Artemis II crew will continue to observe Orientale from multiple angles as they approach the Moon and throughout the lunar flyby. Orientale is the textbook multi-ring impact basin used as a baseline to compare other impact craters on rocky worlds from Mercury to Pluto. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-04 00:34:19",
@@ -1266,7 +1282,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Unique Perspective of Home",
       "flickr_desc": "art002e004450 (April 4, 2026) - Earth is illuminated against the blackness of space in this photo taken by an Artemis II crew member through an Orion spacecraft window. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-04 01:06:49",
@@ -1281,7 +1298,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Our Home Planet",
       "flickr_desc": "art002e004462 (April 4, 2026) - A sliver of Earth is illuminated against the blackness of space in this photo taken by an Artemis II crew member through an Orion spacecraft window. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-04 11:35:00",
@@ -1414,7 +1432,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "One Day Closer to the Moon",
       "flickr_desc": "art002e009186 (April 5, 2026) - Peering out one of the four windows near the display console on the Orion spacecraft, the Earth is illuminated by the blackness of space and grows smaller as the crew journeys closer to the Moon. This image was taken by an Artemis II crew member on the fourth day of the mission. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-05 02:39:36",
@@ -1429,7 +1448,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Mother Earth",
       "flickr_desc": "art002e009205 (April 4, 2026) - A thin arc glowing in the darkness of space. Sunlight traces the curves of the ocean and clouds, while the rest of the planet fades into shadow. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-05 12:31:00",
@@ -1459,7 +1479,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Quick Shave Before Lunar Flyby",
       "flickr_desc": "art002e009211 (April 6, 2026) - Artemis II mission specialist and CSA (Canadian Space Agency) astronaut Jeremy Hansen enjoys a shave inside the Orion spacecraft during Flight Day 5 and ahead of the crew's lunar flyby on April 6, 2026. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-05 22:10:46",
@@ -1504,7 +1525,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Jeremy Hansen Looks Back Home",
       "flickr_desc": "art002e009272 (April 6, 2026) - Artemis II mission specialist and CSA (Canadian Space Agency) astronaut Jeremy Hansen peers out one of the Orion spacecraft's windows looking back at Earth ahead of the crew's lunar flyby on April 6, 2026. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-05 23:43:29",
@@ -1519,7 +1541,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Reflections of Earth with Victor Glover",
       "flickr_desc": "art002e009273 (April 6, 2026) - Artemis II pilot and NASA astronaut Victor Glover peers out one of the Orion spacecraft's windows looking back at Earth ahead of the crew's lunar flyby on April 6, 2026. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-05 23:45:53",
@@ -1534,7 +1557,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Home, Sweet Home",
       "flickr_desc": "art002e009274 (April 6, 2026) - Artemis II mission specialist and NASA astronaut Christina Koch looks out one of the Orion spacecraft's windows back at Earth ahead of the crew's lunar flyby on April 6, 2026. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-05 23:48:55",
@@ -1549,7 +1573,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Lunar Looking",
       "flickr_desc": "art002e009275 (April 6, 2026) - Artemis II commander and NASA astronaut Reid Wiseman looks out one of the Orion spacecraft's main cabin windows at the Moon ahead of the crew's lunar flyby on April 6, 2026. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 01:45:17",
@@ -1564,7 +1589,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Goodnight Moon",
       "flickr_desc": "art002e009210 (April 6, 2026) - Before going to sleep on flight day 5, the Artemis II crew snapped one more photo of the Moon, as it drew close in the window of the Orion spacecraft. Orion and the four humans aboard entered the lunar sphere of influence at 12:37 a.m. EDT on April 6, at the tail end of the fifth day of their mission. That marked the point at which the Moon's gravity had a stronger pull on the spacecraft than the Earth's. Artemis II's closest approach to the Moon will come on flight day 6, as they swing around the far side before beginning their journey back to Earth. About an hour after entering the lunar sphere of influence, Artemis II Mission Specialist Christina Koch said, &quot;We are now falling to the Moon rather than rising away from Earth. It is an amazing milestone!&quot; Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 11:25:36",
@@ -1579,7 +1605,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Even Closer Now",
       "flickr_desc": "art002e009276 (April 6, 2026) - In this view of the Moon, the near side (the hemisphere we see from Earth), is visible at the top half of the Moon disk. It is identifiable by the dark splotches. These are ancient lava flows from a time early in the Moon\u2019s history when it was volcanically active. The large crater that appears below the lava flows, dark in the center, is Orientale basin, a nearly 600-mile-wide crater that straddles the Moon\u2019s near and far sides as is partly visible from Earth on the edge of the Moon. In this image, we have a full view of the crater. Everything below the crater is the far side, the hemisphere we don\u2019t get to see from Earth because the Moon rotates on its axis at the same rate that it orbits round us. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-06 13:13:31",
@@ -1639,7 +1666,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Mesmerizing Moon",
       "flickr_desc": "art002e014195 (April 6, 2026) \u2013 NASA astronaut and Artemis II Commander Reid Wiseman pictured here in the Orion spacecraft during the Artemis II lunar flyby. Wiseman and his fellow crewmates spent approximately seven hours taking turns at the Orion windows capturing science data to share with their team back on Earth. At closest approach, they came within 4,067 miles of the Moon\u2019s surface. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-06 14:15:22",
@@ -1654,7 +1682,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Window Seat for the Flyby",
       "flickr_desc": "art002e014198 (April 6, 2026) \u2013 NASA astronaut and Artemis II Commander Reid Wiseman taking a moment during the seven-hour lunar observation period where the crew reported to the ground team their observations including color nuances, which will help enhance scientific understandings of the Moon. At the beginning of the window, as Orion approaches the Moon on the near side, the side we can see from Earth, people in parts of the eastern hemisphere can view some of the same features the astronauts will observe. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-06 14:19:17",
@@ -1669,7 +1698,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Overexposed Moon for Analysis",
       "flickr_desc": "art002e009582 (April 6, 2026) \u2013 In this view, most of the Moon\u2019s surface is illuminated as captured by the Artemis II crew during their flyby. To support scientific analysis, the lunar science team requested a series of images of the same scene using different exposure settings\u2014including overexposed, underexposed, and standard images. Each variation highlights different aspects of the surface: brighter exposures can reveal faint features in shadowed regions, while darker exposures help preserve detail in highly reflective areas. Together, these images provide complementary data that allow scientists to better analyze the Moon\u2019s surface composition, texture, and geologic features. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 14:19:35",
@@ -1684,7 +1714,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Moment with the Moon",
       "flickr_desc": "art002e009277 (April 6, 2026) - In this view of the Moon, taken by the Artemis II crew at 2:19 p.m. EDT, just before the crew began their observation period, Orientale basin is visible in the center, with a black patch of ancient lava in the center that punched through the Moon\u2019s crust in an eruption billions of years ago. This 600-mile-wide impact crater lies along the transition between the near and far sides and is sometimes partly visible from Earth. The small, bright crater to its left is Byrgius, which has 250-mile rays extending out from its basin. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 14:22:45",
@@ -1699,7 +1730,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Distant Crescent of Home",
       "flickr_desc": "art002e014211 (April 6, 2026) - Seen side by side from deep space, the Moon and Earth share the frame\u2014yet Earth appears as a small, delicate crescent against the blackness beyond. At this stage, Orion is approaching the Moon\u2019s farside, placing the image earlier in the flyby, before closest approach during Artemis II. Though both worlds are visible, the scale and distance between them become immediately clear, offering a powerful perspective of how far the crew has traveled from home. Even in its reduced size, Earth\u2019s soft glow stands out, a reminder of the only world we\u2019ve ever known. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-06 14:41:43",
@@ -1714,7 +1746,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Distant Waning Crescent Earth",
       "flickr_desc": "art002e014225 (April 6, 2026) \u2013 Seen from afar, Earth appears as a small, delicate waning crescent suspended in the darkness of space, captured by the crew during the Artemis II mission. Only a thin sliver of the planet is illuminated, resembling the familiar crescent phases often seen when observing the Moon from Earth. Despite its distance, faint hints of Earth\u2019s blue tones and cloud patterns are visible, offering a striking perspective of our home planet from deep space. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-06 14:43:49",
@@ -1729,7 +1762,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Quiet Moment for Observations",
       "flickr_desc": "art002e014231 (April 6, 2026) \u2013 NASA astronaut and Artemis II Commander Reid Wiseman taking a moment during the seven-hour lunar observation period where the crew reported to the ground team their observations including color nuances, which will help enhance scientific understandings of the Moon. At the beginning of the window, as Orion approaches the Moon on the near side, the side we can see from Earth, people in parts of the eastern hemisphere can view some of the same features the astronauts will observe. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-06 14:44:25",
@@ -1744,7 +1778,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Crew Scientist",
       "flickr_desc": "art002e009290 (April 6, 2026) \u2013 Artemis II Commander Reid Wiseman peers out the window of the Orion spacecraft just as his first lunar observation period of the day begins. Throughout the course of the sixth day of the mission, Wiseman and his crewmates took turns at the windows, capturing images and video of the Moon, along with recorded observations. The astronauts are members of the science team, and the data they collect will shape the future of lunar science. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-06 14:45:19",
@@ -1774,7 +1809,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Capturing the Lunar Flyby from Orion",
       "flickr_desc": "art002e014235 (April 6, 2026) \u2013 CSA (Canadian Space Agency) astronaut and Artemis II Mission Specialist Jeremy Hansen is seen taking images through the Orion spacecraft window during the Artemis II lunar flyby. Hansen and his fellow crewmates spent approximately seven hours taking turns at the Orion windows capturing science data to share with their team back on Earth. At closest approach, they came within 4,067 miles of the Moon\u2019s surface. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-06 14:55:26",
@@ -1804,7 +1840,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A \"Handprint\" on the Moon",
       "flickr_desc": "art002e012010 (April 6, 2026) - Resembling a \u201chandprint\u201d to the Artemis II crew, this view highlights contrasting dark and light features on the Moon\u2019s surface. From top to bottom, the darker regions include Oceanus Procellarum, Mare Humorum\u2014known as the \u201cSea of Moisture\u201d\u2014and the crater Byrgius A. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:04:00",
@@ -1819,7 +1856,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Ancient Lava on the Moon",
       "flickr_desc": "art002e012028 (April 6, 2026) - The Artemis II crew captured a close-up snapshot of the near side of the Moon as NASA\u2019s Orion spacecraft approached for the lunar flyby. The near side, characterized by the dark patches of ancient lava, is visible on the top third of the lunar disk. Aristarchus crater is the bright white dot in the midst of a dark grey lava flow at the top of the image. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:05:44",
@@ -1834,7 +1872,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Keeper of the Night Sky",
       "flickr_desc": "art002e009278 (April 6, 2026) - Just over half of the Moon fills the left half of the image. The near side, characterized by the dark patches of ancient lava, is visible on the top third of the lunar disk. Orientale basin, a round crater in the center with a black patch of ancient lava in the center, is wrapped in rings of mountains. The round black spot northeast of Orientale is Grimaldi crater, and Aristarchus crater is the bright white dot in the midst of a dark grey lava flow at the top of the image. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:06:26",
@@ -1849,7 +1888,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "The Rings of the Orientale Basin",
       "flickr_desc": "art002e012090 (April 6, 2026) - In this view of the Moon, the Artemis II crew captured an intricate snapshot of the rings of the Orientale basin, one of the Moon\u2019s youngest and best-preserved large impact craters on his first shift during the lunar flyby observation period. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:06:43",
@@ -1864,7 +1904,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Vavilov Crater Along the Hertzsprung Basin Rim",
       "flickr_desc": "art002e012093 (April 6, 2026) - Hertzsprung Basin comes into view with its distinctive two concentric rings of mountains, revealing the scale of this ancient impact structure. Near the lower left, Vavilov crater\u2014identified by its central peak\u2014stands out, a feature often described by the Artemis II crew during their lunar flyby. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:07:44",
@@ -1879,7 +1920,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Cross Section of Lunar Geology",
       "flickr_desc": "A diverse set of lunar features is visible in this view, including the brightly colored Aristarchus crater, whose high reflectivity stands out against the surrounding terrain. Nearby, the Marius Hills region reveals a field of volcanic domes and cones, evidence of past lunar volcanism. The sinuous Reiner Gamma swirl contrasts with the darker mare surface, while rays from Glushko crater streak across the plains. At the bottom of the frame, the dark-floored Grimaldi crater anchors the scene. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:08:18",
@@ -1894,7 +1936,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Seriously Moonstruck",
       "flickr_desc": "art002e012129 (April 6, 2026) - The lower half of the Moon hangs suspended in time in this photograph from the Artemis II crew during the lunar flyby observation period. In the upper center of the photo, the Orientale basin is the prominent feature, with a black patch of ancient lava in the center that punched through the Moon\u2019s crust in an eruption billions of years ago. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:09:26",
@@ -1909,7 +1952,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Crater of Remembrance",
       "flickr_desc": "art002e012153 (April 6, 2026) - The small, bright spot in the center of the image is the crater that the Artemis II crew have proposed as Carroll, after Commander Reid Wiseman\u2019s late wife. About 3.5 miles across (5.6 km in diameter), the proposed Carroll crater is on the nearside of the lunar surface on the western edge and would be visible from Earth with powerful telescopes. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:11:52",
@@ -1924,7 +1968,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Moodier Moon",
       "flickr_desc": "art002e012178 (April 7, 2026) - A shot from early in the Artemis II lunar flyby, taken with a smaller aperture setting, shows a moodier version of the Moon than some of the other flyby images with more typical lighting settings. The four crew members spent about 7 hours photographing and recording observations of the Moon as they flew around the far side on April 6, 2026.",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:12:00",
@@ -1954,7 +1999,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Capture My Good Side \\u2013 The Moon",
       "flickr_desc": "art002e012183 (April 6, 2026) - On the first shift during the lunar flyby observation period, the Artemis II crew captured more than two-thirds of the Moon showcasing the intricate features of the nearside. The 600-mile-wide impact crater, Orientale basin, lies along the transition between the near and far sides and is sometimes partly visible from Earth. The round black spot northeast of Orientale is Grimaldi crater, known for its exceptionally dark mare lava floor and heavily degraded rim. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:18:24",
@@ -1984,7 +2030,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Tapestry of Lunar Landmarks",
       "flickr_desc": "art002e012261 (April 6, 2026) - Multiple lunar landmarks come into view in this image, many of which were highlighted during the Artemis II crew\u2019s observation call. Visible features include Ohm crater, Oceanus Procellarum, Grimaldi crater, Pierazzo crater, the newly proposed Carroll crater, and the expansive Hertzsprung Basin\u2014together illustrating a range of geologic terrains, from dark volcanic plains to heavily cratered highlands and the remnants of ancient impact basins.",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:28:57",
@@ -1999,7 +2046,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Swoon at the Moon",
       "flickr_desc": "art002e012273 (April 6, 2026) - This view of the southwest portion of Orientale Basin highlights its prominent annular ring\u2014a sweeping arc of mountainous terrain formed by the immense energy of an ancient impact. The ring structure rises above the surrounding surface, tracing the basin\u2019s outer boundary and revealing the layered, multi-ring nature of one of the Moon\u2019s most well-preserved impact features. Apollo-era observers nicknamed this formation \u201cthe kiss,\u201d reflecting its distinctive, curved shape. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:34:27",
@@ -2014,7 +2062,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Dark Craters, Bright Views",
       "flickr_desc": "art002e009627 (April 6, 2026) \u2013 During the first shift of the lunar flyby observation period, the Artemis II crew captured more than two-thirds of the Moon, highlighting surface details on the nearside, including the 600-mile-wide impact crater, Orientale basin, along the boundary between the near and far sides. They also captured the Grimaldi crater, a dark, round feature northeast of Orientale, known for its dark mare lava floor and heavily worn rim. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:41:45",
@@ -2029,7 +2078,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "It's All in the Details",
       "flickr_desc": "art002e009279 (April 6, 2026) \u2013 During their lunar flyby observation period, the Artemis II crew captured this image at 3:41 p.m. EDT, showing the rings of the Orientale basin, one of the Moon\u2019s youngest and best-preserved large impact craters. These concentric rings offer scientists a rare window into how massive impacts shape planetary surfaces, helping refine models of crater formation and the Moon\u2019s geologic history. At the 10 o\u2019clock position of the Orientale basin, the two smaller craters \u2013 which the Artemis II crew has suggested be named Integrity and Carroll \u2013 are visible. These features highlight how crew observations can directly support surface feature identification and real-time science. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:46:20",
@@ -2044,7 +2094,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Crossing into the Lunar Farside",
       "flickr_desc": "art002e010014 (April 6, 2026) \u2013 A bright portion of the Moon is visible in this image. If you look closely, you can see linear, pitted features known as \u201ccrater chains\u201d radiating from the Orientale basin, an impact crater with a patch of ancient lava at its center, visible in the bottom center of the image. These crater chains formed about 3.8 billion years ago, when rocks spewed from the collision that formed Orientale landed in lines extending away from the crater. These chains are found near other large craters on the Moon, but we don\u2019t get to see them on Earth because our planet\u2019s crust has been turned over so many times through plate tectonics and largely erased by rain, wind, and ice. In the upper left corner of the Moon disk is a line called the terminator, the boundary between lunar day and night. Here, low-angle sunlight skims the surface, casting dramatic shadows that expose the area\u2019s topography \u2014 or the shape of its surface. Glushko crater is the bright spot just to the left of the dark mare, or \u201csea\u201d of ancient lava flows on the near side of the Moon. It\u2019s identifiable by the bright rays that shoot across the mare, some hundreds of miles away. These rays are made of ejected material after the collision that formed Glushko. Glushko and its rays are brighter than the surrounding area because that younger has experienced less weathering from radiation and impacts. Oceanus Procellarum, the largest lava-filled region on the Moon, spans the horizon. The Aristarchus crater, the bright spot in the sea of lava, creeps toward the right edge of the Moon. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 15:57:39",
@@ -2173,7 +2224,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 17:30:00",
@@ -2203,7 +2255,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "The Edge of Darkness",
       "flickr_desc": "art002e010208 (April 6, 2026) - As the Artemis II crew flew over the terminator, the astronauts described this boundary between day and night as &quot;anything but a straight line.&quot; Crater rims along the terminator stand out as &quot;islands&quot; in the night. Giant chains of craters emanating from the 3.7-billion-year-old Orientale basin can be seen scouring the surface, stretching almost to the terminator. This tells a geologic story: these crater chains produced by the Orientale impact event mar the surface of the relatively flat Hertzsprung Basin (center of this image), which means that Hertzsprung Basin must be even older than Orientale! Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 17:45:04",
@@ -2218,7 +2271,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "The Moon's Great Scar",
       "flickr_desc": "art002e010232 (April 6, 2026) \u2013 During the lunar flyby observation period, the Artemis II crew captures a detailed image of the Orientale basin, a 600-mile-wide impact crater marked by a dark patch of ancient lava that erupted through the Moon\u2019s crust billions of years ago. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 17:46:35",
@@ -2233,7 +2287,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Shadows at the Edge of Lunar Day",
       "flickr_desc": "art002e009281 (April 6, 2026) \u2013 The Artemis II crew captures a portion of the Moon coming into view along the terminator \u2013 the boundary between lunar day and night \u2013 where low-angle sunlight casts long, dramatic shadows across the surface. This grazing light accentuates the Moon\u2019s rugged topography, revealing craters, ridges, and basin structures in striking detail. Features along the terminator such as Jule Crater, Birkhoff Crater, Stebbins Crater, and surrounding highlands stand out. From this perspective, the interplay of light and shadow highlights the complexity of the lunar surface in ways not visible under full illumination. The image was captured about three hours into the crew\u2019s lunar observation period, as they flew around the far side of the Moon on the sixth day of the mission. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 17:49:02",
@@ -2248,7 +2303,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Craters of Time",
       "flickr_desc": "art002e010399 (April 6, 2026) \u2013 During a lunar flyby observation period, the Artemis II crew captures craters dotting the surface of the Moon, revealing its rugged, ancient surface. This scarred landscape reflects a long history of cosmic collisions. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 17:49:43",
@@ -2263,7 +2319,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Shadows Across Vavilov Crater",
       "flickr_desc": "A close-up view taken by the Artemis II crew of Vavilov Crater on the rim of the older and larger Hertzsprung basin. The right portion of the image shows the transition from smooth material within an inner ring of mountains to more rugged terrain around the rim. Vavilov and other craters and their ejecta are accentuated by long shadows at the terminator, the boundary between lunar day and night. The image was captured with a handheld camera at a focal length of 400 mm, as the crew flew around the far side of the Moon. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 17:50:25",
@@ -2293,7 +2350,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Ready for a Close Up",
       "flickr_desc": "art002e009283 (April 6, 2026) \u2013 Captured by the Artemis II crew, the heavily cratered terrain of the eastern edge of the South Pole-Aitken basin is seen with the shadowed terminator \u2013 the boundary between lunar day and night \u2013 at the top of the image. The South Pole-Aitken basin is the largest and oldest basin on the Moon, providing a glimpse into an ancient geologic history built up over billions of years. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:02:22",
@@ -2323,7 +2381,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Earthset Over the Lunar Limb",
       "flickr_desc": "Earth appears tiny as the Moon looms large in this photo taken by the Artemis II crew during their lunar flyby on April 6, 2026. Taken 36 minutes before Earthset, our home planet is visible in the blackness of space off the limb of the illuminated Moon. Earth is in a crescent phase, with sunlight coming from the right. Orientale mare basin, with its dark floor of cooled lava and outer rings of mountains, covers nearly the lower third of the imaged lunar surface. Different colors in the mare hint at its mineral composition. The lines of small indentations above Orientale are secondary crater chains, formed by material ejected during a violent primary impact. Both of the new craters that the Artemis II crew has suggested names for \u2013 Integrity and Carroll \u2013 are in full view. The edge of the visible surface of the Moon is called the \u201clunar limb.\u201d Seen from afar, it almost looks like a circular arc \u2013 except when backlit, as in other images captured by the Artemis II crew. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:10:17",
@@ -2366,7 +2425,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:33:35",
@@ -2411,7 +2471,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "The Edge of Two Worlds",
       "flickr_desc": "art002e009285 (April 6, 2026) \u2013 Our planet draws closer to passing behind the Moon in this image captured by the Artemis II crew during their lunar flyby, about six minutes before Earthset. Earth is in a crescent phase, with sunlight coming from the right. The dark portion of Earth is experiencing nighttime. On Earth\u2019s day side, swirling clouds are visible over muted blue in the Australia and Oceania region. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:35:56",
@@ -2452,7 +2513,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:40:47",
@@ -2467,7 +2529,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Peeking at the Earth",
       "flickr_desc": "art002e009286 (April 6, 2026) \u2013 As the Artemis II crew came close to passing behind the Moon and experiencing a planned loss of signal, they captured this image of a crescent Earth setting on the Moon\u2019s limb. The edge of the visible surface of the Moon is called the \u201clunar limb.\u201d Seen from afar, it almost looks like a circular arc \u2013 except when backlit, as in other images captured by the Artemis II crew. In this photo, the dark portion of Earth is experiencing nighttime, while Australia and Oceania are in the daylight. In the foreground, the Ohm crater is visible, with terraced edges and a flat floor interrupted by central peaks\u2014formed when the surface rebounded upward during the impact that created the crater. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:41:22",
@@ -2482,7 +2545,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A New View of the Moon",
       "flickr_desc": "art002e009287 (April 6, 2026) \u2013 Earth sets at 6:41 p.m. EDT, April 6, 2026, over the Moon\u2019s curved limb in this photo captured by the Artemis II crew during their journey around the far side of the Moon. Orientale basin is perched on the edge of the visible lunar surface. Hertzsprung Basin appears as two subtle concentric rings, which are interrupted by Vavilov, a younger crater superimposed over the older structure. The lines of indentations are secondary crater chains formed by ejecta from the massive impact that created Orientale. The dark portion of Earth is experiencing nighttime. On Earth\u2019s day side, swirling clouds are visible over the Australia and Oceania region. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:41:37",
@@ -2497,7 +2561,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Earthset",
       "flickr_desc": "art002e009288 (April 6, 2026) \u2013 Earthset captured through the Orion spacecraft window at 6:41 p.m. EDT, April 6, 2026, during the Artemis II crew\u2019s flyby of the Moon. A muted blue Earth with bright white clouds sets behind the cratered lunar surface. The dark portion of Earth is experiencing nighttime. On Earth\u2019s day side, swirling clouds are visible over the Australia and Oceania region. In the foreground, Ohm crater has terraced edges and a flat floor interrupted by central peaks\u2014formed when the surface rebounded upward during the impact that created the crater. Image Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:41:58",
@@ -2510,7 +2575,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:41:58",
@@ -2525,7 +2591,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Setting Earth",
       "flickr_desc": "art002e009289 (April 6, 2026) \u2013 The lunar surface fills the frame in sharp detail, as seen during the Artemis II lunar flyby, while a distant Earth sets in the background. This image was captured at 6:41 p.m. EDT, on April 6, 2026, just three minutes before the Orion spacecraft and its crew went behind the Moon and lost contact with Earth for 40 minutes before emerging on the other side. In this image, the dark portion of Earth is experiencing nighttime, while on its day side, swirling clouds are visible over the Australia and Oceania region. In the foreground, Ohm crater shows terraced edges and a relatively flat floor marked by central peaks \u2014 formed when the surface rebounded upward during the impact that created the crater. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:42:14",
@@ -2570,7 +2637,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Breathtaking Earthset from Orion",
       "flickr_desc": "art002e021278 (April 6, 2026) \u2013 Echoing the iconic Earthrise photo captured by the Apollo 8 astronauts in 1968, during the lunar flyby, the Artemis II crew captured a shot of Earthset as they passed behind the Moon\u2019s far side. It is one of many photos taken during the seven-hour lunar flyby by the Artemis II crew on the Orion spacecraft. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:42:45",
@@ -2585,7 +2653,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Taking a Peek at Earth from the Far Side of the Moon",
       "flickr_desc": "art002e021283 (April 6, 2026) \u2013 The Earth appears to be peeking out over the horizon of the Moon,but pictured here is actually an Earthset. During an Earthset, the planet appears to sink below the lunar horizon. In this scene, a partially lit crescent Earth drops behind the Moon as seen by crew on the Orion spacecraft. The image also shows the vast canvas of the Moon\u2019s surface with its overlapping craters and basins. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 18:42:52",
@@ -2600,7 +2669,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Hertzsprung in Light and Shadow",
       "flickr_desc": "art002e021296 (April 6, 2026) \u2013 As the Artemis II crew flew around the far side of the Moon, they captured key scientific observations, photographs, videos, and records documenting critical observations to help scientists on the ground understand the composition and history of the lunar surface. Near the center of the view lies Hertzsprung basin, an ancient and expansive impact feature described by the Artemis II crew as darker in overall tone compared to surrounding terrain. Crew observations highlight a striking contrast in texture: the interior of Hertzsprung appears unusually smooth, \u201clike a paved road,\u201d while the outer regions transition into rougher, more jagged terrain. Subtle variations in brightness and color across the basin create a patchwork of lighter and darker areas, offering clues to its complex geologic history. Surrounding regions show evidence of ejecta and crater rays, with faint brownish and gray tones radiating across the highlands. Together, these features provide a dynamic view of one of the Moon\u2019s oldest and most intriguing basins. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 19:01:17",
@@ -2615,7 +2685,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Over the Moon, Bea",
       "flickr_desc": "art002e012632 (April 6, 2026) - The Artemis II crew captures the Moon's curved limb during their journey around the far side of the Moon. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 19:02:32",
@@ -2630,7 +2701,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Terrain of Ancient Impacts",
       "flickr_desc": "art002e012673 (April 6, 2026) \u2013 As the Artemis II crew passes the Moon during an observation period, the lunar landscape sharpens into focus: a terrain scattered with craters and shadows stretching beneath the black expanse of space. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 19:03:06",
@@ -2645,7 +2717,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Poynting and Keeler Craters on the Lunar Far Side",
       "flickr_desc": "art002e012702 (April 6, 2026) \u2013 Poynting crater and Keeler crater are visible side by side in the lower right portion of this image of the Moon\u2019s far side highlands. Poynting, positioned above, is a large impact crater with a well-defined rim and relatively smooth interior, indicative of material that has settled following the initial impact. Just below it, Keeler crater appears slightly smaller, with a sharply outlined rim and a more textured interior shaped by subsequent impacts and ejecta. Both features lie within the densely cratered far side highlands, preserving a record of ancient impacts that have shaped the lunar surface over billions of years. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 19:03:30",
@@ -2660,7 +2733,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Birkhoff Crater in Low-Light Detail",
       "flickr_desc": "art002e012723 (April 6, 2026) \u2013 A close-up view of the Birkhoff crater on the Moon\u2019s far side, captured by the Artemis II crew, shows the surface under low-light conditions. Located within the lunar highlands, Birkhoff is an impact crater shaped by billions of years of collisions. In this underexposed image, reduced brightness reveals subtle variations in texture and topography that are often less visible in brighter views. The lighting emphasizes differences in surface roughness and ejecta patterns, providing a clearer look at the crater\u2019s structure and the surrounding terrain. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 19:09:19",
@@ -2673,7 +2747,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 19:09:30",
@@ -2688,7 +2763,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Craters Along the Lunar Terminator",
       "flickr_desc": "art002e014055 (April 6, 2026) - A close-up view of the Moon along the terminator\u2014the boundary between lunar day and night\u2014captured by the crew during the Artemis II mission. The low-angle sunlight on this specific day casts long shadows across the surface, revealing the shape and depth of craters in striking detail. Since the early days of the telescope, astronomers used observations along the terminator to map the Moon\u2019s terrain, taking advantage of the contrast between light and shadow to distinguish surface features. While modern imaging has advanced significantly, this lighting still provides valuable insight into the Moon\u2019s topography. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 19:22:30",
@@ -2703,7 +2779,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Artemis Era Earthrise",
       "flickr_desc": "art002e009280 (April 6, 2026) \u2013 Earthrise captured through the Orion spacecraft window at 7:22 p.m. ET during the Artemis II crew\u2019s flyby of the Moon\u2019s far side. Earth appears as a delicate crescent, with only its upper edge illuminated. The planet\u2019s soft blue hue and scattered white cloud systems stand out against the blackness of space, while the lower portion fades into night. Taken with a 400 mm lens, the image, Earthrise, reveals a striking alignment of Earth and Moon, with the Moon in the top foreground and the Earth below. Along the lunar horizon, rugged terrain is silhouetted against the bright crescent Earth. Both bodies are oriented with their north poles to the left and south poles to the right, offering a unique perspective of our home planet from deep space. This photo was rotated 90 degrees clockwise for standard viewing orientation. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 19:22:44",
@@ -2731,7 +2808,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Earth's Crescent from Lunar Orbit",
       "flickr_desc": "art002e014066 (April 6, 2026) \u2013 The Artemis II crew captures an image of a crescent Earth on their journey around the Moon. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 20:35:31",
@@ -2746,7 +2824,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "A Solar Eclipse Like No Other",
       "flickr_desc": "art002e010782 (April 6, 2026) - In this view captured by the Artemis II crew on the Orion spacecraft, a wedge of the Moon in nighttime is visible in the foreground, as the Sun is setting on the opposite side. This image captures the beginning of a total solar eclipse that astronauts were able to observe at the end of their lunar observation period during Orion\u2019s closest approach to the Moon on April 6, 2026. Unlike minutes-long eclipses as viewed from Earth, the Artemis II crew witnessed the Sun hide behind the Moon for nearly an hour. Because the astronauts were so near the Moon, it appeared much larger than the Sun; because of this, it took longer for the Sun to make its transit across the Moon and peek out the other side. From Earth, in contrast, the Moon and Sun appear about the same size, so even small changes in their alignment quickly bring the Sun back into view, making totality much shorter. The bright rays of light, or streamers, that are running outward towards the bottom of the Moon disk are part of the Sun's corona. The corona is the outermost layer of the Sun's atmosphere and is only visible during a total solar eclipse. It is normally hidden by the bright light of the Sun's surface. In addition, the jagged edge of the Moon visible in this image reveals the topography of backlit mountains on the horizon. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 20:40:54",
@@ -2774,7 +2853,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Artemis II Total Solar Eclipse, Partial Frame",
       "flickr_desc": "art002e009298 (April 6, 2026) \u2013 A close-up view from the Orion spacecraft during the Artemis II crew\u2019s lunar flyby on April 6, 2026, captures a total solar eclipse, with only part of the Moon visible in the frame as it fully obscures the Sun. We see a glowing halo around the dark lunar disk. The science community is investigating whether this effect is due to the corona, zodiacal light, or a combination of the two. From this deep-space vantage point, the Moon appeared large enough to sustain nearly 54 minutes of totality, far longer than total solar eclipses typically seen from Earth. The bright silver glint on the left edge of the image is the planet Venus. The round, dark gray feature visible along the Moon\u2019s horizon between the 9 and 10 o\u2019clock positions is Mare Crisium, a feature visible from Earth. We see faint lunar features because light reflected off of Earth provides a source of illumination. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 21:05:29",
@@ -2847,7 +2927,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Solar Eclipse Emergence from Orion",
       "flickr_desc": "art002e009299 (April 6, 2026) \u2013 Captured from the Orion spacecraft near the end of the Artemis II lunar flyby on April 6, this image shows the Sun beginning to peek out from behind the Moon as the eclipse transitions out of totality. Only a portion of the Moon is visible in frame, its curved edge revealing a bright sliver of sunlight returning after nearly an hour of darkness. In final moments of the eclipse observed by the crew, the reemerging light creates a sharp contrast against the Moon\u2019s silhouette and reveals lunar topography not usually visible along the lunar limb. This fleeting phase captures the dynamic alignment of the Sun, Moon, and spacecraft as Orion continues its journey back from the far side of the Moon. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-06 21:28:39",
@@ -3130,7 +3211,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5a"
     },
     {
       "time": "2026-04-07 17:32:35",
@@ -3160,7 +3242,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Four Thumbs Up",
       "flickr_desc": "art002e013356 (April 7, 2026) \u2013 The Artemis II crew \u2013 (from left) Mission Specialist Christina Koch, Mission Specialist Jeremy Hansen, Pilot Victor Glover, and Commander Reid Wiseman \u2013 pause for a group photo inside the Orion spacecraft on their way home. Following a swing around the far side of the Moon on April 6, 2026, the crew exited the lunar sphere of influence (the point at which the Moon's gravity has a stronger pull on Orion than the Earth's) on April 7, and are headed back to Earth for a splashdown in the Pacific Ocean on April 10. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-07 18:35:09",
@@ -3175,7 +3258,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Artemis II Group Shoot",
       "flickr_desc": "art002e013361 (April 7, 2026) \u2013 The Artemis II crew \u2013 (clockwise from left) Mission Specialist Christina Koch, Mission Specialist Jeremy Hansen, Commander Reid Wiseman, and Pilot Victor Glover \u2013 pause for a group photo inside the Orion spacecraft on their way home. Following a swing around the far side of the Moon on April 6, 2026, the crew exited the lunar sphere of influence (the point at which the Moon's gravity has a stronger pull on Orion than the Earth's) on April 7, and are headed back to Earth for a splashdown in the Pacific Ocean on April 10. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-07 18:35:25",
@@ -3190,7 +3274,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Artemis II Crew \"Rise-ing\" To the Occasion",
       "flickr_desc": "art002e013365 (April 7, 2026) \u2013 The Artemis II crew \u2013 (clockwise from left) Mission Specialist Christina Koch, Mission Specialist Jeremy Hansen, Commander Reid Wiseman, and Pilot Victor Glover \u2013 pause for a group photo with their zero gravity indicator &quot;Rise,&quot; inside the Orion spacecraft on their way home. Following a swing around the far side of the Moon on April 6, 2026, the crew exited the lunar sphere of influence (the point at which the Moon's gravity has a stronger pull on Orion than the Earth's) on April 7, and are headed back to Earth for a splashdown in the Pacific Ocean on April 10. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-07 18:35:33",
@@ -3205,7 +3290,8 @@ const PHOTO_DATA = {
       "external": false,
       "title": "Moon Joy",
       "flickr_desc": "art002e013367 (April 7, 2026) \u2013 The Artemis II crew \u2013 (clockwise from left) Mission Specialist Christina Koch, Mission Specialist Jeremy Hansen, Commander Reid Wiseman, and Pilot Victor Glover \u2013 take time out for a group hug inside the Orion spacecraft on their way home. Following a swing around the far side of the Moon on April 6, 2026, the crew exited the lunar sphere of influence (the point at which the Moon's gravity has a stronger pull on Orion than the Earth's) on April 7, and are headed back to Earth for a splashdown in the Pacific Ocean on April 10. The crew was selected in April 2023, and have been training together for their mission for the past three years. Credit: NASA",
-      "enabled": true
+      "enabled": true,
+      "camera_id": "d5b"
     },
     {
       "time": "2026-04-07 19:30:48",

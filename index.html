@@ -867,6 +867,15 @@ function loadPhotoData() {
   const data = PHOTO_DATA;
   data.photos.filter(p => p.enabled !== false).forEach(p => {
     const entry = {t:edt(p.time),f:p.file,p:p.photographer,loc:p.location,cam:p.camera,set:p.settings,sc:!!p.spacecraft,b:p.batch||0};
+    // Camera ID for filter buttons — use explicit camera_id from data if present,
+    // otherwise derive from camera string (z9, gopro, iphone)
+    if (p.camera_id) entry.cid = p.camera_id;
+    else {
+      const c = (p.camera || '').toUpperCase();
+      if (c.includes('Z 9') || c.includes('Z9')) entry.cid = 'z9';
+      else if (c.includes('HERO')) entry.cid = 'gopro';
+      else if (c.includes('IPHONE')) entry.cid = 'iphone';
+    }
     if (p.video) entry.v = true;
     if (p.external) entry.ext = true;
     if (p.desc) entry.desc = p.desc;
