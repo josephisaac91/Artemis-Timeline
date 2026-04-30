@@ -1335,11 +1335,7 @@ function formatMoonDist(moonKm) {
   return Math.round(surfaceDist * KM_TO_MI).toLocaleString() + ' miles';
 }
 
-function toggleUnits() {
-  useMetric = !useMetric;
-  document.getElementById('unitsToggle').textContent = useMetric ? 'Show in miles' : 'Show in km';
-  updatePhoto();
-}
+// toggleUnits is defined inside the IIFE where updatePhoto is accessible
 
 // --- CREW ACTIVITY SCHEDULE ---
 // Color-coded activity bars on the timeline. Sourced from NASA's Artemis II
@@ -2203,6 +2199,23 @@ window.addEventListener('hashchange', () => {
 
 // --- CALENDAR COUNTDOWN ---
 // Pre-order deadline: May 12, 2026 at midnight EDT
+// --- UNIT TOGGLE ---
+window.toggleUnits = function() {
+  useMetric = !useMetric;
+  document.getElementById('unitsToggle').textContent = useMetric ? 'Show in miles' : 'Show in km';
+  // Refresh distance fields for current photo without reloading the image
+  if (filteredPhotos.length === 0) return;
+  const photo = filteredPhotos[currentPhotoIdx];
+  document.getElementById('metaDistance').textContent = formatDistance(getDisplayDistance(photo.t));
+  if (photo.t >= TRAJ_START && photo.t <= TRAJ_START + TRAJ_SC.length * TRAJ_STEP_SC) {
+    const moonKm = getMoonDistKm(photo.t);
+    document.getElementById('metaMoonDist').textContent = formatMoonDist(moonKm);
+  } else {
+    document.getElementById('metaMoonDist').textContent = photo.t < TRAJ_START ? (useMetric ? '~385,000 km' : '~239,000 miles') : '—';
+  }
+  drawTrajectory(photo.t);
+};
+
 const PREORDER_DEADLINE = new Date('2026-05-12T23:59:59-04:00').getTime();
 function updateCountdown() {
   const now = Date.now();
