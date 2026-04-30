@@ -206,8 +206,8 @@ a:hover { text-decoration: underline; }
 .card-thumb {
   width: 160px;
   min-width: 160px;
-  height: 107px;
-  object-fit: cover;
+  max-height: 240px;
+  object-fit: contain;
   border-radius: 4px;
   background: #1a1a2e;
 }
@@ -334,6 +334,17 @@ a:hover { text-decoration: underline; }
   margin-top: 4px;
 }
 .desc-toggle:hover { color: var(--accent); }
+.delete-btn {
+  font-size: 11px;
+  color: var(--danger);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.delete-btn:hover { border-color: var(--danger); background: rgba(239,83,80,0.1); }
 .desc-section { display: none; margin-top: 6px; }
 .desc-section.open { display: block; }
 
@@ -540,7 +551,8 @@ function renderPhotos() {
             <input type="datetime-local" class="time-input"
                    value="${timeToDatetimeLocal(photo.time)}"
                    step="1"
-                   onchange="setPhotoField(${idx},'time',datetimeLocalToTime(this.value))">
+                   onblur="setPhotoField(${idx},'time',datetimeLocalToTime(this.value))"
+                   onkeydown="if(event.key==='Enter'){this.blur()}">
           </div>
         </div>
         <div class="card-row">
@@ -583,7 +595,10 @@ function renderPhotos() {
                    placeholder="filename.jpg">
           </div>
         </div>
-        <button class="desc-toggle" onclick="toggleDesc(this)">Show description</button>
+        <div style="display:flex;gap:12px;align-items:center;margin-top:4px">
+          <button class="desc-toggle" onclick="toggleDesc(this)">Show description</button>
+          <button class="delete-btn" onclick="deletePhoto(${idx})">Delete</button>
+        </div>
         <div class="desc-section">
           <div class="card-field" style="width:100%">
             <textarea class="desc-area" onchange="setPhotoField(${idx},'flickr_desc',this.value)"
@@ -619,7 +634,8 @@ function renderAudio() {
         <input type="datetime-local" class="time-input"
                value="${timeToDatetimeLocal(audio.time)}"
                step="1"
-               onchange="setAudioField(${idx},'time',datetimeLocalToTime(this.value))">
+               onblur="setAudioField(${idx},'time',datetimeLocalToTime(this.value))"
+               onkeydown="if(event.key==='Enter'){this.blur()}">
       </div>
       <span class="audio-file">${esc(audio.file)}</span>
       <div class="card-field" style="flex:1">
@@ -680,6 +696,17 @@ function setAudioField(idx, field, value) {
     const card = document.querySelector(`.audio-card[data-aidx="${idx}"]`);
     if (card) card.classList.toggle('disabled-card', !value);
   }
+}
+
+// Delete photo permanently
+function deletePhoto(idx) {
+  const photo = data.photos[idx];
+  const label = photo.title || photo.file || 'this entry';
+  if (!confirm('Permanently delete "' + label + '"?')) return;
+  data.photos.splice(idx, 1);
+  markChanged();
+  updateStats();
+  renderPhotos();
 }
 
 // Add new photo
