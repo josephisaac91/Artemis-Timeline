@@ -464,11 +464,40 @@
   .calendar-promo:hover {
     border-color: rgba(255,255,255,0.18);
   }
+  .calendar-cover-wrap {
+    position: relative;
+  }
   .calendar-cover {
     width: 100%;
     display: block;
     aspect-ratio: 1;
     object-fit: cover;
+  }
+  .calendar-countdown {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-8deg);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.7), 0 0 4px rgba(0,0,0,0.5);
+  }
+  .countdown-number {
+    font-size: 48px;
+    font-weight: 900;
+    color: #e53935;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .countdown-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #e53935;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 4px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.7);
   }
   .calendar-body {
     padding: 12px 14px 14px;
@@ -500,6 +529,7 @@
     letter-spacing: 0.3px;
   }
   .calendar-link:hover { background: linear-gradient(135deg, #1976d2, #1565c0); }
+  .calendar-countdown-mobile { display: none; }
 
   .timeline-hover-tip {
     display: none;
@@ -581,15 +611,20 @@
       align-items: center;
       gap: 12px;
     }
+    .calendar-cover-wrap {
+      width: 80px;
+      flex-shrink: 0;
+    }
     .calendar-cover {
       width: 80px;
       aspect-ratio: 1;
       border-radius: 6px;
-      flex-shrink: 0;
     }
+    .calendar-countdown { display: none; }
     .calendar-body { padding: 8px 0; }
     .calendar-title { font-size: 12px; }
     .calendar-subtitle { display: none; }
+    .calendar-countdown-mobile { display: block; font-size: 11px; color: var(--accent); font-weight: 600; margin-top: 2px; }
     .calendar-link { margin-top: 6px; padding: 6px 14px; display: inline-block; font-size: 10px; }
     .meta-section { flex: 1; min-width: 140px; padding: 10px; }
     .meta-field { margin-bottom: 6px; }
@@ -736,9 +771,16 @@
       <div class="meta-desc" id="metaDesc"></div>
     </div>
     <div class="calendar-promo">
-      <img class="calendar-cover" src="web/Farther.png" alt="Farther — 2027 Calendar">
+      <div class="calendar-cover-wrap">
+        <img class="calendar-cover" src="web/Farther.png" alt="Farther — 2027 Calendar">
+        <div class="calendar-countdown" id="calendarCountdown">
+          <div class="countdown-number" id="countdownDays"></div>
+          <div class="countdown-label">days left to pre-order</div>
+        </div>
+      </div>
       <div class="calendar-body">
         <div class="calendar-title">FARTHER — 2027 Calendar</div>
+        <div class="calendar-countdown-mobile" id="countdownMobile"></div>
         <div class="calendar-subtitle">13 months of historic Artemis II mission photography on premium matte paper.</div>
         <a class="calendar-link" href="https://store.dftba.com/products/artemis-ii-2027-calendar" target="_blank" rel="noopener">Pre-order Now →</a>
       </div>
@@ -2117,6 +2159,27 @@ updatePhoto();
 window.addEventListener('hashchange', () => {
   if (navigateToHash()) { updatePhoto(); ensurePhotoInView(); }
 });
+
+// --- CALENDAR COUNTDOWN ---
+// Pre-order deadline: May 12, 2026 at midnight EDT
+const PREORDER_DEADLINE = new Date('2026-05-12T23:59:59-04:00').getTime();
+function updateCountdown() {
+  const now = Date.now();
+  const msLeft = PREORDER_DEADLINE - now;
+  const el = document.getElementById('countdownDays');
+  const wrap = document.getElementById('calendarCountdown');
+  const mobile = document.getElementById('countdownMobile');
+  if (msLeft <= 0) {
+    if (wrap) wrap.style.display = 'none';
+    if (mobile) mobile.style.display = 'none';
+    return;
+  }
+  const daysLeft = Math.ceil(msLeft / 86400000);
+  if (el) el.textContent = daysLeft;
+  if (mobile) mobile.textContent = daysLeft + (daysLeft === 1 ? ' day left' : ' days left to pre-order');
+}
+updateCountdown();
+setInterval(updateCountdown, 3600000); // refresh hourly
 
 })(); // end init
 </script>

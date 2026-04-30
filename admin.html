@@ -656,8 +656,11 @@ function setPhotoField(idx, field, value) {
   data.photos[idx][field] = value;
   markChanged();
   updateStats();
-  // Update disabled class visually
-  if (field === 'enabled') {
+  if (field === 'time') {
+    // Re-sort by time and re-render so the card moves to its new position
+    data.photos.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+    renderPhotos();
+  } else if (field === 'enabled') {
     const card = document.querySelector(`.card[data-idx="${idx}"]`);
     if (card) card.classList.toggle('disabled-card', !value);
   }

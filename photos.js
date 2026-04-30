@@ -408,22 +408,22 @@ const PHOTO_DATA = {
       "enabled": false
     },
     {
-      "time": "2026-04-01 18:34:40",
-      "file": "55182918876_b7de1752f8_o.jpg",
+      "time": "2026-04-01 18:03",
+      "file": "55182788563_2a32202fbf_o.jpg",
       "photographer": "NASA",
       "location": "Kennedy Space Center",
-      "camera": "Canon EOS 5DS + EF20mm f/2.8 USM",
-      "settings": "20mm · f/8.0 · 1/1000s · ISO 100",
+      "camera": "NIKON Z 9 + VR 800mm f/5.6E",
+      "settings": "800mm · f/9.0 · 1/1000s · ISO 250",
       "spacecraft": false,
       "batch": 1,
       "video": false,
       "external": true,
-      "title": "Artemis II Launch (NHQ202604010224)",
+      "title": "Artemis II Launch (NHQ202604010213)",
       "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
       "enabled": true
     },
     {
-      "time": "2026-04-01 18:34:39",
+      "time": "2026-04-01 18:34:30",
       "file": "55184539204_f0d6690e0a_o.jpg",
       "photographer": "NASA",
       "location": "Kennedy Space Center",
@@ -435,36 +435,6 @@ const PHOTO_DATA = {
       "external": true,
       "title": "Artemis II Launch (NHQ202604010257)",
       "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
-      "enabled": true
-    },
-    {
-      "time": "2026-04-01 18:34:41",
-      "file": "55182911249_2705824375_o.jpg",
-      "photographer": "NASA",
-      "location": "Kennedy Space Center",
-      "camera": "LEICA M MONOCHROM (Typ 246) + not selected",
-      "settings": "f/1.0 · 1/1000s · ISO 320",
-      "spacecraft": false,
-      "batch": 1,
-      "video": false,
-      "external": true,
-      "title": "Artemis II Launch (NHQ202604010224)",
-      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
-      "enabled": true
-    },
-    {
-      "time": "2026-04-01 18:35:17",
-      "file": "55181691437_9b91f6bdbf_o.jpg",
-      "photographer": "NASA",
-      "location": "Kennedy Space Center",
-      "camera": "NIKON Z 7_2 + NIKKOR Z 17-28mm f/2.8",
-      "settings": "17mm · f/11.0 · 1/800s · ISO 2800",
-      "spacecraft": false,
-      "batch": 1,
-      "video": false,
-      "external": true,
-      "title": "Artemis II Launch (NHQ202604010107)",
-      "flickr_desc": "Guests at the Banana Creek viewing site watch the launch of NASA’s Space Launch System (SLS) rocket and Orion spacecraft with Commander Reid Wiseman, Pilot Victor Glover, and Mission Specialist Christina Koch from NASA, and Mission Specialist Jeremy Hansen from the CSA (Canadian Space Agency) on the Artemis II mission, Wednesday, April 1, 2026, at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard SLS rocket and Orion spacecraft. The quartet launched at 6:35 p.m. EDT from Launch Complex 39B. Photo Credit: (NASA/Keegan Barber)",
       "enabled": true
     },
     {
@@ -499,6 +469,21 @@ const PHOTO_DATA = {
     },
     {
       "time": "2026-04-01 18:34:40",
+      "file": "55182918876_b7de1752f8_o.jpg",
+      "photographer": "NASA",
+      "location": "Kennedy Space Center",
+      "camera": "Canon EOS 5DS + EF20mm f/2.8 USM",
+      "settings": "20mm · f/8.0 · 1/1000s · ISO 100",
+      "spacecraft": false,
+      "batch": 1,
+      "video": false,
+      "external": true,
+      "title": "Artemis II Launch (NHQ202604010224)",
+      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
+      "enabled": true
+    },
+    {
+      "time": "2026-04-01 18:34:40",
       "file": "55186319833_165b4b7852_3k.jpg",
       "photographer": "NASA",
       "location": "Kennedy Space Center",
@@ -511,18 +496,48 @@ const PHOTO_DATA = {
       "enabled": true
     },
     {
-      "time": "2026-04-01 18:35:37",
-      "file": "55183122230_c572b07a81_o.jpg",
+      "time": "2026-04-01 18:34:40",
+      "file": "55182789108-f13e3eb9ec-o.jpg",
+      "photographer": "NASA/Joel Kowsky",
+      "location": "Liftoff",
+      "camera": "NIKON Z 9 + VR 800mm f/5.6E",
+      "settings": "800mm · f/9.0 · 1/1000s · ISO 250",
+      "spacecraft": false,
+      "batch": 1,
+      "video": false,
+      "external": false,
+      "title": "Artemis II Launch",
+      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
+      "enabled": true
+    },
+    {
+      "time": "2026-04-01 18:34:40",
+      "file": "55183079963-98d70178ff-o.jpg",
+      "photographer": "NASA/Joel Kowsky",
+      "location": "Liftoff",
+      "camera": "Canon EOS 6D + EF20mm f/2.8 USM",
+      "settings": "20mm · f/6.3 · 1/4000s · ISO 100",
+      "spacecraft": false,
+      "batch": 1,
+      "video": false,
+      "external": false,
+      "title": "Artemis II Launch",
+      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
+      "enabled": true
+    },
+    {
+      "time": "2026-04-01 18:34:41",
+      "file": "55182911249_2705824375_o.jpg",
       "photographer": "NASA",
       "location": "Kennedy Space Center",
-      "camera": "NIKON D5 + 24.0-70.0 mm f/2.8",
-      "settings": "31mm · f/8.0 · 1/1000s · ISO 500",
+      "camera": "LEICA M MONOCHROM (Typ 246) + not selected",
+      "settings": "f/1.0 · 1/1000s · ISO 320",
       "spacecraft": false,
       "batch": 1,
       "video": false,
       "external": true,
-      "title": "Artemis II Launch (NHQ202604010225)",
-      "flickr_desc": "Crawler Transporter 2 is seen as NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Bill Ingalls)",
+      "title": "Artemis II Launch (NHQ202604010224)",
+      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
       "enabled": true
     },
     {
@@ -541,6 +556,51 @@ const PHOTO_DATA = {
       "enabled": true
     },
     {
+      "time": "2026-04-01 18:34:41",
+      "file": "55183089523-2832f9419d-o.jpg",
+      "photographer": "NASA/Joel Kowsky",
+      "location": "Liftoff",
+      "camera": "Canon EOS 6D + EF20mm f/2.8 USM",
+      "settings": "20mm · f/6.3 · 1/4000s · ISO 100",
+      "spacecraft": false,
+      "batch": 1,
+      "video": false,
+      "external": false,
+      "title": "Artemis II Launch",
+      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
+      "enabled": true
+    },
+    {
+      "time": "2026-04-01 18:35:17",
+      "file": "55181691437_9b91f6bdbf_o.jpg",
+      "photographer": "NASA",
+      "location": "Kennedy Space Center",
+      "camera": "NIKON Z 7_2 + NIKKOR Z 17-28mm f/2.8",
+      "settings": "17mm · f/11.0 · 1/800s · ISO 2800",
+      "spacecraft": false,
+      "batch": 1,
+      "video": false,
+      "external": true,
+      "title": "Artemis II Launch (NHQ202604010107)",
+      "flickr_desc": "Guests at the Banana Creek viewing site watch the launch of NASA’s Space Launch System (SLS) rocket and Orion spacecraft with Commander Reid Wiseman, Pilot Victor Glover, and Mission Specialist Christina Koch from NASA, and Mission Specialist Jeremy Hansen from the CSA (Canadian Space Agency) on the Artemis II mission, Wednesday, April 1, 2026, at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard SLS rocket and Orion spacecraft. The quartet launched at 6:35 p.m. EDT from Launch Complex 39B. Photo Credit: (NASA/Keegan Barber)",
+      "enabled": true
+    },
+    {
+      "time": "2026-04-01 18:35:37",
+      "file": "55183122230_c572b07a81_o.jpg",
+      "photographer": "NASA",
+      "location": "Kennedy Space Center",
+      "camera": "NIKON D5 + 24.0-70.0 mm f/2.8",
+      "settings": "31mm · f/8.0 · 1/1000s · ISO 500",
+      "spacecraft": false,
+      "batch": 1,
+      "video": false,
+      "external": true,
+      "title": "Artemis II Launch (NHQ202604010225)",
+      "flickr_desc": "Crawler Transporter 2 is seen as NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Bill Ingalls)",
+      "enabled": true
+    },
+    {
       "time": "2026-04-01 18:35:57",
       "file": "55181712417_3daccb4ba9_o.jpg",
       "photographer": "NASA",
@@ -554,21 +614,6 @@ const PHOTO_DATA = {
       "title": "Artemis II Launch (NHQ202604010309)",
       "flickr_desc": "Employees and invited guest, including Eric Trump family, left, and Donald Trump Jr. family, right, watch the launch of NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist on NASA’s Artemis II mission,, Wednesday, April 1, 2026, from Operations and Support Building II at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard SLS rocket and Orion spacecraft launched at 6:35pm EDT from Launch Complex 39B. Photo Credit: (NASA/Bill Ingalls)",
       "enabled": true
-    },
-    {
-      "time": "2026-04-01 18:36:13",
-      "file": "55182788563_2a32202fbf_o.jpg",
-      "photographer": "NASA",
-      "location": "Kennedy Space Center",
-      "camera": "NIKON Z 9 + VR 800mm f/5.6E",
-      "settings": "800mm · f/9.0 · 1/1000s · ISO 250",
-      "spacecraft": false,
-      "batch": 1,
-      "video": false,
-      "external": true,
-      "title": "Artemis II Launch (NHQ202604010213)",
-      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
-      "enabled": false
     },
     {
       "time": "2026-04-01 18:36:32",
@@ -629,51 +674,6 @@ const PHOTO_DATA = {
       "title": "Artemis II Launch",
       "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Keegan Barber)",
       "enabled": false
-    },
-    {
-      "time": "2026-04-01 18:34:40",
-      "file": "55182789108-f13e3eb9ec-o.jpg",
-      "photographer": "NASA/Joel Kowsky",
-      "location": "Liftoff",
-      "camera": "NIKON Z 9 + VR 800mm f/5.6E",
-      "settings": "800mm · f/9.0 · 1/1000s · ISO 250",
-      "spacecraft": false,
-      "batch": 1,
-      "video": false,
-      "external": false,
-      "title": "Artemis II Launch",
-      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
-      "enabled": true
-    },
-    {
-      "time": "2026-04-01 18:34:40",
-      "file": "55183079963-98d70178ff-o.jpg",
-      "photographer": "NASA/Joel Kowsky",
-      "location": "Liftoff",
-      "camera": "Canon EOS 6D + EF20mm f/2.8 USM",
-      "settings": "20mm · f/6.3 · 1/4000s · ISO 100",
-      "spacecraft": false,
-      "batch": 1,
-      "video": false,
-      "external": false,
-      "title": "Artemis II Launch",
-      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
-      "enabled": true
-    },
-    {
-      "time": "2026-04-01 18:34:41",
-      "file": "55183089523-2832f9419d-o.jpg",
-      "photographer": "NASA/Joel Kowsky",
-      "location": "Liftoff",
-      "camera": "Canon EOS 6D + EF20mm f/2.8 USM",
-      "settings": "20mm · f/6.3 · 1/4000s · ISO 100",
-      "spacecraft": false,
-      "batch": 1,
-      "video": false,
-      "external": false,
-      "title": "Artemis II Launch",
-      "flickr_desc": "NASA’s Space Launch System rocket carrying the Orion spacecraft with NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist onboard launches on the Artemis II mission, Wednesday, April 1, 2026, from Launch Complex 39B at NASA’s Kennedy Space Center in Florida. NASA’s Artemis II mission will take Wiseman, Glover, Koch, and Hansen on a 10-day journey around the Moon and back aboard their Orion spacecraft. The quartet launched at 6:35 p.m. EDT, from Launch Complex 39B at the Kennedy Space Center. Photo Credit: (NASA/Joel Kowsky)",
-      "enabled": true
     },
     {
       "time": "2026-04-01 18:37:30",
@@ -3356,6 +3356,19 @@ const PHOTO_DATA = {
       "enabled": true
     },
     {
+      "time": "2026-04-10 12:37",
+      "file": "55206199989_da419a08f0_o.jpg",
+      "photographer": "Artemis Crew",
+      "location": "Orion Spacecraft",
+      "camera": "NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S Z TC-2.0x",
+      "settings": "1120mm · f/8.0 · 1/4000s · ISO 2000",
+      "spacecraft": true,
+      "batch": 1,
+      "video": false,
+      "external": false,
+      "enabled": true
+    },
+    {
       "time": "2026-04-10 15:36:40",
       "file": "55201073550_f6a8cd338e_o.jpg",
       "photographer": "NASA",
@@ -3654,6 +3667,19 @@ const PHOTO_DATA = {
       "enabled": true
     },
     {
+      "time": "2026-04-10 20:07:18",
+      "file": "nhq202604100018.jpg",
+      "photographer": "NASA",
+      "location": "Pacific Ocean Recovery Zone",
+      "camera": "NIKON Z 9 + VR 800mm f/5.6E",
+      "settings": "1000mm · f/8.0 · 1/4000s · ISO 280",
+      "spacecraft": false,
+      "batch": 1,
+      "video": false,
+      "external": true,
+      "enabled": true
+    },
+    {
       "time": "2026-04-10 20:07:24",
       "file": "55199878669-257ddff58b-o-1.jpg",
       "photographer": "NASA",
@@ -3697,17 +3723,18 @@ const PHOTO_DATA = {
       "enabled": false
     },
     {
-      "time": "2026-04-10 20:07:26",
-      "file": "nhq202604100018.jpg",
-      "photographer": "NASA",
-      "location": "Pacific Ocean Recovery Zone",
-      "camera": "NIKON Z 9 + VR 800mm f/5.6E",
-      "settings": "1000mm · f/8.0 · 1/4000s · ISO 280",
+      "time": "2026-04-10 20:07:29",
+      "file": "9609103.jpg",
+      "photographer": "U.S. Navy",
+      "location": "USS John P. Murtha, Pacific Ocean",
+      "camera": "NIKON Z 8 + NIKKOR Z 70-200mm f/2.8 VR S",
+      "settings": "200mm · f/4.0 · 1/3200s · ISO 125",
       "spacecraft": false,
       "batch": 1,
       "video": false,
       "external": true,
-      "enabled": false
+      "title": "Orion Parachutes Toward the Pacific",
+      "enabled": true
     },
     {
       "time": "2026-04-10 20:07:29",
@@ -3780,20 +3807,6 @@ const PHOTO_DATA = {
       "external": true,
       "title": "Artemis II Recovery",
       "flickr_desc": "NASA’s Orion spacecraft with Artemis II crewmembers NASA astronauts Reid Wiseman, commander; Victor Glover, pilot; Christina Koch, mission specialist; and CSA (Canadian Space Agency) astronaut Jeremy Hansen, mission specialist aboard is seen as it lands in the Pacific Ocean off the coast of California, Friday, April 10, 2026. NASA’s Artemis II mission took Wiseman, Glover, Koch, and Hansen on a nearly 10-day journey around the Moon and back to Earth. Following a splashdown at 8:07p.m. EDT, NASA, U.S. Navy, and U.S. Air Force teams are working to bring the crewmembers and Orion spacecraft aboard USS John P. Murtha. Photo Credit: (NASA/Bill Ingalls)",
-      "enabled": true
-    },
-    {
-      "time": "2026-04-10 20:05:11",
-      "file": "9609103.jpg",
-      "photographer": "U.S. Navy",
-      "location": "USS John P. Murtha, Pacific Ocean",
-      "camera": "NIKON Z 8 + NIKKOR Z 70-200mm f/2.8 VR S",
-      "settings": "200mm · f/4.0 · 1/3200s · ISO 125",
-      "spacecraft": false,
-      "batch": 1,
-      "video": false,
-      "external": true,
-      "title": "Orion Parachutes Toward the Pacific",
       "enabled": true
     },
     {
@@ -3952,6 +3965,21 @@ const PHOTO_DATA = {
       "enabled": true
     },
     {
+      "time": "2026-04-10 20:50:11",
+      "file": "ig-welcome-aboard.mp4",
+      "photographer": "Artemis II Crew",
+      "location": "USS John P. Murtha, Pacific Ocean",
+      "camera": "Instagram Video",
+      "settings": "848×478 · 70s",
+      "spacecraft": false,
+      "batch": 1,
+      "video": true,
+      "external": true,
+      "title": "Welcome Aboard Integrity",
+      "flickr_desc": "Jesse, Steve, Laddy, and Vlad\\u2026 such an incredible feeling to welcome you aboard Integrity after your journey around the Moon. The recovery team opens the Orion capsule hatch aboard USS John P. Murtha. \\u2014 via Instagram",
+      "enabled": true
+    },
+    {
       "time": "2026-04-10 20:56:18",
       "file": "KSC-20260411-KED01-0267.jpg",
       "photographer": "NASA/Keegan Barber",
@@ -4005,6 +4033,21 @@ const PHOTO_DATA = {
       "enabled": true
     },
     {
+      "time": "2026-04-10 20:58:43",
+      "file": "ig-capsule-egress.mp4",
+      "photographer": "Artemis II Crew",
+      "location": "USS John P. Murtha, Pacific Ocean",
+      "camera": "Instagram Video",
+      "settings": "720×1280 · 121s",
+      "spacecraft": false,
+      "batch": 1,
+      "video": true,
+      "external": true,
+      "title": "Coming Home",
+      "flickr_desc": "The moments just after the capsule is opened \\u2014 the Artemis II crew exits the Orion spacecraft aboard USS John P. Murtha following splashdown. \\u2014 via Instagram",
+      "enabled": true
+    },
+    {
       "time": "2026-04-10 20:58:50",
       "file": "9609124.jpg",
       "photographer": "U.S. Navy",
@@ -4016,21 +4059,6 @@ const PHOTO_DATA = {
       "video": false,
       "external": true,
       "title": "Divers Enter the Crew Module",
-      "enabled": true
-    },
-    {
-      "time": "2026-04-10 20:50:15",
-      "file": "ig-welcome-aboard.mp4",
-      "photographer": "Artemis II Crew",
-      "location": "USS John P. Murtha, Pacific Ocean",
-      "camera": "Instagram Video",
-      "settings": "848×478 · 70s",
-      "spacecraft": false,
-      "batch": 1,
-      "video": true,
-      "external": true,
-      "title": "Welcome Aboard Integrity",
-      "flickr_desc": "Jesse, Steve, Laddy, and Vlad\\u2026 such an incredible feeling to welcome you aboard Integrity after your journey around the Moon. The recovery team opens the Orion capsule hatch aboard USS John P. Murtha. \\u2014 via Instagram",
       "enabled": true
     },
     {
@@ -4101,34 +4129,6 @@ const PHOTO_DATA = {
       "batch": 0,
       "title": "Divers Secure Orion After Crew Extraction",
       "flickr_desc": "Navy divers work alongside the Orion capsule and its flotation bags after the crew has been extracted, with inflatable boats surrounding the spacecraft.",
-      "enabled": true
-    },
-    {
-      "time": "2026-04-10 21:35:28",
-      "file": "55206199989_da419a08f0_o.jpg",
-      "photographer": "Artemis Crew",
-      "location": "Orion Spacecraft",
-      "camera": "NIKON Z 9 + NIKKOR Z 400mm f/2.8 TC VR S Z TC-2.0x",
-      "settings": "1120mm · f/8.0 · 1/4000s · ISO 2000",
-      "spacecraft": true,
-      "batch": 1,
-      "video": false,
-      "external": false,
-      "enabled": true
-    },
-    {
-      "time": "2026-04-10 21:37:00",
-      "file": "ig-capsule-egress.mp4",
-      "photographer": "Artemis II Crew",
-      "location": "USS John P. Murtha, Pacific Ocean",
-      "camera": "Instagram Video",
-      "settings": "720×1280 · 121s",
-      "spacecraft": false,
-      "batch": 1,
-      "video": true,
-      "external": true,
-      "title": "Coming Home",
-      "flickr_desc": "The moments just after the capsule is opened \\u2014 the Artemis II crew exits the Orion spacecraft aboard USS John P. Murtha following splashdown. \\u2014 via Instagram",
       "enabled": true
     },
     {
