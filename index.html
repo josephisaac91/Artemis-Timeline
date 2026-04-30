@@ -392,6 +392,13 @@
   .meta-label { color: #666; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
   .meta-value { color: #bbb; font-size: 13px; margin-top: 2px; word-break: break-word; }
   .meta-value.highlight { color: #4FC3F7; font-weight: 600; }
+  .units-toggle {
+    background: none; border: 1px solid #333; border-radius: 4px;
+    color: #888; font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 4px 10px; cursor: pointer; margin-top: 8px;
+    transition: all 0.15s;
+  }
+  .units-toggle:hover { border-color: #4FC3F7; color: #4FC3F7; }
   .meta-value.time-value { font-size: 15px; font-variant-numeric: tabular-nums; }
   .meta-desc { color: #999; font-size: 12px; line-height: 1.4; margin-top: 4px; }
 
@@ -767,6 +774,7 @@
         <div class="meta-label">Settings</div>
         <div class="meta-value" id="metaSettings">—</div>
       </div>
+      <button class="units-toggle" id="unitsToggle" onclick="toggleUnits()">Show in km</button>
     </div>
     <div class="meta-section" id="descSection" style="display:none">
       <h3>Description</h3>
@@ -823,6 +831,9 @@
 // Base URL for media files (images in web/, audio in audio/).
 // Set to '' for local/relative paths, or a CDN like 'https://pub-xxxxx.r2.dev'
 const MEDIA_BASE = 'https://pub-6f67061aecce4413aa83975cba06595d.r2.dev/';
+
+// Unit toggle: miles (default) or metric (km/m)
+let useMetric = false;
 
 // --- PARSING & ID EXTRACTION ---
 
@@ -1305,12 +1316,29 @@ function getDisplayDistance(ts) {
 function formatDistance(miles) {
   if (miles === -1) return 'Liftoff';
   if (miles < 0.01) return 'On the ground';
+  if (useMetric) {
+    const km = miles * 1.60934;
+    if (km < 160) return Math.round(km * 1000).toLocaleString() + ' m';
+    return Math.round(km).toLocaleString() + ' km';
+  }
   if (miles < 100) {
-    // During ascent or descent — show feet with label at key altitudes
     const feet = Math.round(miles * 5280);
     return feet.toLocaleString() + ' ft';
   }
   return Math.round(miles).toLocaleString() + ' miles';
+}
+
+function formatMoonDist(moonKm) {
+  const surfaceDist = moonKm - MOON_RADIUS_KM;
+  if (surfaceDist <= 0) return 'At the Moon';
+  if (useMetric) return Math.round(surfaceDist).toLocaleString() + ' km';
+  return Math.round(surfaceDist * KM_TO_MI).toLocaleString() + ' miles';
+}
+
+function toggleUnits() {
+  useMetric = !useMetric;
+  document.getElementById('unitsToggle').textContent = useMetric ? 'Show in miles' : 'Show in km';
+  updatePhoto();
 }
 
 // --- CREW ACTIVITY SCHEDULE ---
@@ -1730,9 +1758,15 @@ function drawTrajectory(ts) {
     } else {
       const dist = getDisplayDistance(ts);
       const moonDistKm = getMoonDistKm(ts);
-      const moonDistMi = Math.round((moonDistKm - MOON_RADIUS_KM) * KM_TO_MI); // subtract Moon radius
-      const earthStr = dist === -1 ? 'Liftoff' : (dist < 1 ? 'Near Earth' : Math.round(dist).toLocaleString() + ' mi from Earth');
-      const moonStr = moonDistMi > 0 ? moonDistMi.toLocaleString() + ' mi from Moon' : 'At the Moon';
+      let earthStr, moonStr;
+      if (dist === -1) { earthStr = 'Liftoff'; }
+      else if (dist < 1) { earthStr = 'Near Earth'; }
+      else if (useMetric) { earthStr = Math.round(dist * 1.60934).toLocaleString() + ' km from Earth'; }
+      else { earthStr = Math.round(dist).toLocaleString() + ' mi from Earth'; }
+      const moonSurface = moonDistKm - MOON_RADIUS_KM;
+      if (moonSurface <= 0) { moonStr = 'At the Moon'; }
+      else if (useMetric) { moonStr = Math.round(moonSurface).toLocaleString() + ' km from Moon'; }
+      else { moonStr = Math.round(moonSurface * KM_TO_MI).toLocaleString() + ' mi from Moon'; }
       label.textContent = earthStr + '  ·  ' + moonStr;
     }
   }
@@ -1799,10 +1833,9 @@ function updatePhoto() {
   // Moon distance
   if (photo.t >= TRAJ_START && photo.t <= TRAJ_START + TRAJ_SC.length * TRAJ_STEP_SC) {
     const moonKm = getMoonDistKm(photo.t);
-    const moonMi = Math.round((moonKm - MOON_RADIUS_KM) * KM_TO_MI); // surface-to-surface
-    document.getElementById('metaMoonDist').textContent = moonMi > 0 ? moonMi.toLocaleString() + ' miles' : 'At the Moon';
+    document.getElementById('metaMoonDist').textContent = formatMoonDist(moonKm);
   } else {
-    document.getElementById('metaMoonDist').textContent = photo.t < TRAJ_START ? '~239,000 miles' : '—';
+    document.getElementById('metaMoonDist').textContent = photo.t < TRAJ_START ? (useMetric ? '~385,000 km' : '~239,000 miles') : '—';
   }
   document.getElementById('metaCamera').textContent = photo.cam;
   document.getElementById('metaSettings').textContent = photo.set;
