@@ -6,24 +6,25 @@ An attempt to contextualize the photography of the Artemis II mission chronologi
 
 ## How it works
 
-The entire site is two HTML files and a data file — no build step, no framework, no dependencies. Open `index.html` in a browser and it just works, even from `file://`.
+The entire site is two HTML files and a data file — no build step, no framework, no dependencies. Media files (photos and audio) are served from Cloudflare R2; only the code and metadata live in this repo.
 
 ```
 index.html     The viewer — CSS, HTML, and JS in one self-contained file
 photos.js      All photo/audio metadata (titles, timestamps, camera info)
 admin.html     Visual editor for photos.js (toggle entries, edit metadata, export)
-web/           1600px-wide web-optimized versions of every photo
-audio/         Mission audio clips (MP3/WAV)
 faq.html       Frequently asked questions
 ```
+
+Images and audio are hosted on Cloudflare R2 and referenced via `MEDIA_BASE` at the top of `index.html`. To run locally with your own copies, set `MEDIA_BASE = ''` and place files in `web/` and `audio/` directories.
 
 ## Adding photos
 
 1. Create a 1600px-wide web version of your image: `convert original.jpg -resize 1600x -quality 85 web/filename.jpg`
-2. Open `admin.html` in your browser and click **+ Add Photo**.
-3. Fill in the filename, timestamp, photographer, camera info, etc. The entry will sort into chronological position automatically.
-4. Click **Export photos.js** to download the updated data file.
-5. Replace `photos.js` with the exported version.
+2. Upload it to the `web/` folder in the R2 bucket (via the Cloudflare dashboard or `wrangler r2 object put artemistimeline/web/filename.jpg --file=web/filename.jpg`).
+3. Open `admin.html` in your browser and click **+ Add Photo**.
+4. Fill in the filename, timestamp, photographer, camera info, etc. The entry will sort into chronological position automatically.
+5. Click **Export photos.js** to download the updated data file.
+6. Replace `photos.js` with the exported version and deploy.
 
 ### Timestamps
 

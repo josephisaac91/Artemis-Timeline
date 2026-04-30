@@ -774,7 +774,7 @@
     </div>
     <div class="calendar-promo">
       <a class="calendar-cover-wrap" href="https://store.dftba.com/products/artemis-ii-2027-calendar" target="_blank" rel="noopener">
-        <img class="calendar-cover" src="web/Farther.png" alt="Farther — 2027 Calendar">
+        <img class="calendar-cover" src="" alt="Farther — 2027 Calendar" id="calendarCover">
         <div class="calendar-countdown" id="calendarCountdown">
           <div class="countdown-number" id="countdownDays"></div>
           <div class="countdown-label">days left to pre-order</div>
@@ -817,6 +817,12 @@
 //    trajectory visualization showing Orion's position between Earth and Moon.
 // ============================================================================
 
+
+// --- CONFIGURATION ---
+
+// Base URL for media files (images in web/, audio in audio/).
+// Set to '' for local/relative paths, or a CDN like 'https://pub-xxxxx.r2.dev'
+const MEDIA_BASE = 'https://pub-6f67061aecce4413aa83975cba06595d.r2.dev/';
 
 // --- PARSING & ID EXTRACTION ---
 
@@ -1761,14 +1767,14 @@ function updatePhoto() {
   if (photo.v) {
     imgEl.style.display = 'none';
     vidEl.pause();
-    vidEl.poster = 'web/' + encodeURIComponent(photo.f.replace(/\.mp4$/,'-poster.jpg'));
-    vidEl.src = 'web/' + safeSrc;
+    vidEl.poster = MEDIA_BASE + 'web/' + encodeURIComponent(photo.f.replace(/\.mp4$/,'-poster.jpg'));
+    vidEl.src = MEDIA_BASE + 'web/' + safeSrc;
     vidEl.style.display = '';
   } else {
     vidEl.pause();
     vidEl.removeAttribute('src');
     vidEl.style.display = 'none';
-    imgEl.src = 'web/' + safeSrc;
+    imgEl.src = MEDIA_BASE + 'web/' + safeSrc;
     imgEl.style.display = '';
   }
   imgEl.alt = nasaTitle || (photo.p + ' — ' + photo.loc);
@@ -1828,7 +1834,7 @@ function updatePhoto() {
   for (const off of preloadOffsets) {
     const idx = currentPhotoIdx + off;
     if (idx >= 0 && idx < filteredPhotos.length) {
-      const src = 'web/' + encodeURIComponent(filteredPhotos[idx].f);
+      const src = MEDIA_BASE + 'web/' + encodeURIComponent(filteredPhotos[idx].f);
       if (!document.querySelector('link[rel="prefetch"][href="' + CSS.escape(src) + '"]')) {
         const link = document.createElement('link');
         link.rel = 'prefetch';
@@ -1869,7 +1875,7 @@ function updateAudio(ts) {
 
   // Crossed into a new clip's segment — play it
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  currentAudio = new Audio(clip.f.replace(/ /g, '%20'));
+  currentAudio = new Audio(MEDIA_BASE + clip.f.replace(/ /g, '%20'));
   currentAudio.volume = 0.7;
   currentAudio.play().catch(() => {});
   lastAudioClip = clip.f;
@@ -2182,6 +2188,9 @@ function updateCountdown() {
 }
 updateCountdown();
 setInterval(updateCountdown, 3600000); // refresh hourly
+
+// Set calendar cover image using MEDIA_BASE
+document.getElementById('calendarCover').src = MEDIA_BASE + 'web/Farther.png';
 
 })(); // end init
 </script>
