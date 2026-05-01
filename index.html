@@ -2054,6 +2054,21 @@ function jumpToNearestPhotoForClientX(clientX) {
   if (currentPhotoIdx !== best) {
     currentPhotoIdx = best;
     updatePhoto();
+    // Auto-pan the view when scrubbing reaches the edge while zoomed in
+    const span = viewEnd - viewStart;
+    const fullSpan = T_END - T_START;
+    if (span < fullSpan * 0.95) {
+      const photoT = filteredPhotos[best].t;
+      const margin = span * 0.15;
+      if (photoT < viewStart + margin || photoT > viewEnd - margin) {
+        viewStart = photoT - span / 2;
+        viewEnd = photoT + span / 2;
+        if (viewStart < T_START) { viewStart = T_START; viewEnd = viewStart + span; }
+        if (viewEnd > T_END) { viewEnd = T_END; viewStart = viewEnd - span; }
+        if (viewStart < T_START) viewStart = T_START;
+        renderTimeline();
+      }
+    }
   }
 }
 
