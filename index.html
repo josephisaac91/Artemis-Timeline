@@ -333,6 +333,8 @@
     justify-content: center;
     transition: background 0.15s, color 0.15s;
     padding: 0;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   .nav-arrow:hover { background: rgba(0,0,0,0.7); color: #fff; }
   .nav-prev { left: 0; border-radius: 0 6px 6px 0; }
@@ -1003,15 +1005,13 @@
       border: 0;
       border-radius: 0;
     }
-    /* On mobile, fill the container width with the photo and crop vertical
-       overflow rather than letterboxing. */
+    /* On mobile, show the full photo (no cropping). */
     .photo-img {
       width: 100%;
       height: 100%;
       max-width: 100%;
       max-height: 100%;
-      object-fit: cover;
-      object-position: center;
+      object-fit: contain;
     }
     /* descHover lives inside the bottom sheet on mobile (moved by JS) */
     .photo-side .photo-links { display: none; }
@@ -1135,9 +1135,9 @@
        (the photo-container shrinks with sheet state, so absolute centering
        there tracks the middle of the viewport above the sheet). */
     .nav-arrow {
-      width: 36px;
-      height: 52px;
-      font-size: 24px;
+      width: 48px;
+      height: 72px;
+      font-size: 30px;
     }
     .nav-prev { left: 0; }
     .nav-next { right: 0; }
