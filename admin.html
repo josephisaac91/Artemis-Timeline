@@ -520,7 +520,7 @@ function matchesFilter(item) {
     case 'enabled': return item.enabled === true;
     case 'disabled': return item.enabled === false;
     case 'videos': return item.video === true;
-    case 'crew': return item.spacecraft === false && item.video === false;
+    case 'crew': return item.spacecraft === true && item.video === false;
     default: return true;
   }
 }
