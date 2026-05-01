@@ -649,7 +649,7 @@
     .photo-desc-btn { display: none !important; }
   }
   @media (max-width: 768px) {
-    .desc-hover { display: none !important; }
+    .photo-desc-btn { display: none !important; }
   }
   /* Photo description button — top-left corner of the image, opens popup */
   .photo-desc-btn {
@@ -1159,6 +1159,67 @@
     .calendar-subtitle { display: none; }
     .calendar-countdown-mobile { display: block; font-size: 11px; color: #4FC3F7; font-weight: 600; margin-top: 2px; }
     .calendar-link { margin-top: 6px; padding: 6px 14px; display: inline-block; font-size: 10px; }
+
+    body {
+      height: auto;
+      min-height: var(--vh);
+      overflow-y: auto;
+    }
+    .viewer {
+      flex: 0 0 auto;
+      overflow: visible;
+      padding-bottom: 0;
+    }
+    body.sheet-state-middle .viewer {
+      padding-bottom: 0;
+    }
+    .photo-side {
+      flex: none;
+      height: calc(var(--vh) - 148px);
+      min-height: 300px;
+      max-height: none;
+    }
+    .meta-panel {
+      position: static;
+      max-height: none;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+      transition: none;
+    }
+    .meta-panel.sheet-open,
+    .meta-panel.sheet-middle,
+    .meta-panel.sheet-closed {
+      top: auto;
+    }
+    .bottom-sheet-handle {
+      display: none;
+    }
+    #photoCounter {
+      position: static;
+      transform: none;
+      z-index: auto;
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 0;
+      color: #888;
+      transition: none;
+    }
+    .filter-popup-modal {
+      inset: auto 8px 8px;
+      max-height: min(620px, calc(var(--vh) - 24px));
+      border: 1px solid #2a2a4e;
+      border-radius: 8px;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.5);
+    }
+    .filter-popup-close {
+      border-radius: 8px 8px 0 0;
+    }
+    .filter-popup-body {
+      overflow-y: auto;
+      padding-bottom: calc(18px + var(--safe-bottom));
+    }
   }
 
   @media (max-width: 480px) {
@@ -3004,42 +3065,16 @@ setInterval(updateCountdown, 3600000); // refresh hourly
 document.getElementById('calendarCover').src = MEDIA_BASE + 'web/Farther.png';
 
 
-// --- MOBILE BOTTOM SHEET ---
-// On mobile we relocate #descHover into the meta-panel so the description
-// toggle, the orion map, and the photo info live together inside a single
-// fixed-position bottom sheet with three snap points.
 const MOBILE_MQ = window.matchMedia('(max-width: 768px)');
 const sheetEl = document.getElementById('metaPanel');
-const sheetHandleEl = document.getElementById('sheetHandle');
 const descHoverEl = document.getElementById('descHover');
 const trajSectionEl = document.querySelector('.traj-section');
 const photoLinksEl = document.querySelector('.photo-side .photo-links');
-
-let sheetState = 'middle'; // 'open' | 'middle' | 'closed'
-
-function applySheetState(state) {
-  sheetState = state;
-  sheetEl.classList.remove('sheet-open', 'sheet-middle', 'sheet-closed');
-  sheetEl.classList.add('sheet-' + state);
-  document.body.classList.remove('sheet-state-open', 'sheet-state-middle', 'sheet-state-closed');
-  document.body.classList.add('sheet-state-' + state);
-  sheetEl.style.top = '';
-}
-
-function snapPxFor(state) {
-  const vh = window.innerHeight;
-  const handle = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sheet-handle-h')) || 56;
-  const middleH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sheet-middle-h')) || 290;
-  if (state === 'open') return vh * 0.35;
-  if (state === 'middle') return vh - middleH;
-  return vh - handle;
-}
 
 function relocateDescHoverForViewport() {
   if (!descHoverEl) return;
   if (MOBILE_MQ.matches) {
     if (descHoverEl.parentElement !== sheetEl) {
-      // Place it right after the orion map so it's grouped with photo info.
       trajSectionEl.insertAdjacentElement('afterend', descHoverEl);
     }
   } else {
@@ -3049,77 +3084,9 @@ function relocateDescHoverForViewport() {
   }
 }
 
-// --- Drag/snap interaction ---
-let dragStartY = 0;
-let dragStartTop = 0;
-let dragging = false;
-
-function getSheetTopPx() {
-  return sheetEl.getBoundingClientRect().top;
-}
-
-function pickClosestSnap(currentTop) {
-  const targets = ['open', 'middle', 'closed'];
-  let best = 'open';
-  let bestDist = Infinity;
-  for (const s of targets) {
-    const d = Math.abs(currentTop - snapPxFor(s));
-    if (d < bestDist) { bestDist = d; best = s; }
-  }
-  return best;
-}
-
-function onPointerDown(e) {
-  if (!MOBILE_MQ.matches) return;
-  dragging = true;
-  dragStartY = (e.touches ? e.touches[0].clientY : e.clientY);
-  dragStartTop = getSheetTopPx();
-  sheetEl.classList.add('sheet-dragging');
-  // Lock current position so transitions don't fight the drag.
-  sheetEl.style.top = dragStartTop + 'px';
-}
-
-function onPointerMove(e) {
-  if (!dragging) return;
-  const y = (e.touches ? e.touches[0].clientY : e.clientY);
-  const delta = y - dragStartY;
-  const minTop = window.innerHeight * 0.35;
-  const maxTop = snapPxFor('closed');
-  const next = Math.max(minTop, Math.min(maxTop, dragStartTop + delta));
-  sheetEl.style.top = next + 'px';
-  if (e.cancelable) e.preventDefault();
-}
-
-function onPointerUp() {
-  if (!dragging) return;
-  dragging = false;
-  sheetEl.classList.remove('sheet-dragging');
-  const finalTop = getSheetTopPx();
-  const dragDistance = Math.abs(finalTop - dragStartTop);
-  if (dragDistance < 6) {
-    // Treat as tap: cycle through the snaps expanding upward, then dismiss.
-    // closed → middle → open → closed
-    applySheetState(sheetState === 'closed' ? 'middle' : sheetState === 'middle' ? 'open' : 'closed');
-  } else {
-    applySheetState(pickClosestSnap(finalTop));
-  }
-}
-
-if (sheetHandleEl) {
-  sheetHandleEl.addEventListener('touchstart', onPointerDown, { passive: true });
-  sheetHandleEl.addEventListener('touchmove', onPointerMove, { passive: false });
-  sheetHandleEl.addEventListener('touchend', onPointerUp);
-  sheetHandleEl.addEventListener('touchcancel', onPointerUp);
-  sheetHandleEl.addEventListener('mousedown', onPointerDown);
-  window.addEventListener('mousemove', onPointerMove);
-  window.addEventListener('mouseup', onPointerUp);
-}
-
 function syncMobileLayout() {
   relocateDescHoverForViewport();
-  if (MOBILE_MQ.matches) {
-    applySheetState(sheetState);
-  } else {
+  if (!MOBILE_MQ.matches) {
     sheetEl.classList.remove('sheet-open', 'sheet-middle', 'sheet-closed', 'sheet-dragging');
     document.body.classList.remove('sheet-state-open', 'sheet-state-middle', 'sheet-state-closed');
     sheetEl.style.top = '';
