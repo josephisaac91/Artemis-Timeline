@@ -1969,6 +1969,7 @@ let filteredPhotos = PHOTOS;
 let audioMuted = true;
 let currentAudio = null;
 let lastAudioClip = null;
+let descTipOpen = false;
 
 // Full timeline range
 const T_START = PHOTOS[0].t;
@@ -2360,13 +2361,13 @@ function updatePhoto() {
     titleRow.style.display = '';
     const fullDesc = flickrId ? (PHOTO_DESCS[flickrId] || nasaTitle) : nasaTitle;
     descTip.textContent = fullDesc || '';
-    descTip.classList.remove('open');
-    document.getElementById('descToggleBtn').setAttribute('aria-expanded', 'false');
+    descTip.classList.toggle('open', descTipOpen);
+    document.getElementById('descToggleBtn').setAttribute('aria-expanded', descTipOpen ? 'true' : 'false');
     setPhotoDescription(fullDesc);
   } else {
     titleRow.style.display = 'none';
     descTip.classList.remove('open');
-    document.getElementById('descToggleBtn').setAttribute('aria-expanded', 'false');
+    document.getElementById('descToggleBtn').setAttribute('aria-expanded', descTipOpen ? 'true' : 'false');
     setPhotoDescription(null);
   }
   document.getElementById('metaPhotographer').textContent = photo.p;
@@ -2841,8 +2842,9 @@ window.toggleDescTip = function() {
   const tip = document.getElementById('descHoverTip');
   const btn = document.getElementById('descToggleBtn');
   if (!tip || !btn) return;
-  const open = tip.classList.toggle('open');
-  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  descTipOpen = !descTipOpen;
+  tip.classList.toggle('open', descTipOpen);
+  btn.setAttribute('aria-expanded', descTipOpen ? 'true' : 'false');
 };
 
 // --- PHOTO DESCRIPTION BUTTON + POPUP ---
@@ -2855,9 +2857,13 @@ function setPhotoDescription(text) {
     if (text) { btn.style.display = ''; btn.dataset.text = text; }
     else      { btn.style.display = 'none'; btn.dataset.text = ''; }
   }
-  // Desktop UI — restored. CSS hides this on mobile so it doesn't double up
-  // with the new top-left "Show Desc" pill.
   if (descHover) descHover.style.display = text ? '' : 'none';
+  const modal = document.getElementById('descPopupModal');
+  const popupText = document.getElementById('descPopupText');
+  if (modal && modal.style.display === 'flex' && popupText) {
+    if (text) popupText.textContent = text;
+    else closeDescPopup();
+  }
 }
 
 window.showDescPopup = function() {
