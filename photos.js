@@ -348,10 +348,10 @@ const PHOTO_DATA = {
       "enabled": true
     },
     {
-      "time": "2026-04-01 15:46:20",
+      "time": "2025-01-30 12:00:00",
       "file": "54424847440-86cd37a196-o.jpg",
-      "photographer": "NASA",
-      "location": "Kennedy Space Center",
+      "photographer": "NASA/Mark Sowa",
+      "location": "Space Vehicle Mockup Facility, Houston, TX",
       "camera": "NIKON D5 + 70.0-200.0 mm f/2.8",
       "settings": "200mm · f/3.2 · 1/160s · ISO 3200",
       "spacecraft": false,
@@ -360,7 +360,7 @@ const PHOTO_DATA = {
       "external": true,
       "title": "NASA astronaut and Artemis II Pilot Victor Glover inside of the Orion spacecraft mockup during Post Insertion and Deorbit Preparation Training",
       "flickr_desc": "jsc2025e004071 (Jan. 30, 2025) --- NASA astronaut and Artemis II Pilot Victor Glover inside of the Orion spacecraft mockup during Post Insertion and Deorbit Preparation training at the Space Vehicle Mockup Facility in Houston, Texas. The crew practiced getting the Orion spacecraft configured once in orbit, how to make it habitable, and suited up in their entry pressure suits to prepare for their return from the Moon. Credit: NASA/Mark Sowa",
-      "enabled": true
+      "enabled": false
     },
     {
       "time": "2026-04-01 16:13:42",
@@ -493,6 +493,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "SLS Twin Boosters Ignite",
+      "flickr_desc": "The twin solid rocket boosters of NASA's Space Launch System roar to life, producing massive plumes of flame and smoke as Artemis II lifts off from Kennedy Space Center on April 1, 2026. The close-up shot captures the raw power of the four RS-25 engines and two boosters generating 8.8 million pounds of thrust.",
       "enabled": true
     },
     {
@@ -835,6 +837,7 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "A Crescent View of Home",
+      "flickr_desc": "A crescent Earth photographed from the Orion spacecraft during the early hours of the Artemis II mission. The planet's sunlit edge reveals swirling cloud patterns and blue ocean, while the rest falls into shadow against the blackness of space.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -850,6 +853,7 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "Earth Up Close from Orbit",
+      "flickr_desc": "A close-up view of Earth's curved horizon from low orbit, showing detailed cloud formations, ocean, and landmass. Taken with a 400mm telephoto lens during the crew's initial orbits before the translunar injection burn.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -865,6 +869,7 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "Watching Earth Shrink",
+      "flickr_desc": "Earth appears as a half-lit sphere receding into the distance as Orion coasts toward the Moon. Sunlight illuminates swirling storm systems and the planet's thin blue atmosphere against the void of space.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -912,6 +917,7 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "Earth from the Outbound Coast",
+      "flickr_desc": "A telephoto view of Earth's curved horizon during the outbound coast to the Moon, showing cloud bands and the thin blue line of the atmosphere. The spacecraft is now tens of thousands of miles from home.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -1032,6 +1038,7 @@ const PHOTO_DATA = {
       "video": false,
       "external": false,
       "title": "Earth Through Orion's Window",
+      "flickr_desc": "Earth's cloud-covered surface seen through one of Orion's crew cabin windows, with the window frame visible around the edges. The wide-angle lens captures the full window view as the crew looks back at their home planet during the outbound transit.",
       "enabled": true,
       "camera_id": "d5b"
     },
@@ -1402,6 +1409,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Smiles in Mission Control",
+      "flickr_desc": "A flight controller smiles at her console in the White Flight Control Room at NASA's Johnson Space Center during the Artemis II mission. The room buzzes with activity as teams monitor the spacecraft's trajectory toward the Moon.",
       "enabled": true
     },
     {
@@ -2213,6 +2222,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Fist Pump at the CAPCOM Console",
+      "flickr_desc": "A flight controller pumps his fist in celebration at his console in Mission Control during the Artemis II lunar flyby. The gesture captures a moment of triumph as the crew approaches the Moon.",
       "enabled": true
     },
     {
@@ -2226,6 +2237,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "A Moment of Awe in Mission Control",
+      "flickr_desc": "A member of the mission support team looks up with quiet emotion during the Artemis II lunar flyby, the Moon visible on a screen behind him. His expression captures the profound significance of humanity's return to the Moon.",
       "enabled": true
     },
     {
@@ -2239,6 +2252,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "The Moon's Cratered Southern Highlands",
+      "flickr_desc": "A black-and-white view of the Moon's heavily cratered southern hemisphere, photographed from the Orion spacecraft during the Artemis II flyby. The stark lighting reveals the depth and texture of ancient impact craters across the lunar highlands.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -2440,6 +2455,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Lunar Horizon at an Angle",
+      "flickr_desc": "The cratered lunar surface stretches diagonally across the frame, with the horizon cutting from lower-left to upper-right. Taken during the closest approach phase of the Artemis II flyby, the image shows the rugged far side terrain in sharp detail.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -2515,6 +2532,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Orion Selfie with Crescent Moon and Earth",
+      "flickr_desc": "A GoPro camera mounted on Orion's solar array wing captures the spacecraft's service module in the foreground with a crescent Moon and a tiny crescent Earth visible in the background. The NASA logo is clearly visible on the spacecraft's exterior.",
       "enabled": true
     },
     {
@@ -2528,6 +2547,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Earthrise Behind the Lunar Limb",
+      "flickr_desc": "A crescent Earth peeks out from behind the Moon's cratered limb in this stunning telephoto image from the Artemis II flyby. The Moon's surface fills most of the frame, its craters and highlands sharply rendered, while Earth's familiar blue-and-white crescent hangs just beyond the horizon.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -2590,6 +2611,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Earthrise Over the Lunar Far Side",
+      "flickr_desc": "Earth rises above the Moon's far side horizon, appearing as a small blue-white crescent above the grey expanse of the lunar surface. The image captures one of the most iconic views in spaceflight — our home planet seen from the vicinity of another world.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -2762,6 +2785,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "The Lunar Terminator at Close Range",
+      "flickr_desc": "The boundary between day and night on the Moon's surface — the terminator — cuts diagonally across the frame, with crater rims catching the last rays of sunlight while the rest falls into deep shadow. Taken at close range during the Artemis II flyby.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -2808,6 +2833,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Orion, Earth, and Moon from the Solar Array",
+      "flickr_desc": "A GoPro mounted on Orion's solar array captures the spacecraft's service module in the foreground with a tiny crescent Earth visible in the distance and the faintly lit lunar surface at the edge of the frame. The NASA worm logo is visible on the adapter ring.",
       "enabled": true
     },
     {
@@ -2853,6 +2880,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Solar Eclipse from the Far Side",
+      "flickr_desc": "The Sun is fully eclipsed by the Moon as seen from the Orion spacecraft during the Artemis II flyby. The Moon's dark disk is surrounded by a brilliant halo of light — the Sun's corona and possibly zodiacal light — with stars visible in the background. The crew witnessed nearly 54 minutes of totality from this vantage point.",
       "enabled": true
     },
     {
@@ -2882,6 +2911,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Eclipsed Moon with Corona Glow",
+      "flickr_desc": "The Moon's full disk appears in silhouette against the Sun's glowing corona during the total solar eclipse witnessed by the Artemis II crew. The corona's ethereal light radiates outward from behind the Moon, with faint surface features visible through Earthshine. Stars dot the surrounding darkness.",
       "enabled": true
     },
     {
@@ -3226,6 +3257,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Waning Crescent Moon on the Return",
+      "flickr_desc": "A slender crescent Moon photographed from the Orion spacecraft during the return coast to Earth. The sunlit portion reveals cratered terrain while the rest of the disk fades into darkness, a farewell view as the crew heads home.",
       "enabled": true,
       "camera_id": "d5a"
     },
@@ -3409,6 +3442,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": false,
+      "title": "Crew Video Call from Orion",
+      "flickr_desc": "The four Artemis II crew members wave and smile during a video call from inside the Orion spacecraft, displayed on a large screen at an Artemis event. American and Canadian flags and an America 250 banner float above them in microgravity.",
       "enabled": true
     },
     {
@@ -5374,6 +5409,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Crew Inspects the Heat Shield",
+      "flickr_desc": "The Artemis II crew, wearing blue flight suits, examines the Orion capsule's charred heat shield aboard the USS John P. Murtha after recovery. A technician points out details of the thermal protection system, which endured temperatures of nearly 5,000 degrees Fahrenheit during reentry.",
       "enabled": true
     },
     {
@@ -5387,6 +5424,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Hansen Beside the Returned Capsule",
+      "flickr_desc": "Canadian Space Agency astronaut Jeremy Hansen stands beside the recovered Orion crew module aboard the USS John P. Murtha, placing his hand on the scorched exterior. The heat shield's ablative tiles show the intense effects of atmospheric reentry.",
       "enabled": true
     },
     {
@@ -5400,6 +5439,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Hansen Signs the Ship's Banner",
+      "flickr_desc": "Astronaut Jeremy Hansen signs a commemorative Artemis II banner aboard the USS John P. Murtha after the crew's recovery from the Pacific Ocean. The banner features the mission's insignia and signatures from the ship's crew.",
       "enabled": true
     },
     {
@@ -5413,6 +5454,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Koch and Hansen Sign the Banner",
+      "flickr_desc": "Astronauts Christina Koch and Jeremy Hansen lean over a large Artemis II mission banner, adding their signatures aboard the USS John P. Murtha. Both wear blue flight suits covered in mission patches.",
       "enabled": true
     },
     {
@@ -5426,6 +5469,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Hansen Signs the Artemis II Banner",
+      "flickr_desc": "A close-up of Canadian Space Agency astronaut Jeremy Hansen carefully signing the Artemis II mission banner aboard the recovery ship. His blue flight suit displays the Canadian flag and Artemis II mission patch.",
       "enabled": true
     },
     {
@@ -5439,6 +5484,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Glover Signs the Mission Banner",
+      "flickr_desc": "NASA astronaut Victor Glover adds his signature to the Artemis II mission banner aboard the USS John P. Murtha. Wearing his blue flight suit adorned with mission patches, he concentrates on adding his mark alongside those of the ship's crew.",
       "enabled": true
     },
     {
@@ -5452,6 +5499,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Wiseman Gears Up Below Deck",
+      "flickr_desc": "Commander Reid Wiseman wears a flight deck cranial helmet and gives a shaka sign aboard the USS John P. Murtha, with astronaut Christina Koch visible behind him. Both wear blue flight suits over flight deck safety gear as they prepare for helicopter operations.",
       "enabled": true
     },
     {
@@ -5629,6 +5678,8 @@ const PHOTO_DATA = {
       "batch": 1,
       "video": false,
       "external": true,
+      "title": "Crew Celebrates at Ellington Field",
+      "flickr_desc": "The four Artemis II astronauts gather together on stage at a NASA welcome event, wearing matching navy USS John P. Murtha ballcaps. Commander Wiseman, Koch, and Hansen help pilot Glover stand in a lighthearted moment, drawing laughs from the crowd in front of a large NASA meatball logo.",
       "enabled": true
     },
     {

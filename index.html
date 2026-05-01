@@ -2265,18 +2265,20 @@ function updatePhoto() {
   const titleEl = document.getElementById('metaTitle');
   const descHover = document.getElementById('descHover');
   const descTip = document.getElementById('descHoverTip');
+  const descWasOpen = descTip.classList.contains('open');
   if (nasaTitle) {
     titleEl.textContent = nasaTitle;
     titleRow.style.display = '';
     const fullDesc = flickrId ? (PHOTO_DESCS[flickrId] || nasaTitle) : nasaTitle;
     descTip.textContent = fullDesc || '';
     descTip.classList.toggle('open', descTipOpen);
-    document.getElementById('descToggleBtn').setAttribute('aria-expanded', descTipOpen ? 'true' : 'false');
+    document.getElementById('descToggleBtn').setAttribute('aria-expanded', descTipOpen ? 'true' : 'false')
     setPhotoDescription(fullDesc);
   } else {
     titleRow.style.display = 'none';
+    descTipOpen = false;
     descTip.classList.remove('open');
-    document.getElementById('descToggleBtn').setAttribute('aria-expanded', descTipOpen ? 'true' : 'false');
+    document.getElementById('descToggleBtn').setAttribute('aria-expanded', 'false');
     setPhotoDescription(null);
   }
   document.getElementById('metaPhotographer').textContent = photo.p;
