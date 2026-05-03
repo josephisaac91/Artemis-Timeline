@@ -223,8 +223,8 @@
   <h1>The Artemis II Photo Top 50</h1>
   <p>Ranked by selection rate — the fraction of voters who picked each photo when shown. Photos must have appeared at least 3 times to qualify, so we're not just showing whichever photo got lucky and was seen first.</p>
   <div class="stats">
-    <span>Total votes: <em id="stat-votes">—</em></span>
-    <span>Photos with picks: <em id="stat-photos">—</em></span>
+    <span>Ballots cast: <em id="stat-votes">—</em></span>
+    <span>Photos picked at least once: <em id="stat-photos">—</em></span>
   </div>
   <div class="actions">
     <button class="btn" id="btn-refresh">↻ Refresh</button>
@@ -244,6 +244,10 @@
     <p id="err-msg" style="margin-top:10px"></p>
   </div>
   <div id="grid" class="grid" style="display:none"></div>
+  <div id="scroll-sentinel" style="height:80px; display:none"></div>
+  <div id="eof-marker" style="display:none; text-align:center; padding:30px 16px; color:var(--muted); font-size:13px;">
+    That's everything. Want more variety on the leaderboard? <a href="index.html">Vote on more photos.</a>
+  </div>
 </main>
 
 <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
@@ -269,7 +273,13 @@
   const R2  = "https://pub-1f1ce68455c0432ea65ac3155a6b2409.r2.dev";
   const NASA_DETAIL = "https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?";
   const NASA_FULL   = "https://eol.jsc.nasa.gov/DatabaseImages/ESC/large/ART002";
-  const TOP_N = 50;
+  const FETCH_N    = 1000;  // total leaderboard depth (fetched once)
+  const PAGE_SIZE  = 50;    // cards rendered per scroll batch
+
+  // Progressive render state
+  let allResults = [];
+  let renderedCount = 0;
+  let scrollObserver = null;
 
   const $ = s => document.querySelector(s);
 
@@ -315,40 +325,78 @@
     return Math.round(rate * 100) + "%";
   }
 
-  function render(results, totalVotes) {
-    if (!results.length) {
+  function makeCard(row, rank) {
+    const card = document.createElement("div");
+    card.className = rankClass(rank);
+    card.dataset.guid = row.guid;
+    const picks = row.picks ?? 0;
+    const shown = row.shown ?? 0;
+    const rate  = (typeof row.rate === "number") ? row.rate : (shown ? picks / shown : 0);
+    card.innerHTML = `
+      <div class="photo">
+        <img src="${thumbUrl(row.guid)}" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="meta">
+        <span class="rank">#${rank + 1}</span>
+        <span class="frame">${row.guid.replace("ART002-E-","#")}</span>
+        <span style="text-align:right; line-height:1.2">
+          <span class="rate">${fmtRate(rate)}</span><br>
+          <span class="picks">${picks}/${shown}</span>
+        </span>
+      </div>
+    `;
+    const img = card.querySelector("img");
+    img.addEventListener("load", () => img.classList.add("loaded"));
+    card.addEventListener("click", () => openLightbox(row.guid));
+    return card;
+  }
+
+  function renderNextBatch() {
+    const grid = $("#grid");
+    const slice = allResults.slice(renderedCount, renderedCount + PAGE_SIZE);
+    for (let i = 0; i < slice.length; i++) {
+      grid.appendChild(makeCard(slice[i], renderedCount + i));
+    }
+    renderedCount += slice.length;
+    updateSentinel();
+  }
+
+  function updateSentinel() {
+    const s = $("#scroll-sentinel");
+    const eof = $("#eof-marker");
+    if (renderedCount >= allResults.length) {
+      // Stop observing; show end-of-list marker if we rendered anything substantial
+      if (scrollObserver) scrollObserver.disconnect();
+      s.style.display = "none";
+      eof.style.display = renderedCount > PAGE_SIZE ? "" : "none";
+    } else {
+      s.style.display = "";
+      eof.style.display = "none";
+    }
+  }
+
+  function setupScrollObserver() {
+    if (scrollObserver) scrollObserver.disconnect();
+    scrollObserver = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && renderedCount < allResults.length) {
+        renderNextBatch();
+      }
+    }, { rootMargin: "600px 0px" });   // start loading well before visible
+    scrollObserver.observe($("#scroll-sentinel"));
+  }
+
+  function render(results) {
+    allResults = results || [];
+    renderedCount = 0;
+    const grid = $("#grid");
+    grid.innerHTML = "";
+    if (!allResults.length) {
       show("stage-empty");
       return;
     }
-    const grid = $("#grid");
-    grid.innerHTML = "";
-    results.forEach((row, i) => {
-      const card = document.createElement("div");
-      card.className = rankClass(i);
-      card.dataset.guid = row.guid;
-      const picks = row.picks ?? 0;
-      const shown = row.shown ?? 0;
-      const rate  = (typeof row.rate === "number") ? row.rate : (shown ? picks / shown : 0);
-      card.innerHTML = `
-        <div class="photo">
-          <img src="${thumbUrl(row.guid)}" alt="" loading="lazy" decoding="async">
-        </div>
-        <div class="meta">
-          <span class="rank">#${i + 1}</span>
-          <span class="frame">${row.guid.replace("ART002-E-","#")}</span>
-          <span style="text-align:right; line-height:1.2">
-            <span class="rate">${fmtRate(rate)}</span><br>
-            <span class="picks">${picks}/${shown}</span>
-          </span>
-        </div>
-      `;
-      const img = card.querySelector("img");
-      img.addEventListener("load", () => img.classList.add("loaded"));
-      card.addEventListener("click", () => openLightbox(row.guid));
-      grid.appendChild(card);
-    });
-    $("#stat-photos").textContent = results.length.toString();
     show("grid");
+    renderNextBatch();
+    setupScrollObserver();
   }
 
   function openLightbox(guid) {
@@ -370,13 +418,14 @@
     show("stage-loading");
     try {
       const [topRes, countRes] = await Promise.all([
-        fetch(`${API}/top?n=${TOP_N}`, { cache: "no-cache" }).then(r => r.json()),
+        fetch(`${API}/top?n=${FETCH_N}`, { cache: "no-cache" }).then(r => r.json()),
         fetch(`${API}/count`, { cache: "no-cache" }).then(r => r.json()),
       ]);
       if (!topRes.ok) throw new Error(topRes.error || "Top fetch failed");
       if (!countRes.ok) throw new Error(countRes.error || "Count fetch failed");
       $("#stat-votes").textContent = countRes.count.toLocaleString();
-      render(topRes.results || [], countRes.count);
+      $("#stat-photos").textContent = (countRes.unique_picked ?? 0).toLocaleString();
+      render(topRes.results || []);
     } catch (err) {
       $("#err-msg").textContent = err.message || String(err);
       show("stage-error");
