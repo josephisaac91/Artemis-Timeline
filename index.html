@@ -804,9 +804,7 @@
     :root {
       --sheet-handle-h: 44px;
       --sheet-middle-h: 192px; /* orion map flush at top + a little chrome */
-      /* y-coord of the sheet's top edge; default matches the middle snap so
-         pre-JS layout already reserves the right space for the photo. */
-      --sheet-top-y: calc(var(--vh) - 192px);
+      --sheet-top-y: calc(var(--vh) - var(--sheet-handle-h) - var(--safe-bottom));
     }
 
     body { height: var(--vh); overflow: hidden; }
@@ -1101,9 +1099,6 @@
     .meta-panel.sheet-closed  { top: calc(var(--vh) - var(--sheet-handle-h) - var(--safe-bottom)); overflow-y: hidden; }
     .meta-panel.sheet-dragging { transition: none; }
 
-    /* Handle floats absolutely over the orion map; only the drag bar is
-       visible in open/middle states. Closed state lets the handle stretch
-       to fill the visible sheet area and reveal the title. */
     .bottom-sheet-handle {
       position: absolute;
       top: 0;
@@ -1122,6 +1117,15 @@
       -webkit-tap-highlight-color: transparent;
       touch-action: none;
       background: transparent;
+    }
+    .meta-panel:not(.sheet-closed) .bottom-sheet-handle {
+      position: sticky;
+      order: 0;
+      top: 0;
+      flex-shrink: 0;
+      background: #0a0a14;
+      border-radius: 14px 14px 0 0;
+      padding: 8px 16px 10px;
     }
     .meta-panel.sheet-dragging .bottom-sheet-handle { cursor: grabbing; }
     .sheet-handle-bar {
@@ -1148,9 +1152,6 @@
       padding: 8px 16px calc(8px + var(--safe-bottom));
     }
 
-    /* Reorder: orion map first so it's the only thing visible at the middle snap.
-       Orion map is flush with sheet edges (no margin/border); the handle floats
-       on top of it. */
     .traj-section {
       order: 1;
       margin: 0;
@@ -1159,8 +1160,8 @@
       border-radius: 14px 14px 0 0;
       background: rgba(0,0,0,0.35);
       flex-shrink: 0;
-      max-height: 140px;
-      overflow: hidden;
+      max-height: none;
+      overflow: visible;
     }
     .traj-section canvas {
       border-radius: 14px 14px 0 0;
@@ -1169,7 +1170,7 @@
       object-fit: contain;
       display: block;
     }
-    .traj-label { padding-bottom: 4px; }
+    .traj-label { padding: 0 8px 8px; }
     .meta-panel > .calendar-promo { order: 2; margin: 10px 12px 0; flex-shrink: 0; }
     .desc-hover { order: 3; margin: 10px 12px 0; width: auto; flex-shrink: 0; }
     .meta-panel > .meta-section:not(#descSection) { order: 4; margin: 10px 12px 0; flex-shrink: 0; }
@@ -1220,7 +1221,7 @@
 </style>
 <script src="photos.js"></script>
 </head>
-<body>
+<body class="sheet-state-closed">
 
 <!-- Header -->
 <div id="header">
@@ -1298,7 +1299,7 @@
       </div>
     </div>
   </div>
-  <div class="meta-panel" id="metaPanel">
+  <div class="meta-panel sheet-closed" id="metaPanel">
     <div class="bottom-sheet-handle" id="sheetHandle" role="button" tabindex="0" aria-label="Toggle information panel">
       <div class="sheet-handle-bar"></div>
       <div class="sheet-handle-title" id="sheetHandleTitle">Show More Information</div>
@@ -3095,7 +3096,7 @@ const descHoverEl = document.getElementById('descHover');
 const trajSectionEl = document.querySelector('.traj-section');
 const photoLinksEl = document.querySelector('.photo-side .photo-links');
 
-let sheetState = 'middle'; // 'open' | 'middle' | 'closed'
+let sheetState = 'closed'; // 'open' | 'middle' | 'closed'
 
 function applySheetState(state) {
   sheetState = state;
@@ -3133,6 +3134,7 @@ function relocateDescHoverForViewport() {
 let dragStartY = 0;
 let dragStartTop = 0;
 let dragging = false;
+let ignoreMouseUntil = 0;
 
 function getSheetTopPx() {
   return sheetEl.getBoundingClientRect().top;
@@ -3151,6 +3153,7 @@ function pickClosestSnap(currentTop) {
 
 function onPointerDown(e) {
   if (!MOBILE_MQ.matches) return;
+  if (e.type === 'mousedown' && Date.now() < ignoreMouseUntil) return;
   dragging = true;
   dragStartY = (e.touches ? e.touches[0].clientY : e.clientY);
   dragStartTop = getSheetTopPx();
@@ -3170,16 +3173,17 @@ function onPointerMove(e) {
   if (e.cancelable) e.preventDefault();
 }
 
-function onPointerUp() {
+function onPointerUp(e) {
   if (!dragging) return;
+  if (e && e.type && e.type.startsWith('touch')) {
+    ignoreMouseUntil = Date.now() + 500;
+  }
   dragging = false;
   sheetEl.classList.remove('sheet-dragging');
   const finalTop = getSheetTopPx();
   const dragDistance = Math.abs(finalTop - dragStartTop);
   if (dragDistance < 6) {
-    // Treat as tap: cycle through the snaps expanding upward, then dismiss.
-    // closed → middle → open → closed
-    applySheetState(sheetState === 'closed' ? 'middle' : sheetState === 'middle' ? 'open' : 'closed');
+    applySheetState(sheetState === 'closed' ? 'open' : 'closed');
   } else {
     applySheetState(pickClosestSnap(finalTop));
   }
@@ -3194,7 +3198,7 @@ if (sheetHandleEl) {
   sheetHandleEl.addEventListener('keydown', e => {
     if (e.key !== 'Enter' && e.key !== ' ') return;
     e.preventDefault();
-    applySheetState(sheetState === 'closed' ? 'middle' : sheetState === 'middle' ? 'open' : 'closed');
+    applySheetState(sheetState === 'closed' ? 'open' : 'closed');
   });
   window.addEventListener('mousemove', onPointerMove);
   window.addEventListener('mouseup', onPointerUp);
