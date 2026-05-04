@@ -2483,6 +2483,7 @@ const tipActivity = document.getElementById('tipActivity');
 const timelineTrack = document.getElementById('timelineTrack');
 
 function updateTooltip(e) {
+  if (isTimelineInteractiveTarget(e.target)) { hoverTip.style.display = 'none'; return; }
   if (isDragging) { hoverTip.style.display = 'none'; return; }
   const rect = this.getBoundingClientRect();
   const frac = (e.clientX - rect.left) / rect.width;
