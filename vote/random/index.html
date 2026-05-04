@@ -495,6 +495,7 @@
     const grid = $("#grid");
     grid.innerHTML = "";
     selected.clear();
+    $("#btn-submit").textContent = "Submit my picks";
     updateCount();
     for (const item of batch) {
       const tile = document.createElement("div");
