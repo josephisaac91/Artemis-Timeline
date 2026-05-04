@@ -818,14 +818,25 @@
     #header h1 { font-size: 18px; }
     #header .crew { display: none; }
     .timeline-bar { padding: 4px 12px; }
-    .timeline-track { height: 34px; }
-    .timeline-playhead { top: 0; height: 34px; }
+    .timeline-track { height: 42px; cursor: pointer; }
+    .timeline-playhead { top: 0; height: 42px; }
     /* Keep activity bars, audio dots, and day labels visible on mobile */
     .timeline-labels { font-size: 8px; margin-top: 4px; }
     .timeline-audio-dots { display: block; }
-    .audio-dot { width: 6px; height: 6px; top: 2px; transform: translateX(-3px); }
-    .photo-dot { width: 6px; height: 6px; top: 2px; transform: translateX(-3px); }
-    .photo-dot.active { width: 8px; height: 8px; top: 1px; transform: translateX(-4px); }
+    .timeline-photo-dots,
+    .timeline-audio-dots { height: 18px; }
+    .timeline-activity-bars { height: 24px; }
+    .timeline-activity-bar { height: 24px; line-height: 24px; border-radius: 4px; }
+    .audio-dot { width: 8px; height: 8px; top: 3px; transform: translateX(-4px); }
+    .photo-dot { width: 8px; height: 8px; top: 3px; transform: translateX(-4px); }
+    .photo-dot::before,
+    .audio-dot::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 50%;
+    }
+    .photo-dot.active { width: 10px; height: 10px; top: 2px; transform: translateX(-5px); }
     /* Hover tooltip and zoom controls don't work well on touch — keep hidden */
     .zoom-controls { display: none; }
     .timeline-hover-tip { display: none !important; }
@@ -2034,6 +2045,36 @@ const T_SPAN = T_END - T_START;
 let viewStart = T_START;
 let viewEnd = (window.innerWidth <= 768) ? T_START + 24 * 3600000 : T_END;
 const MIN_VIEW_SPAN = 2 * 3600000;
+const MOBILE_TIMELINE_SPAN = 24 * 3600000;
+
+function isMobileViewport() {
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
+function setTimelineWindowAround(t) {
+  if (!isMobileViewport()) {
+    viewStart = T_START;
+    viewEnd = T_END;
+    return;
+  }
+  const span = Math.min(MOBILE_TIMELINE_SPAN, T_SPAN);
+  viewStart = t - span / 2;
+  viewEnd = viewStart + span;
+  if (viewStart < T_START) {
+    viewStart = T_START;
+    viewEnd = viewStart + span;
+  }
+  if (viewEnd > T_END) {
+    viewEnd = T_END;
+    viewStart = viewEnd - span;
+  }
+  if (viewStart < T_START) viewStart = T_START;
+}
+
+function resetTimelineForCurrentPhoto() {
+  const photo = filteredPhotos[currentPhotoIdx];
+  setTimelineWindowAround(photo ? photo.t : T_START);
+}
 
 // Convert a Unix timestamp to EDT date components.
 // Trick: subtract 4 hours, then read UTC accessors — the UTC values now
@@ -2106,12 +2147,23 @@ function renderActivityBars(force) {
 // Render photo dots + event ticks + activity bars + playhead
 function renderTimeline() {
   const dotsContainer = document.getElementById('photoDots');
+  const audioDotsContainer = document.getElementById('audioDots');
+  const playhead = document.getElementById('playhead');
 
   // Toggle grab cursor when zoomed in
   timelineTrack.classList.toggle('zoomed', isZoomedIn());
 
   // Activity bars
   renderActivityBars();
+
+  if (!filteredPhotos.length) {
+    dotsContainer.innerHTML = '';
+    audioDotsContainer.innerHTML = '';
+    playhead.style.display = 'none';
+    updateTimelineLabels();
+    return;
+  }
+  playhead.style.display = '';
 
   // Photo dots
   let dotsHtml = '';
@@ -2132,7 +2184,6 @@ function renderTimeline() {
   });
 
   // Audio dots
-  const audioDotsContainer = document.getElementById('audioDots');
   const currentClip = getAudioForTimestamp(filteredPhotos[currentPhotoIdx].t);
   let audioDotsHtml = '';
   AUDIO.forEach((a, ai) => {
@@ -2162,7 +2213,7 @@ function renderTimeline() {
 
   // Playhead
   const photo = filteredPhotos[currentPhotoIdx];
-  document.getElementById('playhead').style.left = timeToViewPercent(photo.t) + '%';
+  playhead.style.left = timeToViewPercent(photo.t) + '%';
 
   updateTimelineLabels();
 }
@@ -2778,7 +2829,12 @@ timelineTrack.addEventListener('pointercancel', finishTimelinePointer);
 // Zoom buttons
 document.getElementById('zoomInBtn').addEventListener('click', (e) => { e.stopPropagation(); zoomTimeline(0.5, 0.5); });
 document.getElementById('zoomOutBtn').addEventListener('click', (e) => { e.stopPropagation(); zoomTimeline(2, 0.5); });
-document.getElementById('zoomResetBtn').addEventListener('click', (e) => { e.stopPropagation(); viewStart = T_START; viewEnd = T_END; renderTimeline(); });
+document.getElementById('zoomResetBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (isMobileViewport()) resetTimelineForCurrentPhoto();
+  else { viewStart = T_START; viewEnd = T_END; }
+  renderTimeline();
+});
 
 // --- Navigation ---
 function ensurePhotoInView() {
@@ -2837,7 +2893,7 @@ document.querySelectorAll('[data-filter]').forEach(btn => {
     const filter = this.dataset.filter;
     filteredPhotos = filter === 'all' ? PHOTOS : filter === 'videos' ? PHOTOS.filter(p => p.v) : filter === 'exterior' ? PHOTOS.filter(p => p.exterior) : PHOTOS.filter(p => p.sc);
     currentPhotoIdx = 0;
-    viewStart = T_START; viewEnd = T_END;
+    resetTimelineForCurrentPhoto();
     updatePhoto();
   });
 });
@@ -2856,12 +2912,17 @@ document.querySelectorAll('[data-cam]').forEach(btn => {
       filteredPhotos = PHOTOS;
     }
     currentPhotoIdx = 0;
-    viewStart = T_START; viewEnd = T_END;
+    resetTimelineForCurrentPhoto();
     updatePhoto();
   });
 });
 
 document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const currentPhoto = document.getElementById("currentPhoto");
+    currentPhoto.classList.remove('fullscreen');
+    document.body.classList.remove('photo-fullscreen-active');
+  }
   if (e.key === 'ArrowLeft' && currentPhotoIdx > 0) { currentPhotoIdx--; updatePhoto(); ensurePhotoInView(); }
   if (e.key === 'ArrowRight' && currentPhotoIdx < filteredPhotos.length - 1) { currentPhotoIdx++; updatePhoto(); ensurePhotoInView(); }
 });
@@ -2914,6 +2975,7 @@ function navigateToHash() {
 }
 
 navigateToHash();
+resetTimelineForCurrentPhoto();
 updatePhoto();
 
 window.addEventListener('hashchange', () => {
@@ -3208,10 +3270,17 @@ function syncMobileLayout() {
   relocateDescHoverForViewport();
   if (MOBILE_MQ.matches) {
     applySheetState(sheetState);
+    resetTimelineForCurrentPhoto();
   } else {
     sheetEl.classList.remove('sheet-open', 'sheet-middle', 'sheet-closed', 'sheet-dragging');
     document.body.classList.remove('sheet-state-open', 'sheet-state-middle', 'sheet-state-closed');
     sheetEl.style.top = '';
+    viewStart = T_START;
+    viewEnd = T_END;
+  }
+  if (filteredPhotos.length) {
+    renderTimeline();
+    drawTrajectory(filteredPhotos[currentPhotoIdx].t);
   }
 }
 
