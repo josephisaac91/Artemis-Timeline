@@ -221,7 +221,7 @@
         <p>See a random batch of 50, pick your 5 favorites. Best for casting a wide net across all 7,000+ usable frames.</p>
       </div>
       <div class="cta">
-        <a class="btn primary" href="random/">Start voting →</a>
+        <a class="btn primary" id="cta-random" href="random/">Start voting →</a>
       </div>
     </div>
   </section>
@@ -241,7 +241,7 @@
     <div class="lb-cta">
       <h3>See what's winning so far</h3>
       <p>Live rankings update with every vote.</p>
-      <a class="btn" href="leaderboard.html">View overall leaderboard →</a>
+      <a class="btn" id="cta-lb" href="leaderboard.html">View overall leaderboard →</a>
     </div>
   </section>
 
@@ -257,7 +257,22 @@
 (() => {
   const R2 = "https://pub-1f1ce68455c0432ea65ac3155a6b2409.r2.dev";
 
-  fetch("c/index.json", { cache: "no-store" })
+  // Compute the doc's directory so relative URLs work whether the page is
+  // served from /vote/, /vote, or /vote/index.html.
+  const _docDir = (() => {
+    const p = location.pathname;
+    if (p.endsWith("/")) return p;
+    if (/\.[^/]+$/.test(p)) return p.replace(/[^/]+$/, "");
+    return p + "/";
+  })();
+
+  // Fix the static CTA hrefs so they always point to the right place
+  const ctaR = document.getElementById("cta-random");
+  if (ctaR) ctaR.href = _docDir + "random/";
+  const ctaL = document.getElementById("cta-lb");
+  if (ctaL) ctaL.href = _docDir + "leaderboard.html";
+
+  fetch(_docDir + "c/index.json", { cache: "no-store" })
     .then(r => r.json())
     .then(idx => {
       const grid = document.getElementById("cats");
@@ -265,7 +280,7 @@
       for (const b of idx.buckets) {
         const a = document.createElement("a");
         a.className = "cat" + (b.slug === "notable" ? " notable" : "");
-        a.href = `c/?cat=${encodeURIComponent(b.slug)}`;
+        a.href = _docDir + `c/?cat=${encodeURIComponent(b.slug)}`;
         a.innerHTML = `
           <div class="photo" style="background-image:url('${R2}/thumbs/${b.showcase}.jpg')"></div>
           <div class="meta">
