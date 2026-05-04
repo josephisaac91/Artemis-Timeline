@@ -298,6 +298,9 @@
   ];
   // Pseudo-bucket: head-to-head Elo leaderboard
   const ELO_LABEL = "Head-to-head (Elo)";
+  // ── Feature flag: silence the head-to-head/Elo leaderboard for now.
+  //    Set to true to bring it back. All code below is preserved.
+  const SHOW_ELO = false;
 
   const $ = s => document.querySelector(s);
 
@@ -394,7 +397,7 @@
     nav.innerHTML = "";
     const pills = [
       ["overall", "Overall"],
-      ["elo",     "Head-to-head"],
+      ...(SHOW_ELO ? [["elo", "Head-to-head"]] : []),
       ...CATS,
     ];
     for (const [id, label] of pills) {
@@ -415,8 +418,10 @@
     const fetches = {
       overallTop: fetch(`${API}/top?n=${TOP_N}&min_shown=10&sort=rate`).then(r => r.json()),
       count:      fetch(`${API}/count`).then(r => r.json()),
-      eloTop:     fetch(`${API}/elo-top?n=${TOP_N}&min_matches=1`).then(r => r.json()),
     };
+    if (SHOW_ELO) {
+      fetches.eloTop = fetch(`${API}/elo-top?n=${TOP_N}&min_matches=1`).then(r => r.json());
+    }
     for (const [slug] of CATS) {
       fetches[`cat_${slug}`] = fetch(
         `${API}/category-top?n=${TOP_N}&min_shown=2&cat=${encodeURIComponent(slug)}`
@@ -459,15 +464,17 @@
       }));
 
       // Head-to-head Elo leaderboard
-      main.appendChild(makeSection({
-        id:       "elo",
-        label:    ELO_LABEL,
-        count:    (data.eloTop.results || []).length,
-        mode:     "elo",
-        results:  data.eloTop.results || [],
-        fullHref: "leaderboard.html?lb=elo&label=Head-to-head",
-        note:     "Pairwise comparisons → Elo rating. Photos start at 1200; winners gain points from losers.",
-      }));
+      if (SHOW_ELO && data.eloTop) {
+        main.appendChild(makeSection({
+          id:       "elo",
+          label:    ELO_LABEL,
+          count:    (data.eloTop.results || []).length,
+          mode:     "elo",
+          results:  data.eloTop.results || [],
+          fullHref: "leaderboard.html?lb=elo&label=Head-to-head",
+          note:     "Pairwise comparisons → Elo rating. Photos start at 1200; winners gain points from losers.",
+        }));
+      }
 
       for (const [slug, label] of CATS) {
         const cat = data[`cat_${slug}`] || {};
