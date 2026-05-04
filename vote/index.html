@@ -226,6 +226,20 @@
     </div>
   </section>
 
+  <!-- Head-to-head -->
+  <section>
+    <h2>Head-to-head</h2>
+    <div class="featured">
+      <div class="body">
+        <h3>This one or that one?</h3>
+        <p>Snap-decision pairwise comparisons drawn from the top 200. Faster decisions, sharper signal — separate Elo leaderboard.</p>
+      </div>
+      <div class="cta">
+        <a class="btn primary" id="cta-vs" href="vs/">Start comparing →</a>
+      </div>
+    </div>
+  </section>
+
   <!-- Category-specific ranking -->
   <section>
     <h2>Or rank specific moments</h2>
@@ -269,6 +283,8 @@
   // Fix the static CTA hrefs so they always point to the right place
   const ctaR = document.getElementById("cta-random");
   if (ctaR) ctaR.href = _docDir + "random/";
+  const ctaV = document.getElementById("cta-vs");
+  if (ctaV) ctaV.href = _docDir + "vs/";
   const ctaL = document.getElementById("cta-lb");
   if (ctaL) ctaL.href = _docDir + "leaderboard.html";
 

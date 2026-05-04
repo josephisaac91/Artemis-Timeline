@@ -296,6 +296,8 @@
     ["stars",         "Stars & Galaxies"],
     ["notable",       "Notable Highlights"],
   ];
+  // Pseudo-bucket: head-to-head Elo leaderboard
+  const ELO_LABEL = "Head-to-head (Elo)";
 
   const $ = s => document.querySelector(s);
 
@@ -332,13 +334,18 @@
 
     const picks = row.picks ?? 0;
     const shown = row.shown ?? 0;
-    let metric;
+    let metric, sub;
     if (mode === "rate") {
       const rate = (typeof row.rate === "number") ? row.rate : (shown ? picks/shown : 0);
       metric = Math.round(rate * 100) + "%";
+      sub    = `${picks}/${shown}`;
+    } else if (mode === "elo") {
+      metric = Math.round(row.elo ?? 1200);
+      sub    = `${row.wins ?? 0}W ${row.losses ?? 0}L`;
     } else {
       const avg = (typeof row.avg_score === "number") ? row.avg_score : 0;
       metric = (Math.round(avg * 100) / 100).toFixed(2);
+      sub    = `${picks}/${shown}`;
     }
 
     card.innerHTML = `
@@ -348,7 +355,7 @@
       </div>
       <div class="meta">
         <strong>${metric}</strong>
-        <span>${picks}/${shown}</span>
+        <span>${sub}</span>
       </div>
     `;
     const img = card.querySelector("img");
@@ -385,7 +392,11 @@
   function renderTopnav() {
     const nav = $("#topnav");
     nav.innerHTML = "";
-    const pills = [["overall", "Overall"], ...CATS];
+    const pills = [
+      ["overall", "Overall"],
+      ["elo",     "Head-to-head"],
+      ...CATS,
+    ];
     for (const [id, label] of pills) {
       const a = document.createElement("a");
       a.href = `#${id}`;
@@ -404,6 +415,7 @@
     const fetches = {
       overallTop: fetch(`${API}/top?n=${TOP_N}&min_shown=10&sort=rate`).then(r => r.json()),
       count:      fetch(`${API}/count`).then(r => r.json()),
+      eloTop:     fetch(`${API}/elo-top?n=${TOP_N}&min_matches=1`).then(r => r.json()),
     };
     for (const [slug] of CATS) {
       fetches[`cat_${slug}`] = fetch(
@@ -444,6 +456,17 @@
         results:  data.overallTop.results || [],
         fullHref: "leaderboard.html",
         note:     "Top photos from random voting, ranked by selection rate (% of times shown that voters picked).",
+      }));
+
+      // Head-to-head Elo leaderboard
+      main.appendChild(makeSection({
+        id:       "elo",
+        label:    ELO_LABEL,
+        count:    (data.eloTop.results || []).length,
+        mode:     "elo",
+        results:  data.eloTop.results || [],
+        fullHref: "leaderboard.html?lb=elo&label=Head-to-head",
+        note:     "Pairwise comparisons → Elo rating. Photos start at 1200; winners gain points from losers.",
       }));
 
       for (const [slug, label] of CATS) {

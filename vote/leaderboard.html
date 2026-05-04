@@ -276,11 +276,16 @@
   const FETCH_N    = 1000;  // total leaderboard depth (fetched once)
   const PAGE_SIZE  = 50;    // cards rendered per scroll batch
 
-  // Mode: ?cat=X = per-category Borda leaderboard. Otherwise = overall rate-based.
+  // Modes:
+  //   ?cat=X        = per-category Borda leaderboard
+  //   ?lb=elo       = head-to-head Elo leaderboard
+  //   (default)     = overall rate-based leaderboard
   const params      = new URLSearchParams(location.search);
   const CAT_SLUG    = params.get("cat");
-  const CAT_LABEL   = params.get("label") || CAT_SLUG;
+  const LB_MODE     = (params.get("lb") || "").toLowerCase();
+  const CAT_LABEL   = params.get("label") || CAT_SLUG || (LB_MODE === "elo" ? "Head-to-head" : "");
   const IS_CATEGORY = !!CAT_SLUG;
+  const IS_ELO      = LB_MODE === "elo";
 
   // Progressive render state
   let allResults = [];
@@ -342,7 +347,13 @@
     const picks = row.picks ?? 0;
     const shown = row.shown ?? 0;
     let primary, secondary;
-    if (IS_CATEGORY) {
+    if (IS_ELO) {
+      const elo  = Math.round(row.elo ?? 1200);
+      const wins = row.wins ?? 0;
+      const losses = row.losses ?? 0;
+      primary   = elo;
+      secondary = `${wins}W ${losses}L`;
+    } else if (IS_CATEGORY) {
       // Borda mode: avg_score on 0–3 scale; secondary shows picks/shown
       const avg = (typeof row.avg_score === "number") ? row.avg_score : 0;
       primary   = fmtScore(avg);
@@ -437,12 +448,20 @@
   async function load() {
     show("stage-loading");
 
-    // In category mode swap title and stat labels.
-    if (IS_CATEGORY) {
-      const titleEl = document.querySelector("header h1");
+    // Tweak headers for non-default modes
+    const titleEl = document.querySelector("header h1");
+    const sub     = document.querySelector("header > p");
+    if (IS_ELO) {
+      if (titleEl) titleEl.textContent = `Head-to-head: top photos by Elo`;
+      document.title = `Head-to-head leaderboard · Artemis II Photo Voter`;
+      if (sub) sub.textContent = "Ranked by Elo rating from pairwise comparisons. Photos start at 1200; winners gain points from losers.";
+      const lbl1 = document.querySelector(".stats span:nth-child(1)");
+      const lbl2 = document.querySelector(".stats span:nth-child(2)");
+      if (lbl1) lbl1.innerHTML = `Photos rated: <em id="stat-votes">—</em>`;
+      if (lbl2) lbl2.innerHTML = `Total comparisons: <em id="stat-photos">—</em>`;
+    } else if (IS_CATEGORY) {
       if (titleEl) titleEl.textContent = `${CAT_LABEL} — top photos`;
       document.title = `${CAT_LABEL} — top photos · Artemis II Photo Voter`;
-      const sub = document.querySelector("header > p");
       if (sub) sub.textContent = "Ranked by Borda score (3 pts for #1, 2 for #2, 1 for #3) averaged over how many times each photo appeared.";
       const lbl1 = document.querySelector(".stats span:nth-child(1)");
       const lbl2 = document.querySelector(".stats span:nth-child(2)");
@@ -452,9 +471,12 @@
 
     try {
       let topUrl, countUrl;
-      if (IS_CATEGORY) {
+      if (IS_ELO) {
+        topUrl   = `${API}/elo-top?n=${FETCH_N}&min_matches=1`;
+        countUrl = null;
+      } else if (IS_CATEGORY) {
         topUrl   = `${API}/category-top?n=${FETCH_N}&min_shown=2&cat=${encodeURIComponent(CAT_SLUG)}`;
-        countUrl = null;  // /count is for the overall votes table, not per-category
+        countUrl = null;
       } else {
         topUrl   = `${API}/top?n=${FETCH_N}&min_shown=10&sort=rate`;
         countUrl = `${API}/count`;
@@ -467,9 +489,12 @@
 
       if (!topRes.ok) throw new Error(topRes.error || "Top fetch failed");
 
-      if (IS_CATEGORY) {
-        // For per-category mode the stats line shows # of qualifying photos,
-        // since we don't have a per-category ballot count in the simple API.
+      if (IS_ELO) {
+        const rows = topRes.results || [];
+        const totalMatches = rows.reduce((s, r) => s + ((r.wins || 0) + (r.losses || 0)), 0) / 2;
+        $("#stat-votes").textContent  = rows.length.toLocaleString();
+        $("#stat-photos").textContent = Math.round(totalMatches).toLocaleString();
+      } else if (IS_CATEGORY) {
         $("#stat-votes").textContent  = (topRes.results || []).length.toLocaleString();
         $("#stat-photos").textContent = (topRes.results || []).length.toLocaleString();
       } else {
