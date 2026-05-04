@@ -107,7 +107,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 9px;
-    color: #555;
+    color: #888;
     margin-top: 6px;
   }
   /* Photo dots on timeline */
@@ -289,6 +289,12 @@
     padding: 12px 20px;
     gap: 20px;
   }
+  .site-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
 
   /* Photo side — takes available width, fixed height from flex */
   .photo-side {
@@ -453,12 +459,12 @@
     font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #555;
+    color: #888;
     margin-bottom: 8px;
   }
   .meta-field { margin-bottom: 10px; }
   .meta-field:last-child { margin-bottom: 0; }
-  .meta-label { color: #666; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .meta-label { color: #888; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
   .meta-value { color: #bbb; font-size: 13px; margin-top: 2px; word-break: break-word; }
   .meta-value.highlight { color: #4FC3F7; font-weight: 600; }
   .units-toggle {
@@ -507,10 +513,10 @@
     bottom: 0;
     height: 22px;
     border-radius: 3px;
-    opacity: 0.7;
+    opacity: 0.9;
     font-size: 9px;
     font-weight: 600;
-    color: rgba(255,255,255,0.85);
+    color: #fff;
     line-height: 22px;
     padding: 0 4px;
     overflow: hidden;
@@ -519,10 +525,10 @@
     text-align: center;
   }
   .timeline-activity-bar.observation-bar {
-    color: rgba(0,0,0,0.9);
+    color: #000;
   }
   .timeline-activity-bar.observation-bar-plain {
-    color: rgba(0,0,0,0.9);
+    color: #000;
   }
 
   /* Timeline hover tooltip */
@@ -1202,9 +1208,9 @@
       <div class="tip-activity" id="tipActivity"></div>
     </div>
     <div class="zoom-controls">
-      <button class="zoom-btn" id="zoomInBtn" title="Zoom in">+</button>
-      <button class="zoom-btn" id="zoomOutBtn" title="Zoom out">−</button>
-      <button class="zoom-btn" id="zoomResetBtn" title="Reset zoom">⊙</button>
+      <button class="zoom-btn" id="zoomInBtn" title="Zoom in" aria-label="Zoom in">+</button>
+      <button class="zoom-btn" id="zoomOutBtn" title="Zoom out" aria-label="Zoom out">−</button>
+      <button class="zoom-btn" id="zoomResetBtn" title="Reset zoom" aria-label="Reset zoom">⊙</button>
     </div>
   </div>
   <div class="timeline-labels">
@@ -1213,6 +1219,7 @@
 </div>
 
 <!-- Mobile activity label (replaces timeline on small screens) -->
+<main class="site-main">
 <div class="mobile-activity" id="mobileActivity"></div>
 
 <!-- Controls row -->
@@ -1247,8 +1254,8 @@
       <video id="currentVideo" class="photo-img" style="display:none" controls playsinline preload="none"></video>
       <button class="photo-desc-btn" id="photoDescBtn" type="button" onclick="showDescPopup()" style="display:none">Show Desc</button>
     </div>
-    <button class="nav-arrow nav-prev" id="prevBtn" title="Previous photo">‹</button>
-    <button class="nav-arrow nav-next" id="nextBtn" title="Next photo">›</button>
+    <button class="nav-arrow nav-prev" id="prevBtn" title="Previous photo" aria-label="Previous photo">‹</button>
+    <button class="nav-arrow nav-next" id="nextBtn" title="Next photo" aria-label="Next photo">›</button>
     <div class="photo-links">
       <div class="desc-hover" id="descHover" style="display:none">
         <button class="photo-desc-toggle" id="descToggleBtn" type="button" onclick="toggleDescTip()" aria-expanded="false">
@@ -1259,7 +1266,7 @@
     </div>
   </div>
   <div class="meta-panel" id="metaPanel">
-    <div class="bottom-sheet-handle" id="sheetHandle" role="button" aria-label="Toggle information panel">
+    <div class="bottom-sheet-handle" id="sheetHandle" role="button" tabindex="0" aria-label="Toggle information panel">
       <div class="sheet-handle-bar"></div>
       <div class="sheet-handle-title" id="sheetHandleTitle">Show More Information</div>
     </div>
@@ -1268,7 +1275,7 @@
       <div class="traj-label" id="trajLabel"></div>
     </div>
     <div class="calendar-promo" id="calendarPromo">
-      <button class="calendar-dismiss" id="calendarDismiss" onclick="dismissCalendar()" title="Dismiss">&times;</button>
+      <button class="calendar-dismiss" id="calendarDismiss" onclick="dismissCalendar()" title="Dismiss" aria-label="Dismiss calendar promotion">&times;</button>
       <a class="calendar-cover-wrap" href="https://store.dftba.com/products/artemis-ii-2027-calendar" target="_blank" rel="noopener">
         <img class="calendar-cover" src="" alt="Farther — 2027 Calendar" id="calendarCover">
         <div class="calendar-countdown" id="calendarCountdown">
@@ -1338,6 +1345,7 @@
     </div>
   </div>
 </div>
+</main>
 
 
 <script>
@@ -2415,7 +2423,7 @@ function updatePhoto() {
   if (mAct) {
     mEl.innerHTML = `<span class="activity-dot" style="background:${ACTIVITY_COLORS[mAct.a]}"></span><span class="activity-name">${mAct.l}</span>`;
   } else {
-    mEl.innerHTML = `<span class="activity-name" style="color:#555">Between activities</span>`;
+    mEl.innerHTML = `<span class="activity-name" style="color:#888">Between activities</span>`;
   }
   updateAudio(photo.t);
   renderTimeline();
@@ -2496,7 +2504,7 @@ function updateTooltip(e) {
   if (act) {
     tipActivity.innerHTML = `<span class="tip-dot" style="background:${ACTIVITY_COLORS[act.a]}"></span><span class="tip-label">${act.l}</span>`;
   } else {
-    tipActivity.innerHTML = `<span class="tip-label" style="color:#555">No scheduled activity</span>`;
+    tipActivity.innerHTML = `<span class="tip-label" style="color:#888">No scheduled activity</span>`;
   }
   hoverTip.style.display = 'block';
   // Position at cursor X
@@ -3128,6 +3136,11 @@ if (sheetHandleEl) {
   sheetHandleEl.addEventListener('touchend', onPointerUp);
   sheetHandleEl.addEventListener('touchcancel', onPointerUp);
   sheetHandleEl.addEventListener('mousedown', onPointerDown);
+  sheetHandleEl.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    applySheetState(sheetState === 'closed' ? 'middle' : sheetState === 'middle' ? 'open' : 'closed');
+  });
   window.addEventListener('mousemove', onPointerMove);
   window.addEventListener('mouseup', onPointerUp);
 }
