@@ -2442,6 +2442,9 @@ function updatePhoto() {
   // Preload neighboring images via <link rel="prefetch">. Using prefetch (not
   // preload) lets the browser deprioritize these behind the current image,
   // so they load in idle time without competing for bandwidth.
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const limitedData = connection && (connection.saveData || /(^|-)2g$/.test(connection.effectiveType || ''));
+  if (limitedData || window.matchMedia('(max-width: 768px)').matches) return;
   const preloadOffsets = [-1, 1, 2, 3];
   for (const off of preloadOffsets) {
     const idx = currentPhotoIdx + off;
