@@ -86,12 +86,12 @@
     cursor: zoom-in;
   }
   .card .photo {
-    aspect-ratio: 1 / 1;
-    background: #060a10;
+    aspect-ratio: 3 / 2;
+    background: #050810;
     overflow: hidden;
   }
   .card img {
-    width: 100%; height: 100%; object-fit: cover;
+    width: 100%; height: 100%; object-fit: contain;
     display: block;
     opacity: 0;
     transition: opacity 200ms ease;
@@ -221,7 +221,7 @@
 <header>
   <p class="tag">Leaderboard</p>
   <h1>The Artemis II Photo Top 50</h1>
-  <p>Ranked by selection rate — the fraction of voters who picked each photo when shown. Photos must have appeared at least 3 times to qualify, so we're not just showing whichever photo got lucky and was seen first.</p>
+  <p>Ranked by the selection rate, the fraction of voters who picked a photo when shown.</p>
   <div class="stats">
     <span>Ballots cast: <em id="stat-votes">—</em></span>
     <span>Photos picked at least once: <em id="stat-photos">—</em></span>
@@ -276,6 +276,12 @@
   const FETCH_N    = 1000;  // total leaderboard depth (fetched once)
   const PAGE_SIZE  = 50;    // cards rendered per scroll batch
 
+  // Mode: ?cat=X = per-category Borda leaderboard. Otherwise = overall rate-based.
+  const params      = new URLSearchParams(location.search);
+  const CAT_SLUG    = params.get("cat");
+  const CAT_LABEL   = params.get("label") || CAT_SLUG;
+  const IS_CATEGORY = !!CAT_SLUG;
+
   // Progressive render state
   let allResults = [];
   let renderedCount = 0;
@@ -324,6 +330,10 @@
     // 0.4231 → "42%"
     return Math.round(rate * 100) + "%";
   }
+  function fmtScore(s) {
+    // 1.847 → "1.85"
+    return (Math.round(s * 100) / 100).toFixed(2);
+  }
 
   function makeCard(row, rank) {
     const card = document.createElement("div");
@@ -331,7 +341,17 @@
     card.dataset.guid = row.guid;
     const picks = row.picks ?? 0;
     const shown = row.shown ?? 0;
-    const rate  = (typeof row.rate === "number") ? row.rate : (shown ? picks / shown : 0);
+    let primary, secondary;
+    if (IS_CATEGORY) {
+      // Borda mode: avg_score on 0–3 scale; secondary shows picks/shown
+      const avg = (typeof row.avg_score === "number") ? row.avg_score : 0;
+      primary   = fmtScore(avg);
+      secondary = `${picks}/${shown}`;
+    } else {
+      const rate = (typeof row.rate === "number") ? row.rate : (shown ? picks / shown : 0);
+      primary   = fmtRate(rate);
+      secondary = `${picks}/${shown}`;
+    }
     card.innerHTML = `
       <div class="photo">
         <img src="${thumbUrl(row.guid)}" alt="" loading="lazy" decoding="async">
@@ -340,8 +360,8 @@
         <span class="rank">#${rank + 1}</span>
         <span class="frame">${row.guid.replace("ART002-E-","#")}</span>
         <span style="text-align:right; line-height:1.2">
-          <span class="rate">${fmtRate(rate)}</span><br>
-          <span class="picks">${picks}/${shown}</span>
+          <span class="rate">${primary}</span><br>
+          <span class="picks">${secondary}</span>
         </span>
       </div>
     `;
@@ -416,15 +436,47 @@
 
   async function load() {
     show("stage-loading");
+
+    // In category mode swap title and stat labels.
+    if (IS_CATEGORY) {
+      const titleEl = document.querySelector("header h1");
+      if (titleEl) titleEl.textContent = `${CAT_LABEL} — top photos`;
+      document.title = `${CAT_LABEL} — top photos · Artemis II Photo Voter`;
+      const sub = document.querySelector("header > p");
+      if (sub) sub.textContent = "Ranked by Borda score (3 pts for #1, 2 for #2, 1 for #3) averaged over how many times each photo appeared.";
+      const lbl1 = document.querySelector(".stats span:nth-child(1)");
+      const lbl2 = document.querySelector(".stats span:nth-child(2)");
+      if (lbl1) lbl1.innerHTML = `Rankings: <em id="stat-votes">—</em>`;
+      if (lbl2) lbl2.innerHTML = `Photos ranked: <em id="stat-photos">—</em>`;
+    }
+
     try {
-      const [topRes, countRes] = await Promise.all([
-        fetch(`${API}/top?n=${FETCH_N}`, { cache: "no-cache" }).then(r => r.json()),
-        fetch(`${API}/count`, { cache: "no-cache" }).then(r => r.json()),
-      ]);
+      let topUrl, countUrl;
+      if (IS_CATEGORY) {
+        topUrl   = `${API}/category-top?n=${FETCH_N}&min_shown=2&cat=${encodeURIComponent(CAT_SLUG)}`;
+        countUrl = null;  // /count is for the overall votes table, not per-category
+      } else {
+        topUrl   = `${API}/top?n=${FETCH_N}&min_shown=10&sort=rate`;
+        countUrl = `${API}/count`;
+      }
+
+      const topRes   = await fetch(topUrl, { cache: "no-cache" }).then(r => r.json());
+      const countRes = countUrl
+        ? await fetch(countUrl, { cache: "no-cache" }).then(r => r.json())
+        : null;
+
       if (!topRes.ok) throw new Error(topRes.error || "Top fetch failed");
-      if (!countRes.ok) throw new Error(countRes.error || "Count fetch failed");
-      $("#stat-votes").textContent = countRes.count.toLocaleString();
-      $("#stat-photos").textContent = (countRes.unique_picked ?? 0).toLocaleString();
+
+      if (IS_CATEGORY) {
+        // For per-category mode the stats line shows # of qualifying photos,
+        // since we don't have a per-category ballot count in the simple API.
+        $("#stat-votes").textContent  = (topRes.results || []).length.toLocaleString();
+        $("#stat-photos").textContent = (topRes.results || []).length.toLocaleString();
+      } else {
+        if (!countRes.ok) throw new Error(countRes.error || "Count fetch failed");
+        $("#stat-votes").textContent  = countRes.count.toLocaleString();
+        $("#stat-photos").textContent = (countRes.unique_picked ?? 0).toLocaleString();
+      }
       render(topRes.results || []);
     } catch (err) {
       $("#err-msg").textContent = err.message || String(err);
