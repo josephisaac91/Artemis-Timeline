@@ -479,11 +479,18 @@
   const $ = s => document.querySelector(s);
 
   function thumbUrl(g) { return `${R2}/thumbs/${g}.jpg`; }
-  function largeUrl(g) { return `${R2}/large/${g}.jpg`; } // top 200 only
+  function largeUrl(g) { return `${R2}/large/${g}.jpg`; } // top 200 only (mirrored)
   function fullUrl(g)  { return `${NASA_FULL}/${g}.JPG`; }
   function nasaDetailUrl(g) {
     const m = g.match(/^(ART\d+)-([A-Z])-(\d+)$/);
     return m ? `${NASA_DETAIL}mission=${m[1]}&roll=${m[2]}&frame=${m[3]}` : NASA_DETAIL;
+  }
+  // Number of top photos that have been mirrored to R2 /large/ (1800px @ Q85, ~300 KB each).
+  // For ranks ≤ this, prefer the R2 mirror for both the lightbox and the preloader —
+  // it's an order of magnitude faster and bandwidth-friendlier than NASA full-res.
+  const R2_MIRROR_TOP = 200;
+  function bigUrl(rank, guid) {
+    return rank <= R2_MIRROR_TOP ? largeUrl(guid) : fullUrl(guid);
   }
 
   // ─── Selection state ───
@@ -602,8 +609,17 @@
   function openLightbox(row) {
     lbCurrentGuid = row.guid;
     resetZoom(false);
-    $("#lb-img").src = fullUrl(row.guid);
-    $("#lb-img").alt = row.guid;
+    const img = $("#lb-img");
+    img.alt = row.guid;
+    // Try R2 mirror first for top-200; on error, fall back to NASA full-res.
+    img.onerror = () => {
+      if (img.dataset.fallback !== "1" && row.rank <= R2_MIRROR_TOP) {
+        img.dataset.fallback = "1";
+        img.src = fullUrl(row.guid);
+      }
+    };
+    img.dataset.fallback = "0";
+    img.src = bigUrl(row.rank, row.guid);
     $("#lb-id").textContent = `#${row.rank}  ·  ${row.guid}`;
     $("#lb-nasa").href = nasaDetailUrl(row.guid);
     updateLbToggle();
@@ -880,15 +896,20 @@
     URL.revokeObjectURL(url);
   });
 
-  // ─── Background preloader (NASA full-res for fast lightbox zoom) ───
+  // ─── Background preloader ───
+  // Two-phase: first the R2-mirrored top-200 (fast, ~300 KB each, parallel x 8),
+  // then NASA full-res for the rest (~1-2 MB each, parallel x 4). URLs match
+  // what the lightbox actually requests, so completed preloads cache-hit
+  // when you click to zoom.
   const preloadState = {
     cancelled: false,
     done: 0,
     failed: 0,
     total: 0,
-    cache: new Set(),    // guids whose fullUrl finished loading
+    cache: new Set(),
   };
-  const PRELOAD_PARALLEL = 4;
+  const PRELOAD_PARALLEL_R2   = 8;
+  const PRELOAD_PARALLEL_NASA = 4;
 
   function updatePreloadUI() {
     const total = preloadState.total;
@@ -900,26 +921,33 @@
       $("#preload").classList.add("done");
       $("#preload-label").textContent = `Preloaded ${preloadState.done}/${total}` +
         (preloadState.failed ? ` (${preloadState.failed} failed)` : "");
-      // Auto-hide after a moment
       setTimeout(() => $("#preload").classList.remove("active"), 4000);
     }
   }
 
-  function preloadOne(guid) {
+  function preloadOne(url, guid) {
     return new Promise(resolve => {
       if (preloadState.cancelled) return resolve("cancelled");
       const img = new Image();
-      // Request lower priority so it doesn't fight with grid thumbs
       try { img.fetchPriority = "low"; } catch {}
       img.decoding = "async";
-      img.referrerPolicy = "no-referrer";
-      const cleanup = () => {
-        img.onload = null; img.onerror = null;
-      };
+      const cleanup = () => { img.onload = null; img.onerror = null; };
       img.onload  = () => { preloadState.done++;   preloadState.cache.add(guid); cleanup(); resolve("ok"); };
       img.onerror = () => { preloadState.failed++;                                 cleanup(); resolve("err"); };
-      img.src = fullUrl(guid);
+      img.src = url;
     });
+  }
+
+  async function runQueue(items, parallel) {
+    let idx = 0;
+    async function worker() {
+      while (idx < items.length && !preloadState.cancelled) {
+        const it = items[idx++];
+        await preloadOne(it.url, it.guid);
+        updatePreloadUI();
+      }
+    }
+    await Promise.all(Array.from({ length: parallel }, worker));
   }
 
   async function startPreload() {
@@ -932,16 +960,21 @@
     $("#preload").classList.add("active");
     updatePreloadUI();
 
-    const queue = allRows.map(r => r.guid);
-    let idx = 0;
-    async function worker() {
-      while (idx < queue.length && !preloadState.cancelled) {
-        const guid = queue[idx++];
-        await preloadOne(guid);
-        updatePreloadUI();
-      }
+    // Split into the R2 mirror (fast) and the NASA tail (slower).
+    const r2Items   = [];
+    const nasaItems = [];
+    for (const r of allRows) {
+      const url = bigUrl(r.rank, r.guid);
+      const item = { url, guid: r.guid };
+      if (r.rank <= R2_MIRROR_TOP) r2Items.push(item);
+      else                          nasaItems.push(item);
     }
-    await Promise.all(Array.from({ length: PRELOAD_PARALLEL }, worker));
+
+    // Phase 1: rip through the mirrored top-200 fast.
+    await runQueue(r2Items, PRELOAD_PARALLEL_R2);
+    if (preloadState.cancelled) return;
+    // Phase 2: chew through NASA full-res in the background.
+    await runQueue(nasaItems, PRELOAD_PARALLEL_NASA);
   }
 
   $("#preload-cancel").addEventListener("click", () => {
