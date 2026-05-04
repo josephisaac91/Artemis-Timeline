@@ -407,7 +407,7 @@
       <span><em id="stat-total">—</em> photos</span>
       <span><em id="stat-selected" class="selected-count">0</em> selected</span>
       <span class="preload" id="preload">
-        <span id="preload-label">Preloading 0/400</span>
+        <span id="preload-label">Preloading 0/1000</span>
         <span class="bar"><span class="fill" id="preload-fill"></span></span>
         <button id="preload-cancel" title="Cancel preloading">✕</button>
       </span>
@@ -422,7 +422,7 @@
 </header>
 
 <main id="main">
-  <div class="empty"><span class="spin"></span> Loading top 400…</div>
+  <div class="empty"><span class="spin"></span> Loading top 1000…</div>
 </main>
 
 <div id="lightbox" class="lightbox" role="dialog" aria-modal="true">
@@ -473,7 +473,7 @@
   const R2  = "https://pub-1f1ce68455c0432ea65ac3155a6b2409.r2.dev";
   const NASA_DETAIL = "https://eol.jsc.nasa.gov/SearchPhotos/photo.pl?";
   const NASA_FULL   = "https://eol.jsc.nasa.gov/DatabaseImages/ESC/large/ART002";
-  const FETCH_N = 400;
+  const FETCH_N = 1000;
   const STORAGE_KEY = "photovote-curate-selections-v1";
 
   const $ = s => document.querySelector(s);
@@ -949,7 +949,7 @@
     $("#preload").classList.remove("active");
   });
 
-  // ─── Load top 400 ───
+  // ─── Load top 1000 ───
   async function load() {
     try {
       const r = await fetch(`${API}/top?n=${FETCH_N}&min_shown=10&sort=rate`, { cache: "no-store" });
