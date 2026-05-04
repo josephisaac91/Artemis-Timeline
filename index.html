@@ -340,16 +340,14 @@
   }
   .photo-img.fullscreen {
     position: fixed;
-    inset: 0;
-    z-index: 1300;
-    width: 100vw;
-    height: var(--vh);
-    max-width: none;
-    max-height: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 50;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     background-color: #0d0d1a;
-    border-radius: 0;
-    cursor: zoom-out;
   }
   /* Prev/Next arrow overlays on photo */
   .nav-arrow {
@@ -1042,29 +1040,16 @@
       max-height: none;
     }
     .photo-container {
-      flex: 1 1 auto;
-      min-height: 0;
-      height: 100%;
       border: 0;
       border-radius: 0;
     }
     /* On mobile, show the full photo (no cropping). */
     .photo-img {
-      display: block;
       width: 100%;
       height: 100%;
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      transition: opacity 0.12s ease;
-    }
-    .photo-img.is-loading {
-      opacity: 0;
-    }
-    body.photo-fullscreen-active .photo-desc-btn,
-    body.photo-fullscreen-active #photoCounter,
-    body.photo-fullscreen-active .meta-panel {
-      display: none !important;
     }
     /* descHover lives inside the bottom sheet on mobile (moved by JS) */
     .photo-side .photo-links { display: none; }
@@ -1283,7 +1268,7 @@
 <div class="viewer">
   <div class="photo-side">
     <div class="photo-container">
-      <img id="currentPhoto" class="photo-img" alt="Current photo" decoding="async" fetchpriority="high">
+      <img id="currentPhoto" class="photo-img" alt="Current photo">
       <video id="currentVideo" class="photo-img" style="display:none" controls playsinline preload="none"></video>
       <button class="photo-desc-btn" id="photoDescBtn" type="button" onclick="showDescPopup()" style="display:none">Show Desc</button>
     </div>
@@ -2391,9 +2376,7 @@ function updatePhoto() {
   const nasaTitle = flickrId ? PHOTO_TITLES[flickrId] || '' : '';
   const imgEl = document.getElementById('currentPhoto');
   const vidEl = document.getElementById('currentVideo');
-  document.body.classList.remove('photo-fullscreen-active');
   if (photo.v) {
-    imgEl.classList.remove('is-loading', 'fullscreen');
     imgEl.style.display = 'none';
     vidEl.pause();
     vidEl.poster = MEDIA_BASE + 'web/' + encodeURIComponent(photo.f.replace(/\.mp4$/,'-poster.jpg'));
@@ -2403,20 +2386,7 @@ function updatePhoto() {
     vidEl.pause();
     vidEl.removeAttribute('src');
     vidEl.style.display = 'none';
-    const nextSrc = MEDIA_BASE + 'web/' + safeSrc;
-    imgEl.classList.remove('fullscreen');
-    imgEl.classList.add('is-loading');
-    imgEl.onload = () => imgEl.classList.remove('is-loading');
-    imgEl.onerror = () => {
-      const fallbackSrc = MEDIA_BASE + 'web/' + photo.f;
-      if (imgEl.src.endsWith('/' + safeSrc) && fallbackSrc !== nextSrc) {
-        imgEl.src = fallbackSrc;
-      } else {
-        imgEl.classList.remove('is-loading');
-      }
-    };
-    imgEl.src = nextSrc;
-    if (imgEl.complete && imgEl.naturalWidth > 0) imgEl.classList.remove('is-loading');
+    imgEl.src = MEDIA_BASE + 'web/' + safeSrc;
     imgEl.style.display = '';
   }
   imgEl.alt = nasaTitle || (photo.p + ' — ' + photo.loc);
@@ -2795,11 +2765,7 @@ function ensurePhotoInView() {
 
 function goPrev() { if (currentPhotoIdx > 0) { currentPhotoIdx--; updatePhoto(); ensurePhotoInView(); } }
 function goNext() { if (currentPhotoIdx < filteredPhotos.length - 1) { currentPhotoIdx++; updatePhoto(); ensurePhotoInView(); } }
-function toggleFullscreenPhoto() {
-  const currentPhoto = document.getElementById("currentPhoto");
-  currentPhoto.classList.toggle("fullscreen");
-  document.body.classList.toggle('photo-fullscreen-active', currentPhoto.classList.contains('fullscreen'));
-}
+function toggleFullscreenPhoto() { const currentPhoto = document.getElementById("currentPhoto"); currentPhoto.classList.toggle("fullscreen"); }
 document.getElementById('prevBtn').addEventListener('click', goPrev);
 document.getElementById('nextBtn').addEventListener('click', goNext);
 document.getElementById("currentPhoto").addEventListener("click", toggleFullscreenPhoto);
