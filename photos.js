@@ -1491,21 +1491,6 @@ const PHOTO_DATA = {
       "camera_id": "d5a"
     },
     {
-      "time": "2026-04-05 12:31:00",
-      "file": "ig-gravity-flyby.mp4",
-      "photographer": "Artemis II Crew",
-      "location": "Orion Spacecraft",
-      "camera": "Instagram Video",
-      "settings": "720×1280 · 39s",
-      "spacecraft": true,
-      "batch": 1,
-      "video": true,
-      "external": false,
-      "title": "Playing with Earth-Moon Gravity",
-      "flickr_desc": "Out here playing with Earth-Moon gravity like it is a toy and seeing things that are beautiful beyond words. 215,010 miles from Earth. 12,787 miles from the Moon. — via Instagram",
-      "enabled": true
-    },
-    {
       "time": "2026-04-05 13:23:47",
       "file": "55191185696_f8cd3e9788_o.jpg",
       "photographer": "Artemis II Crew",
@@ -1646,6 +1631,21 @@ const PHOTO_DATA = {
       "flickr_desc": "art002e009276 (April 6, 2026) - In this view of the Moon, the near side (the hemisphere we see from Earth), is visible at the top half of the Moon disk. It is identifiable by the dark splotches. These are ancient lava flows from a time early in the Moon’s history when it was volcanically active. The large crater that appears below the lava flows, dark in the center, is Orientale basin, a nearly 600-mile-wide crater that straddles the Moon’s near and far sides as is partly visible from Earth on the edge of the Moon. In this image, we have a full view of the crater. Everything below the crater is the far side, the hemisphere we don’t get to see from Earth because the Moon rotates on its axis at the same rate that it orbits round us. Credit: NASA",
       "enabled": true,
       "camera_id": "d5b"
+    },
+    {
+      "time": "2026-04-06 13:13:00",
+      "file": "ig-gravity-flyby.mp4",
+      "photographer": "Artemis II Crew",
+      "location": "Orion Spacecraft",
+      "camera": "Instagram Video",
+      "settings": "720×1280 · 39s",
+      "spacecraft": true,
+      "batch": 1,
+      "video": true,
+      "external": false,
+      "title": "Playing with Earth-Moon Gravity",
+      "flickr_desc": "Out here playing with Earth-Moon gravity like it is a toy and seeing things that are beautiful beyond words. 215,010 miles from Earth. 12,787 miles from the Moon. — via Instagram",
+      "enabled": true
     },
     {
       "time": "2026-04-06 13:13:31",
