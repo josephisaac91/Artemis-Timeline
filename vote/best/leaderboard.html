@@ -196,9 +196,9 @@
   <h1>The Best Artemis II Photo — Leaderboard</h1>
   <p class="desc">Live Elo ranking from your head-to-head votes. Photos start at 1200; winners gain points from losers. The closer two photos' ratings, the smaller the swing per match.</p>
   <div class="stats">
-    <span>Showing top: <em id="stat-shown">—</em></span>
-    <span>Pool: <em id="stat-pool">—</em></span>
-    <span>Ranked so far: <em id="stat-ranked">—</em></span>
+    <span><em id="stat-pool">—</em> in the running</span>
+    <span>showing the top <em id="stat-shown">—</em></span>
+    <span><em id="stat-votes">—</em> votes submitted</span>
   </div>
   <div class="actions">
     <a class="btn primary" href="./">← Vote on more pairs</a>
@@ -232,8 +232,9 @@
   const R2  = "https://pub-1f1ce68455c0432ea65ac3155a6b2409.r2.dev";
   const R2_TIMELINE = R2 + "/timeline";
   const TIMELINE_ORIG_BASE = "https://artemistimeline.com/web";  // for "view original" link
-  const TOP_N = 200;
-  const MIN_MATCHES = 1;     // show photos with ≥1 match (lower threshold = livelier early data)
+  const TOP_N = 200;          // how many to render
+  const FETCH_N = 1000;       // pull all ranked rows so the vote-count stat is accurate
+  const MIN_MATCHES = 1;      // show photos with ≥1 match (lower threshold = livelier early data)
 
   const _docDir = (() => {
     const p = location.pathname;
@@ -297,7 +298,7 @@
     try {
       const [manifestRes, eloRes] = await Promise.all([
         fetch(_docDir + "manifest.json", { cache: "no-store" }).then(r => r.json()),
-        fetch(`${API}/best-elo-top?n=${TOP_N}&min_matches=${MIN_MATCHES}`, { cache: "no-store" })
+        fetch(`${API}/best-elo-top?n=${FETCH_N}&min_matches=${MIN_MATCHES}`, { cache: "no-store" })
           .then(r => r.json()),
       ]);
 
@@ -306,7 +307,12 @@
       $("#stat-pool").textContent = pool.length.toLocaleString();
 
       const rows = (eloRes && eloRes.results) || [];
-      $("#stat-ranked").textContent = rows.length.toLocaleString();
+      // Each vote produces 1 win + 1 loss across the two photos, so the total
+      // vote count is half the sum of wins+losses.
+      const totalVotes = Math.round(
+        rows.reduce((s, r) => s + (r.wins || 0) + (r.losses || 0), 0) / 2
+      );
+      $("#stat-votes").textContent = totalVotes.toLocaleString();
       $("#stat-shown").textContent = Math.min(rows.length, TOP_N).toLocaleString();
 
       if (rows.length === 0) {
@@ -314,9 +320,10 @@
         return;
       }
 
+      const display = rows.slice(0, TOP_N);
       const grid = document.createElement("div");
       grid.className = "grid";
-      rows.forEach((row, i) => grid.appendChild(makeCard(row, i, lookup)));
+      display.forEach((row, i) => grid.appendChild(makeCard(row, i, lookup)));
       main.innerHTML = "";
       main.appendChild(grid);
     } catch (err) {
