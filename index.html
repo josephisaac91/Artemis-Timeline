@@ -1222,6 +1222,7 @@
   </button>
   <button class="filter-btn active" data-filter="all">All Photos and Video</button>
   <button class="filter-btn" data-filter="spacecraft">Crew Photos Only</button>
+  <button class="filter-btn" data-filter="new">New Crew Photos</button>
   <button class="filter-btn" data-filter="exterior">Spacecraft Exterior</button>
   <span class="filter-sep">|</span>
   <button class="filter-btn cam-filter" data-cam="d5a" title="Nikon D5 body 3500015 — on Orion">D5 #1</button>
@@ -2769,7 +2770,7 @@ document.querySelectorAll('[data-filter]').forEach(btn => {
     clearAllFilters();
     this.classList.add('active');
     const filter = this.dataset.filter;
-    filteredPhotos = filter === 'all' ? PHOTOS : filter === 'videos' ? PHOTOS.filter(p => p.v) : filter === 'exterior' ? PHOTOS.filter(p => p.exterior) : PHOTOS.filter(p => p.sc);
+    filteredPhotos = filter === 'all' ? PHOTOS : filter === 'videos' ? PHOTOS.filter(p => p.v) : filter === 'exterior' ? PHOTOS.filter(p => p.exterior) : filter === 'new' ? PHOTOS.filter(p => p.b === 2) : PHOTOS.filter(p => p.sc);
     currentPhotoIdx = 0;
     viewStart = T_START; viewEnd = T_END;
     updatePhoto();
@@ -3164,6 +3165,10 @@ window.addEventListener('resize', syncMobileLayout);
       <label class="filter-option">
         <input type="radio" name="filter-where" value="spacecraft">
         <span>Crew Photos Only</span>
+      </label>
+      <label class="filter-option">
+        <input type="radio" name="filter-where" value="new">
+        <span>New Crew Photos</span>
       </label>
       <label class="filter-option">
         <input type="radio" name="filter-where" value="exterior">

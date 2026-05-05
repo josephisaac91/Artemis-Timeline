@@ -1107,7 +1107,7 @@ const PHOTO_DATA = {
     {
       "time": "2026-04-02 20:28:00",
       "file": "loop.mp4",
-      "photographer": "Artemis II Crew",
+      "photographer": "u/ResponsibilityNo2097",
       "location": "Orion Spacecraft",
       "camera": "Nikon D5",
       "settings": "1280×982 · 8s",
@@ -1116,7 +1116,7 @@ const PHOTO_DATA = {
       "video": true,
       "external": false,
       "title": "Earth Rotating From Deep Space",
-      "flickr_desc": "A looping time-lapse of Earth slowly rotating as seen from the Orion spacecraft during the outbound translunar coast, compiled from a sequence of crew photographs.",
+      "flickr_desc": "A looping time-lapse of Earth slowly rotating as seen from the Orion spacecraft during the outbound translunar coast, compiled from crew photographs by Reddit user u/ResponsibilityNo2097.",
       "enabled": true
     },
     {
