@@ -556,7 +556,7 @@
   }
   function updateCount() {
     $("#count").textContent = String(selected.size);
-    $("#btn-submit").disabled = selected.size !== PICK_LIMIT;
+    $("#btn-submit").disabled = selected.size > PICK_LIMIT || selected.size === 0;
   }
 
   // ====== Lightbox ======
