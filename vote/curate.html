@@ -487,8 +487,11 @@
   }
   // Number of top photos that have been mirrored to R2 /large/ (1800px @ Q85, ~300 KB each).
   // For ranks ≤ this, prefer the R2 mirror for both the lightbox and the preloader —
-  // it's an order of magnitude faster and bandwidth-friendlier than NASA full-res.
-  const R2_MIRROR_TOP = 200;
+  // R2 serves Cache-Control: public, max-age=2592000, immutable (we set it on upload),
+  // so cached preloads actually stick. NASA's CDN doesn't, so preloaded NASA bytes
+  // get evicted and re-downloaded on click.
+  // Bump this whenever you re-run scripts/mirror-top200.py with a larger --n.
+  const R2_MIRROR_TOP = 1000;
   function bigUrl(rank, guid) {
     return rank <= R2_MIRROR_TOP ? largeUrl(guid) : fullUrl(guid);
   }
