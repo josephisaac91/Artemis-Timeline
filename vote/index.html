@@ -204,28 +204,24 @@
 
   /* Best-of hero card */
   .hero-best {
-    border: 2px solid #ff8a3d;
-    border-radius: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     padding: 22px 22px 18px;
-    background: linear-gradient(135deg, rgba(255,138,61,0.12) 0%, rgba(255,209,102,0.06) 100%);
+    background: var(--bg-2);
     margin: 0 0 28px;
-    box-shadow: 0 8px 30px rgba(255,138,61,0.15);
   }
   .hero-best .eyebrow {
-    color: #ffd166;
+    color: var(--muted);
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    font-weight: 800;
+    font-weight: 700;
     margin: 0 0 6px;
   }
   .hero-best h2 {
     font-size: clamp(20px, 3.5vw, 28px);
     margin: 0 0 6px;
-    background: linear-gradient(90deg, #ffd166 0%, #ff8a3d 70%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--fg);
   }
   .hero-best p { color: var(--muted); margin: 0 0 14px; font-size: 14px; line-height: 1.5; }
   .hero-best .cta { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -242,12 +238,12 @@
 
   <!-- Best-of hero — head-to-head over every photo on artemistimeline.com -->
   <section class="hero-best">
-    <p class="eyebrow">🏆 New</p>
-    <h2>Find THE best Artemis II photo</h2>
-    <p>Every photo featured on <a href="https://artemistimeline.com" target="_blank" rel="noopener">artemistimeline.com</a> goes head-to-head. Click your favorite from each pair, and the running Elo leaderboard crowns the single best image of the mission.</p>
+    <p class="eyebrow">New</p>
+    <h2>Find the best Artemis II photo</h2>
+    <p>Every photo featured on <a href="https://artemistimeline.com" target="_blank" rel="noopener">artemistimeline.com</a> goes head-to-head. Click your favorite from each pair, and the running Elo leaderboard ranks the single best image of the mission.</p>
     <div class="cta">
       <a class="btn primary" id="cta-best" href="best/">Start voting →</a>
-      <a class="btn" id="cta-best-lb" href="best/leaderboard.html">🏆 Current rankings</a>
+      <a class="btn" id="cta-best-lb" href="best/leaderboard.html">Current rankings</a>
     </div>
   </section>
 
